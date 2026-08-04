@@ -1,0 +1,58 @@
+name: quality
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Install frontend dependencies
+        run: npm ci
+
+      - name: Check PHP formatting
+        run: vendor/bin/pint --test
+
+      - name: Run PHP static analysis
+        run: composer analyse
+
+      - name: Check frontend formatting
+        run: npm run format:check
+
+      - name: Run ESLint
+        run: npm run lint:check
+
+      - name: Check TypeScript
+        run: npm run typecheck
+
+      - name: Audit PHP dependencies
+        run: composer audit --locked
+
+      - name: Audit frontend dependencies
+        run: npm audit --audit-level=high

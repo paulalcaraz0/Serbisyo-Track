@@ -1,0 +1,77 @@
+<?php
+
+return [
+    'common' => [
+        'language_label' => 'Choose language',
+        'english' => 'English',
+        'filipino' => 'Filipino',
+        'staff_portal' => 'Staff sign in',
+        'dashboard' => 'Staff dashboard',
+        'skip_to_content' => 'Skip to main content',
+    ],
+    'home' => [
+        'meta_title' => 'Barangay services, easier to follow',
+        'meta_description' => 'A portfolio demonstration of an accessible barangay service-request and appointment portal.',
+        'disclaimer_label' => 'Demonstration only',
+        'disclaimer' => 'SerbisyoTrack is a portfolio demonstration. It is not affiliated with, operated by, or endorsed by any real government office.',
+        'eyebrow' => 'Clear local service requests',
+        'title' => 'Barangay services, easier to understand and track.',
+        'description' => 'Know what you need before you apply, send a request with confidence, and follow every public update from one calm, accessible portal.',
+        'primary_action' => 'See how it works',
+        'secondary_action' => 'Staff sign in',
+        'trust_note' => 'Designed around clear requirements, privacy-conscious forms, and status updates residents can understand.',
+        'preview_label' => 'A clearer resident journey',
+        'preview_title' => 'From question to completed request',
+        'preview_items' => [
+            'Check requirements and expected processing time',
+            'Submit only the information the service needs',
+            'Save a private reference and tracking PIN',
+            'Read public updates without exposing private notes',
+        ],
+        'features_label' => 'What the portal will support',
+        'features_title' => 'Useful information before, during, and after a request',
+        'features_intro' => 'The first foundation is ready. Resident and staff workflows will be added in verified milestones.',
+        'features' => [
+            [
+                'title' => 'Understand each service',
+                'body' => 'See eligibility, requirements, fees, office hours, and realistic processing guidance in plain language.',
+            ],
+            [
+                'title' => 'Submit with confidence',
+                'body' => 'A guided form will collect only what is necessary and explain consent before anything is sent.',
+            ],
+            [
+                'title' => 'Track progress clearly',
+                'body' => 'A secure reference and private PIN will reveal public updates while keeping personal details protected.',
+            ],
+        ],
+        'steps_label' => 'How it will work',
+        'steps_title' => 'A simple path with no hidden steps',
+        'steps' => [
+            ['title' => 'Find the service', 'body' => 'Compare available services and read the full requirements.'],
+            ['title' => 'Review and submit', 'body' => 'Complete a guided request or appointment form.'],
+            ['title' => 'Keep the reference', 'body' => 'Receive a non-sequential reference and private tracking PIN.'],
+            ['title' => 'Follow each update', 'body' => 'See the public timeline without exposing staff-only information.'],
+        ],
+        'foundation_label' => 'Built with care',
+        'foundation_title' => 'Trust is part of the architecture',
+        'foundation_body' => 'SerbisyoTrack is being built as a security- and accessibility-conscious Laravel application, not as a collection of disconnected mock screens.',
+        'foundation_points' => [
+            'Staff-only accounts with rate-limited authentication',
+            'Server-side authorization and redacted public responses',
+            'Keyboard access, visible focus, and reduced-motion support',
+        ],
+        'footer_office' => 'Fictional office: Barangay Haraya',
+        'footer_phase' => 'Portfolio demonstration · Foundation milestone',
+    ],
+    'auth' => [
+        'title' => 'Staff sign in',
+        'description' => 'Use an authorized SerbisyoTrack staff account.',
+        'email' => 'Email address',
+        'password' => 'Password',
+        'remember' => 'Remember me on this device',
+        'forgot' => 'Forgot password?',
+        'submit' => 'Sign in securely',
+        'restricted' => 'Resident accounts are not required. This sign-in is only for authorized staff and administrators.',
+    ],
+];

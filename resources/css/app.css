@@ -1,0 +1,199 @@
+@import 'tailwindcss';
+
+@plugin 'tailwindcss-animate';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+    --radius-lg: var(--radius);
+    --radius-md: calc(var(--radius) - 2px);
+    --radius-sm: calc(var(--radius) - 4px);
+
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-popover: var(--popover);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+    --color-chart-1: var(--chart-1);
+    --color-chart-2: var(--chart-2);
+    --color-chart-3: var(--chart-3);
+    --color-chart-4: var(--chart-4);
+    --color-chart-5: var(--chart-5);
+    --color-sidebar: var(--sidebar-background);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+    --background: hsl(100 16% 97%);
+    --foreground: hsl(169 30% 12%);
+    --card: hsl(0 0% 100%);
+    --card-foreground: hsl(169 30% 12%);
+    --popover: hsl(0 0% 100%);
+    --popover-foreground: hsl(169 30% 12%);
+    --primary: hsl(171 64% 21%);
+    --primary-foreground: hsl(0 0% 100%);
+    --secondary: hsl(160 24% 92%);
+    --secondary-foreground: hsl(171 52% 18%);
+    --muted: hsl(150 12% 94%);
+    --muted-foreground: hsl(168 10% 39%);
+    --accent: hsl(39 85% 87%);
+    --accent-foreground: hsl(33 72% 27%);
+    --destructive: hsl(0 70% 45%);
+    --destructive-foreground: hsl(0 0% 100%);
+    --border: hsl(160 12% 87%);
+    --input: hsl(160 12% 80%);
+    --ring: hsl(171 64% 28%);
+    --chart-1: hsl(171 64% 28%);
+    --chart-2: hsl(39 73% 51%);
+    --chart-3: hsl(198 55% 40%);
+    --chart-4: hsl(18 65% 58%);
+    --chart-5: hsl(143 38% 42%);
+    --radius: 0.75rem;
+    --sidebar-background: hsl(150 18% 97%);
+    --sidebar-foreground: hsl(169 25% 20%);
+    --sidebar-primary: hsl(171 64% 21%);
+    --sidebar-primary-foreground: hsl(0 0% 100%);
+    --sidebar-accent: hsl(160 24% 92%);
+    --sidebar-accent-foreground: hsl(171 52% 18%);
+    --sidebar-border: hsl(160 12% 87%);
+    --sidebar-ring: hsl(171 64% 28%);
+}
+
+.dark {
+    --background: hsl(169 27% 8%);
+    --foreground: hsl(150 17% 94%);
+    --card: hsl(169 25% 11%);
+    --card-foreground: hsl(150 17% 94%);
+    --popover: hsl(169 25% 11%);
+    --popover-foreground: hsl(150 17% 94%);
+    --primary: hsl(156 45% 69%);
+    --primary-foreground: hsl(169 35% 10%);
+    --secondary: hsl(168 18% 17%);
+    --secondary-foreground: hsl(150 17% 94%);
+    --muted: hsl(168 18% 17%);
+    --muted-foreground: hsl(160 10% 67%);
+    --accent: hsl(38 38% 24%);
+    --accent-foreground: hsl(39 85% 87%);
+    --destructive: hsl(0 64% 56%);
+    --destructive-foreground: hsl(0 0% 100%);
+    --border: hsl(168 15% 22%);
+    --input: hsl(168 15% 26%);
+    --ring: hsl(156 45% 69%);
+    --sidebar-background: hsl(169 27% 9%);
+    --sidebar-foreground: hsl(150 17% 90%);
+    --sidebar-primary: hsl(156 45% 69%);
+    --sidebar-primary-foreground: hsl(169 35% 10%);
+    --sidebar-accent: hsl(168 18% 17%);
+    --sidebar-accent-foreground: hsl(150 17% 94%);
+    --sidebar-border: hsl(168 15% 22%);
+    --sidebar-ring: hsl(156 45% 69%);
+}
+
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--border);
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background text-foreground overflow-x-hidden antialiased;
+    }
+
+    button,
+    a,
+    input,
+    select,
+    textarea {
+        @apply transition-colors duration-150;
+    }
+
+    :focus-visible {
+        outline: 3px solid hsl(171 64% 35%);
+        outline-offset: 3px;
+    }
+
+    ::selection {
+        background: hsl(156 35% 78%);
+        color: hsl(169 35% 10%);
+    }
+}
+
+@utility focus-ring {
+    &:focus-visible {
+        outline: 3px solid hsl(171 64% 35%);
+        outline-offset: 3px;
+    }
+}
+
+.skip-link {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 100;
+    min-height: 2.75rem;
+    transform: translateY(-150%);
+    border-radius: 0.75rem;
+    background: white;
+    padding: 0.75rem 1rem;
+    color: #0f172a;
+    font-size: 0.875rem;
+    font-weight: 700;
+    box-shadow: 0 10px 25px rgb(15 23 42 / 0.2);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+@media print {
+    body {
+        background: white !important;
+        color: black !important;
+    }
+
+    [data-print-hidden='true'] {
+        display: none !important;
+    }
+}

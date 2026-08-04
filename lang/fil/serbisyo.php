@@ -1,0 +1,77 @@
+<?php
+
+return [
+    'common' => [
+        'language_label' => 'Pumili ng wika',
+        'english' => 'English',
+        'filipino' => 'Filipino',
+        'staff_portal' => 'Sign in ng kawani',
+        'dashboard' => 'Dashboard ng kawani',
+        'skip_to_content' => 'Lumaktaw sa pangunahing nilalaman',
+    ],
+    'home' => [
+        'meta_title' => 'Mas madaling sundan ang serbisyong barangay',
+        'meta_description' => 'Isang portfolio demonstration ng accessible na portal para sa kahilingan at appointment sa barangay.',
+        'disclaimer_label' => 'Demonstration lamang',
+        'disclaimer' => 'Ang SerbisyoTrack ay isang portfolio demonstration. Hindi ito kaakibat, pinapatakbo, o ineendorso ng anumang tunay na tanggapan ng pamahalaan.',
+        'eyebrow' => 'Malinaw na kahilingan para sa lokal na serbisyo',
+        'title' => 'Mas madaling intindihin at subaybayan ang serbisyong barangay.',
+        'description' => 'Alamin ang kailangan bago mag-apply, magpadala ng kahilingan nang may kumpiyansa, at sundan ang bawat pampublikong update sa isang payapa at accessible na portal.',
+        'primary_action' => 'Tingnan kung paano ito gagana',
+        'secondary_action' => 'Sign in ng kawani',
+        'trust_note' => 'Dinisenyo para sa malinaw na requirements, mga form na may pag-iingat sa privacy, at mga update na madaling maintindihan.',
+        'preview_label' => 'Mas malinaw na proseso para sa residente',
+        'preview_title' => 'Mula tanong hanggang makumpletong kahilingan',
+        'preview_items' => [
+            'Suriin ang requirements at inaasahang oras ng pagproseso',
+            'Ibigay lamang ang impormasyong kailangan ng serbisyo',
+            'Itago ang pribadong reference at tracking PIN',
+            'Basahin ang pampublikong update nang hindi inilalantad ang pribadong tala',
+        ],
+        'features_label' => 'Mga susuportahan ng portal',
+        'features_title' => 'Mahalagang impormasyon bago, habang, at pagkatapos ng kahilingan',
+        'features_intro' => 'Handa na ang unang pundasyon. Idaragdag ang mga workflow ng residente at kawani sa mga beripikadong milestone.',
+        'features' => [
+            [
+                'title' => 'Intindihin ang bawat serbisyo',
+                'body' => 'Makikita ang eligibility, requirements, bayarin, oras ng opisina, at makatotohanang gabay sa pagproseso.',
+            ],
+            [
+                'title' => 'Magsumite nang may kumpiyansa',
+                'body' => 'Kokolektahin lamang ng gabay na form ang kailangan at ipaliliwanag ang pahintulot bago isumite.',
+            ],
+            [
+                'title' => 'Subaybayan nang malinaw',
+                'body' => 'Ipapakita ng secure na reference at pribadong PIN ang pampublikong update habang pinoprotektahan ang personal na detalye.',
+            ],
+        ],
+        'steps_label' => 'Paano ito gagana',
+        'steps_title' => 'Simpleng proseso na walang nakatagong hakbang',
+        'steps' => [
+            ['title' => 'Hanapin ang serbisyo', 'body' => 'Ihambing ang mga serbisyo at basahin ang kumpletong requirements.'],
+            ['title' => 'Suriin at isumite', 'body' => 'Kumpletuhin ang gabay na request o appointment form.'],
+            ['title' => 'Itago ang reference', 'body' => 'Tumanggap ng non-sequential na reference at pribadong tracking PIN.'],
+            ['title' => 'Sundan ang bawat update', 'body' => 'Tingnan ang pampublikong timeline nang hindi inilalantad ang staff-only na impormasyon.'],
+        ],
+        'foundation_label' => 'Ginawang may pag-iingat',
+        'foundation_title' => 'Bahagi ng arkitektura ang tiwala',
+        'foundation_body' => 'Binubuo ang SerbisyoTrack bilang Laravel application na may pag-iingat sa seguridad at accessibility, hindi bilang magkakahiwalay na mock screen.',
+        'foundation_points' => [
+            'Staff-only na account na may rate-limited authentication',
+            'Server-side authorization at pampublikong response na walang pribadong detalye',
+            'Keyboard access, malinaw na focus, at reduced-motion support',
+        ],
+        'footer_office' => 'Kathang-isip na opisina: Barangay Haraya',
+        'footer_phase' => 'Portfolio demonstration · Foundation milestone',
+    ],
+    'auth' => [
+        'title' => 'Sign in ng kawani',
+        'description' => 'Gumamit ng awtorisadong SerbisyoTrack staff account.',
+        'email' => 'Email address',
+        'password' => 'Password',
+        'remember' => 'Tandaan ako sa device na ito',
+        'forgot' => 'Nakalimutan ang password?',
+        'submit' => 'Secure na mag-sign in',
+        'restricted' => 'Hindi kailangan ng account ang residente. Para lamang ito sa awtorisadong kawani at administrator.',
+    ],
+];
