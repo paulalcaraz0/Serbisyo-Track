@@ -20,16 +20,17 @@ export default function PublicLayout({ children }: PropsWithChildren) {
     const publicNav = [
         { label: common.home, href: route('home') },
         { label: common.services, href: route('services.index') },
+        { label: common.track, href: route('tracking.index') },
         { label: common.help, href: route('help') },
     ];
 
     return (
-        <>
+        <div className="public-shell">
             <a href="#main-content" className="skip-link">
                 {common.skip_to_content}
             </a>
 
-            <div className="bg-primary text-primary-foreground">
+            <div className="bg-primary text-primary-foreground" data-print-hidden="true">
                 <div className="mx-auto flex max-w-7xl items-start gap-3 px-4 py-3 text-sm leading-5 sm:px-6 lg:px-8">
                     <ShieldCheck className="mt-0.5 size-4 shrink-0" aria-hidden="true" />
                     <p>
@@ -39,7 +40,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             </div>
 
             <div className="min-h-screen bg-[#f6f8f5] text-slate-950">
-                <header className="border-b border-slate-200 bg-white">
+                <header className="border-b border-slate-200 bg-white" data-print-hidden="true">
                     <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex min-h-14 flex-wrap items-center justify-between gap-3">
                             <Link href={route('home')} className="focus-ring flex min-h-11 items-center gap-3 rounded-xl" aria-label={`${name} home`}>
@@ -99,7 +100,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
 
                 <main id="main-content">{children}</main>
 
-                <footer className="border-t border-slate-200 bg-white">
+                <footer className="border-t border-slate-200 bg-white" data-print-hidden="true">
                     <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 text-sm text-slate-600 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8">
                         <div>
                             <div className="flex items-center gap-2 font-bold text-slate-950">
@@ -126,6 +127,6 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                     </div>
                 </footer>
             </div>
-        </>
+        </div>
     );
 }

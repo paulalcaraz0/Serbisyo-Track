@@ -22,8 +22,9 @@ class SecurityHeaders
         $response->headers->set('Cross-Origin-Opener-Policy', 'same-origin');
         $response->headers->set('Content-Security-Policy', "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'");
 
-        if ($request->user() !== null) {
+        if ($request->user() !== null || $request->routeIs(['requests.*', 'tracking.*'])) {
             $response->headers->set('Cache-Control', 'no-store, private');
+            $response->headers->set('X-Robots-Tag', 'noindex, nofollow, noarchive');
         }
 
         if ($request->isSecure() && app()->environment('production')) {

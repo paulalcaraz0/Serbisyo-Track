@@ -19,6 +19,7 @@ export interface AdminService {
     fee_centavos: number;
     processing_time_en: string;
     processing_time_fil: string;
+    target_business_days: number;
     office_hours_en: string;
     office_hours_fil: string;
     procedure_steps_en: string[];

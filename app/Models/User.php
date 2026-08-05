@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -42,4 +43,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'password' => 'hashed',
         'role' => UserRole::class,
     ];
+
+    /** @return HasMany<ServiceRequest, $this> */
+    public function assignedRequests(): HasMany
+    {
+        return $this->hasMany(ServiceRequest::class, 'assigned_to');
+    }
+
+    /** @return HasMany<RequestActivity, $this> */
+    public function requestActivities(): HasMany
+    {
+        return $this->hasMany(RequestActivity::class, 'actor_id');
+    }
 }

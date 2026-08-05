@@ -25,6 +25,7 @@ class AdminServiceResource extends JsonResource
             'fee_centavos' => $this->fee_centavos,
             'processing_time_en' => $this->processing_time_en,
             'processing_time_fil' => $this->processing_time_fil,
+            'target_business_days' => $this->target_business_days,
             'office_hours_en' => $this->office_hours_en,
             'office_hours_fil' => $this->office_hours_fil,
             'procedure_steps_en' => $this->procedure_steps_en,

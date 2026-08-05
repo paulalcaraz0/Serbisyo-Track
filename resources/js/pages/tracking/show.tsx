@@ -1,0 +1,160 @@
+import { buttonVariants } from '@/components/ui/button';
+import PublicLayout from '@/layouts/public-layout';
+import { cn } from '@/lib/utils';
+import { type SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
+import { CalendarClock, CheckCircle2, Download, FileText, History, ShieldCheck } from 'lucide-react';
+
+interface Props {
+    trackedRequest: {
+        reference: string;
+        serviceName: string;
+        status: string;
+        statusLabel: string;
+        statusDescription: string;
+        submittedAt: string | null;
+        updatedAt: string | null;
+        appointment: { preferredDate: string | null; preferredTimeWindow: string; status: string } | null;
+        attachments: { publicId: string; name: string; sizeBytes: number }[];
+        history: { status: string | null; message: string; occurredAt: string }[];
+    };
+}
+
+export default function TrackingShow({ trackedRequest }: Props) {
+    const { locale, translations } = usePage<SharedData>().props;
+    const copy = translations.tracking;
+    const dateLocale = locale === 'fil' ? 'fil-PH' : 'en-PH';
+    const formatDate = (value: string | null, options: Intl.DateTimeFormatOptions) =>
+        value ? new Intl.DateTimeFormat(dateLocale, options).format(new Date(value)) : '—';
+    const timeLabel = trackedRequest.appointment?.preferredTimeWindow === 'morning' ? translations.requests.morning : translations.requests.afternoon;
+
+    return (
+        <PublicLayout>
+            <Head title={copy.status_meta_title}>
+                <meta name="robots" content="noindex,nofollow,noarchive" />
+            </Head>
+            <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
+                <div className="mb-6">
+                    <p className="text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{copy.status_eyebrow}</p>
+                    <h1 className="mt-2 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{copy.status_title}</h1>
+                    <p className="mt-2 font-mono text-sm font-bold text-slate-500">{trackedRequest.reference}</p>
+                </div>
+                <section className="rounded-3xl border border-emerald-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="current-status">
+                    <div className="flex items-start gap-4">
+                        <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#e4f1ed] text-[#14594f]">
+                            <CheckCircle2 className="size-6" aria-hidden="true" />
+                        </div>
+                        <div>
+                            <p className="text-sm font-semibold text-slate-500">{copy.status_title}</p>
+                            <h2 id="current-status" className="mt-1 text-2xl font-bold">
+                                {trackedRequest.statusLabel}
+                            </h2>
+                            <p className="mt-2 leading-7 text-slate-600">{trackedRequest.statusDescription}</p>
+                        </div>
+                    </div>
+                </section>
+                <div className="mt-6 grid gap-6 md:grid-cols-2">
+                    <section className="rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="request-summary">
+                        <h2 id="request-summary" className="font-bold">
+                            {copy.service}
+                        </h2>
+                        <p className="mt-2 text-lg font-bold text-[#14594f]">{trackedRequest.serviceName}</p>
+                        <dl className="mt-5 space-y-4 border-t border-slate-100 pt-5 text-sm">
+                            <div>
+                                <dt className="font-semibold text-slate-500">{copy.submitted}</dt>
+                                <dd className="mt-1">{formatDate(trackedRequest.submittedAt, { dateStyle: 'medium', timeStyle: 'short' })}</dd>
+                            </div>
+                            <div>
+                                <dt className="font-semibold text-slate-500">{copy.last_updated}</dt>
+                                <dd className="mt-1">{formatDate(trackedRequest.updatedAt, { dateStyle: 'medium', timeStyle: 'short' })}</dd>
+                            </div>
+                        </dl>
+                    </section>
+                    <section className="rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="appointment-summary">
+                        <h2 id="appointment-summary" className="flex items-center gap-2 font-bold">
+                            <CalendarClock className="size-5 text-[#14594f]" aria-hidden="true" />
+                            {copy.appointment}
+                        </h2>
+                        {trackedRequest.appointment ? (
+                            <>
+                                <p className="mt-4 font-bold">
+                                    {copy.appointment_requested
+                                        .replace(':date', formatDate(trackedRequest.appointment.preferredDate, { dateStyle: 'long' }))
+                                        .replace(':time', timeLabel)}
+                                </p>
+                                <span className="mt-3 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-900">
+                                    {translations.appointment_statuses[trackedRequest.appointment.status]}
+                                </span>
+                                <p className="mt-3 text-sm leading-6 text-slate-600">{copy.appointment_note}</p>
+                            </>
+                        ) : (
+                            <p className="mt-4 text-sm text-slate-600">{translations.requests.none}</p>
+                        )}
+                    </section>
+                </div>
+                <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="public-history">
+                    <h2 id="public-history" className="flex items-center gap-2 font-bold">
+                        <History className="size-5 text-[#14594f]" aria-hidden="true" />
+                        {copy.history}
+                    </h2>
+                    <p className="mt-2 text-sm leading-6 text-slate-600">{copy.history_intro}</p>
+                    {trackedRequest.history.length ? (
+                        <ol className="mt-5 space-y-4 border-l-2 border-[#b8d9cf] pl-5">
+                            {[...trackedRequest.history].reverse().map((event) => (
+                                <li key={`${event.occurredAt}-${event.status}`} className="relative">
+                                    <span className="absolute top-1.5 -left-[1.7rem] size-3 rounded-full border-2 border-white bg-[#14594f]" />
+                                    <p className="text-xs font-semibold text-slate-500">
+                                        {formatDate(event.occurredAt, { dateStyle: 'medium', timeStyle: 'short' })}
+                                    </p>
+                                    {event.status && <p className="mt-1 font-bold">{translations.statuses[event.status]?.label}</p>}
+                                    <p className="mt-1 text-sm leading-6 text-slate-600">{event.message}</p>
+                                </li>
+                            ))}
+                        </ol>
+                    ) : (
+                        <p className="mt-4 text-sm text-slate-600">{copy.no_history}</p>
+                    )}
+                </section>
+                <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="attachment-list">
+                    <h2 id="attachment-list" className="flex items-center gap-2 font-bold">
+                        <FileText className="size-5 text-[#14594f]" aria-hidden="true" />
+                        {copy.attachments}
+                    </h2>
+                    {trackedRequest.attachments.length ? (
+                        <ul className="mt-4 divide-y divide-slate-100">
+                            {trackedRequest.attachments.map((file) => (
+                                <li key={file.publicId} className="flex flex-wrap items-center justify-between gap-3 py-3">
+                                    <div>
+                                        <p className="font-semibold">{file.name}</p>
+                                        <p className="text-xs text-slate-500">{(file.sizeBytes / 1024).toFixed(1)} KB</p>
+                                    </div>
+                                    <a
+                                        href={route('tracking.attachments.show', { reference: trackedRequest.reference, attachment: file.publicId })}
+                                        className={buttonVariants({ variant: 'outline', size: 'sm' })}
+                                    >
+                                        <Download />
+                                        {copy.download.replace(':name', file.name)}
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p className="mt-3 text-sm text-slate-600">{copy.no_attachments}</p>
+                    )}
+                </section>
+                <div className="mt-6 flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
+                    <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[#14594f]" aria-hidden="true" />
+                    <p>{copy.privacy_note}</p>
+                </div>
+                <div className="mt-6 flex flex-wrap gap-3">
+                    <Link href={route('requests.receipt', trackedRequest.reference)} className={buttonVariants()}>
+                        {copy.receipt}
+                    </Link>
+                    <Link href={route('tracking.index')} className={cn(buttonVariants({ variant: 'outline' }))}>
+                        {copy.track_another}
+                    </Link>
+                </div>
+            </div>
+        </PublicLayout>
+    );
+}

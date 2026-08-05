@@ -33,6 +33,7 @@ class Service extends Model
         'contact_email',
         'contact_phone',
         'is_active',
+        'target_business_days',
     ];
 
     protected $casts = [
@@ -40,6 +41,7 @@ class Service extends Model
         'archived_at' => 'datetime',
         'fee_centavos' => 'integer',
         'is_active' => 'boolean',
+        'target_business_days' => 'integer',
         'procedure_steps_en' => 'array',
         'procedure_steps_fil' => 'array',
     ];
@@ -67,6 +69,12 @@ class Service extends Model
     public function requirements(): HasMany
     {
         return $this->hasMany(ServiceRequirement::class)->orderBy('sort_order');
+    }
+
+    /** @return HasMany<ServiceRequest, $this> */
+    public function requests(): HasMany
+    {
+        return $this->hasMany(ServiceRequest::class);
     }
 
     /** @return BelongsTo<User, $this> */

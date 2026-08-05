@@ -34,6 +34,7 @@ class ServiceFactory extends Factory
             'contact_email' => 'help@serbisyotrack.test',
             'contact_phone' => '(02) 8000 2026',
             'is_active' => true,
+            'target_business_days' => 3,
         ];
     }
 

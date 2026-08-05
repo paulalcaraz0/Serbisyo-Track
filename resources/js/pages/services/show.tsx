@@ -1,7 +1,7 @@
 import PublicLayout from '@/layouts/public-layout';
 import { type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { ArrowLeft, CalendarClock, Clock3, Mail, PhilippinePeso, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, CalendarClock, Clock3, Mail, PhilippinePeso, Phone, Search } from 'lucide-react';
 
 interface Requirement {
     name: string;
@@ -159,6 +159,22 @@ export default function ServiceDetails({ service: resource }: Props) {
                     <section className="rounded-2xl border border-amber-200 bg-amber-50 p-5">
                         <h2 className="font-bold text-amber-950">{copy.next_step_title}</h2>
                         <p className="mt-2 text-sm leading-6 text-amber-900">{copy.next_step_body}</p>
+                        <div className="mt-4 space-y-2">
+                            <Link
+                                href={route('requests.create', service.slug)}
+                                className="focus-ring inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#14594f] px-4 text-sm font-bold text-white hover:bg-[#0e463e]"
+                            >
+                                {copy.start_request}
+                                <ArrowRight className="size-4" aria-hidden="true" />
+                            </Link>
+                            <Link
+                                href={route('tracking.index')}
+                                className="focus-ring inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-amber-300 bg-white px-4 text-sm font-bold text-amber-950 hover:bg-amber-100"
+                            >
+                                <Search className="size-4" aria-hidden="true" />
+                                {copy.track_request}
+                            </Link>
+                        </div>
                     </section>
                 </aside>
             </div>

@@ -21,6 +21,7 @@ abstract class ServiceFormRequest extends FormRequest
             'fee_centavos' => ['required', 'integer', 'min:0', 'max:10000000'],
             'processing_time_en' => ['required', 'string', 'max:255'],
             'processing_time_fil' => ['required', 'string', 'max:255'],
+            'target_business_days' => ['required', 'integer', 'min:1', 'max:60'],
             'office_hours_en' => ['required', 'string', 'max:255'],
             'office_hours_fil' => ['required', 'string', 'max:255'],
             'procedure_steps_en' => ['required', 'array', 'min:1', 'max:20'],

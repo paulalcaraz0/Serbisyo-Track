@@ -56,6 +56,12 @@ export default function Welcome() {
                             >
                                 {common.services}
                             </Link>
+                            <Link
+                                href={route('tracking.index')}
+                                className="focus-ring inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#14594f]"
+                            >
+                                {common.track}
+                            </Link>
                             <div
                                 className="flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 p-1"
                                 aria-label={common.language_label}

@@ -21,13 +21,13 @@ PostgreSQL       Storage     Notifications
 ## Trust boundaries
 
 - Public resident routes never accept or expose internal database IDs.
-- Tracking will require a non-sequential reference plus a hashed private PIN.
-- Public Inertia/JSON data will be built from allow-listed resources rather than serialized models.
+- Tracking requires a non-sequential reference plus a hashed private PIN.
+- Public Inertia/JSON data is built from allow-listed resources rather than serialized models.
 - Staff routes require an authenticated, active, verified account.
-- Administrator operations will be enforced with policies and recorded as sanitized audit events.
-- Attachments will remain private and download through authorized controller actions.
+- Request operations are enforced with policies and assignment-aware domain services; administrator audit events arrive in Phase 5.
+- Attachments remain private and download through authorized controller actions.
 
-## Planned domain modules
+## Domain modules
 
 | Module | Responsibility |
 | --- | --- |
@@ -50,11 +50,48 @@ Phase 2 implements the first complete domain boundary:
 - Requirements are replaced with their service content inside a database transaction; a service itself is archived rather than deleted.
 - English and Filipino share routes and domain records. The session locale selects allow-listed translated fields on the server.
 
+## Implemented resident request module
+
+Phase 3 implements resident intake and public tracking without resident accounts:
+
+- `ServiceRequest` stores a high-entropy public reference, a one-way tracking PIN hash, workflow state, locale, consent time, and encrypted resident-submitted text fields.
+- `RequestAppointment` stores a resident preference separately so staff can confirm, request rescheduling, or cancel without rewriting the original request.
+- `RequestAttachment` uses a random public UUID, encrypted original filename, strict type/size/count validation, and the private local filesystem disk.
+- Submission creation and attachment metadata writes occur in one database transaction; any private files written before a failure are removed.
+- The receipt reveals the PIN only on its initial response. Reloaded receipts remain redacted and accessible only through the same short-lived session grant.
+- Tracking checks a reference and PIN behind layered rate limits, then issues a 15-minute encrypted-session grant. Public tracking props exclude resident name, contact, location, request description, and future private notes.
+- Attachment downloads query through the owning request and require the same tracking grant; no storage path or database identifier is exposed.
+- Sensitive request, receipt, tracking, and attachment responses send `no-store` and `noindex` headers.
+
+## Implemented staff operations module
+
+Phase 4 implements the protected processing boundary:
+
+- `ServiceRequestPolicy` allows active, verified users to view the queue while restricting assignment, transitions, notes, appointments, and downloads by role, assignment, open state, and request ownership.
+- `RequestWorkflow` is the single status-transition service. It reloads the request with a row lock, re-authorizes the actor, validates the transition graph and appointment prerequisite, updates status/due/closure fields, appends an activity, and schedules the notification inside one transaction.
+- `RequestOperations` uses the same lock-and-re-authorize pattern for assignments, encrypted internal notes, and appointment changes. Staff can claim unassigned work and release only their own; administrators can select any active, verified staff member.
+- `RequestActivity` is an append-only timeline record with an actor, optional subject, typed event, status edge, encrypted bilingual public messages, and encrypted private details. No application route mutates or deletes an activity.
+- Staff list resources deliberately omit resident PII. The protected detail resource includes only the data needed for the authorized workspace and never returns PIN hashes or storage paths.
+- Public tracking derives history from activities that contain both allow-listed public messages. It selects the request locale and omits actors, private details, raw bilingual fields, and internal identifiers.
+- Each service has a 1–60 business-day internal target. Submission calculates `due_at` while skipping weekends; open overdue work is surfaced in queue summaries and filters.
+- `ResidentRequestUpdated` is an after-commit queued email notification. The notifier sends only when email is the selected contact channel and never contains the tracking PIN.
+- Fictional development seed data exercises unassigned, assigned, overdue, and appointment-preference states and is guarded from production.
+
 ## Status workflow
 
-The request workflow will use a PHP backed enum and a single transition service. The service will validate the transition, authorize the actor, lock the request, update it, append immutable public/private history, create an audit event, and queue any notification inside one transaction.
+Request states are defined by a PHP backed enum. The controlled forward graph is:
 
-Planned states: Submitted, Acknowledged, Needs information, Scheduled, In progress, Ready for release, Completed, Rejected, and Cancelled.
+```text
+Submitted -> Acknowledged | Rejected | Cancelled
+Acknowledged -> Needs information | Scheduled | In progress | Rejected | Cancelled
+Needs information -> Acknowledged | In progress | Rejected | Cancelled
+Scheduled -> Needs information | In progress | Cancelled
+In progress -> Needs information | Ready for release | Completed | Rejected | Cancelled
+Ready for release -> In progress | Completed | Cancelled
+Completed | Rejected | Cancelled -> terminal
+```
+
+`Scheduled` additionally requires a confirmed appointment. Terminal transitions set `closed_at` and disable assignment, notes, appointment changes, and further transitions. Formal cross-module audit events remain Phase 5 scope; request activities already preserve the operational timeline.
 
 ## Data strategy
 

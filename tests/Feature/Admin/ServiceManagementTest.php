@@ -159,6 +159,7 @@ class ServiceManagementTest extends TestCase
             'fee_centavos' => 2500,
             'processing_time_en' => '1 to 2 business days',
             'processing_time_fil' => '1 hanggang 2 araw ng trabaho',
+            'target_business_days' => 2,
             'office_hours_en' => 'Monday to Friday, 8:00 AM to 5:00 PM',
             'office_hours_fil' => 'Lunes hanggang Biyernes, 8:00 AM hanggang 5:00 PM',
             'procedure_steps_en' => ['Review requirements.', 'Submit the request.'],

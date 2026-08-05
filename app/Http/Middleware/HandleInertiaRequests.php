@@ -45,7 +45,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'locale' => app()->getLocale(),
             'supportedLocales' => $supportedLocales,
-            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2')),
+            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4')),
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
             ],

@@ -19,6 +19,7 @@ interface ServiceFormData {
     fee_pesos: string;
     processing_time_en: string;
     processing_time_fil: string;
+    target_business_days: string;
     office_hours_en: string;
     office_hours_fil: string;
     procedure_steps_en: string[];
@@ -59,6 +60,7 @@ export function ServiceForm({ service }: { service?: AdminService }) {
         fee_pesos: service ? (service.fee_centavos / 100).toFixed(2) : '0.00',
         processing_time_en: service?.processing_time_en ?? '',
         processing_time_fil: service?.processing_time_fil ?? '',
+        target_business_days: String(service?.target_business_days ?? 3),
         office_hours_en: service?.office_hours_en ?? '',
         office_hours_fil: service?.office_hours_fil ?? '',
         procedure_steps_en: service?.procedure_steps_en ?? [''],
@@ -75,6 +77,7 @@ export function ServiceForm({ service }: { service?: AdminService }) {
         transform((formData) => ({
             ...formData,
             fee_centavos: Math.round(Number(formData.fee_pesos) * 100),
+            target_business_days: Number(formData.target_business_days),
         }));
 
         if (service) {
@@ -229,6 +232,19 @@ export function ServiceForm({ service }: { service?: AdminService }) {
                             maxLength={255}
                         />
                     </Field>
+                    <Field id="target_business_days" label="Internal target in business days" error={errors.target_business_days}>
+                        <Input
+                            id="target_business_days"
+                            type="number"
+                            min="1"
+                            max="60"
+                            step="1"
+                            value={data.target_business_days}
+                            onChange={(e) => setData('target_business_days', e.target.value)}
+                            required
+                        />
+                    </Field>
+                    <div />
                     <Field id="office_hours_en" label="Office hours — English" error={errors.office_hours_en}>
                         <Input
                             id="office_hours_en"

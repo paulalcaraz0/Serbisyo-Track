@@ -33,5 +33,19 @@ class DatabaseSeeder extends Seeder
             'role' => UserRole::Administrator,
             'is_active' => true,
         ])->save();
+
+        $staff = User::query()->firstOrNew([
+            'email' => 'staff@serbisyotrack.test',
+        ]);
+
+        $staff->forceFill([
+            'name' => 'Demo Staff',
+            'email_verified_at' => now(),
+            'password' => Hash::make('SerbisyoTrack!2026'),
+            'role' => UserRole::Staff,
+            'is_active' => true,
+        ])->save();
+
+        $this->call(RequestSeeder::class);
     }
 }
