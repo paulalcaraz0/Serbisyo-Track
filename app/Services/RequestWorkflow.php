@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\AppointmentStatus;
+use App\Enums\AuditEventType;
 use App\Enums\RequestActivityType;
 use App\Enums\ServiceRequestStatus;
 use App\Models\ServiceRequest;
@@ -15,7 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class RequestWorkflow
 {
-    public function __construct(private readonly ResidentUpdateNotifier $notifier) {}
+    public function __construct(
+        private readonly ResidentUpdateNotifier $notifier,
+        private readonly AuditLogger $auditLogger,
+    ) {}
 
     /** @return array<int, ServiceRequestStatus> */
     public function allowedTransitions(ServiceRequestStatus $from): array
@@ -104,6 +108,12 @@ class RequestWorkflow
                 'public_message_en' => $messageEn,
                 'public_message_fil' => $messageFil,
                 'private_details' => $this->clean($privateNote),
+            ]);
+
+            $this->auditLogger->record($actor, AuditEventType::RequestStatusChanged, 'request', $locked->public_reference, [
+                'request_reference' => $locked->public_reference,
+                'from_status' => $fromStatus->value,
+                'to_status' => $toStatus->value,
             ]);
 
             return $locked->fresh(['service', 'assignee', 'appointment', 'attachments', 'activities.actor', 'activities.subjectUser']);

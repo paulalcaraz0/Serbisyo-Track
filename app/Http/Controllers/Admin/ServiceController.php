@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\AuditEventType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreServiceRequest;
 use App\Http\Requests\Admin\UpdateServiceRequest;
 use App\Http\Resources\AdminServiceResource;
 use App\Models\Service;
 use App\Models\User;
+use App\Services\AuditLogger;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -20,6 +22,8 @@ use Inertia\Response;
 
 class ServiceController extends Controller
 {
+    public function __construct(private readonly AuditLogger $auditLogger) {}
+
     public function index(Request $request): Response
     {
         Gate::authorize('viewAny', Service::class);
@@ -79,6 +83,10 @@ class ServiceController extends Controller
 
             $this->replaceRequirements($service, $data['requirements']);
 
+            $this->auditLogger->record($user, AuditEventType::ServiceCreated, 'service', $service->slug, [
+                'service_slug' => $service->slug,
+            ]);
+
             return $service;
         });
 
@@ -108,6 +116,10 @@ class ServiceController extends Controller
             $service->save();
 
             $this->replaceRequirements($service, $data['requirements']);
+
+            $this->auditLogger->record($user, AuditEventType::ServiceUpdated, 'service', $service->slug, [
+                'service_slug' => $service->slug,
+            ]);
         });
 
         return to_route('admin.services.edit', $service)->with('success', 'Service updated successfully.');
@@ -116,12 +128,20 @@ class ServiceController extends Controller
     public function archive(Request $request, Service $service): RedirectResponse
     {
         Gate::authorize('update', $service);
+        $user = $request->user();
+        abort_unless($user instanceof User, 403);
 
-        $service->forceFill([
-            'is_active' => false,
-            'archived_at' => now(),
-            'updated_by' => $request->user()?->getAuthIdentifier(),
-        ])->save();
+        DB::transaction(function () use ($service, $user): void {
+            $service->forceFill([
+                'is_active' => false,
+                'archived_at' => now(),
+                'updated_by' => $user->id,
+            ])->save();
+
+            $this->auditLogger->record($user, AuditEventType::ServiceArchived, 'service', $service->slug, [
+                'service_slug' => $service->slug,
+            ]);
+        });
 
         return to_route('admin.services.index')->with('success', 'Service archived. Existing history is preserved.');
     }
@@ -129,12 +149,20 @@ class ServiceController extends Controller
     public function restore(Request $request, Service $service): RedirectResponse
     {
         Gate::authorize('restore', $service);
+        $user = $request->user();
+        abort_unless($user instanceof User, 403);
 
-        $service->forceFill([
-            'is_active' => false,
-            'archived_at' => null,
-            'updated_by' => $request->user()?->getAuthIdentifier(),
-        ])->save();
+        DB::transaction(function () use ($service, $user): void {
+            $service->forceFill([
+                'is_active' => false,
+                'archived_at' => null,
+                'updated_by' => $user->id,
+            ])->save();
+
+            $this->auditLogger->record($user, AuditEventType::ServiceRestored, 'service', $service->slug, [
+                'service_slug' => $service->slug,
+            ]);
+        });
 
         return to_route('admin.services.edit', $service)->with('success', 'Service restored as inactive. Review it before activation.');
     }

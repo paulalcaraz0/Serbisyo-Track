@@ -26,6 +26,12 @@ export interface SharedData {
     auth: Auth;
     locale: string;
     supportedLocales: Record<string, string>;
+    office: {
+        name: string;
+        address: string;
+        email: string;
+        phone: string;
+    };
     translations: Translations;
     flash: {
         success?: string;

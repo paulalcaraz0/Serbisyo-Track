@@ -24,7 +24,7 @@ PostgreSQL       Storage     Notifications
 - Tracking requires a non-sequential reference plus a hashed private PIN.
 - Public Inertia/JSON data is built from allow-listed resources rather than serialized models.
 - Staff routes require an authenticated, active, verified account.
-- Request operations are enforced with policies and assignment-aware domain services; administrator audit events arrive in Phase 5.
+- Request and administrator operations are enforced with policies, assignment-aware domain services, and transaction-coupled audit events.
 - Attachments remain private and download through authorized controller actions.
 
 ## Domain modules
@@ -91,15 +91,29 @@ Ready for release -> In progress | Completed | Cancelled
 Completed | Rejected | Cancelled -> terminal
 ```
 
-`Scheduled` additionally requires a confirmed appointment. Terminal transitions set `closed_at` and disable assignment, notes, appointment changes, and further transitions. Formal cross-module audit events remain Phase 5 scope; request activities already preserve the operational timeline.
+`Scheduled` additionally requires a confirmed appointment. Terminal transitions set `closed_at` and disable assignment, notes, appointment changes, and further transitions. Request activities preserve the detailed operational timeline while cross-module audit events record sanitized security-relevant actions.
+
+## Implemented administration and reporting module
+
+Phase 5 implements the administrator and data-governance boundary:
+
+- `UserPolicy`, `OfficeSettingPolicy`, and `AuditEventPolicy`, plus the report ability, restrict every Phase 5 route to active administrators on the server.
+- `StaffAccountManager` creates verified internal accounts and updates them under row locks. It prevents self-deactivation/self-demotion and removal of the last active administrator. Deactivation releases only open assignments and appends operational history.
+- `OfficeSetting` is a singleton containing bilingual office identity, public contact details, and the validated retention duration. The resident footer receives only locale-selected allow-listed values.
+- `AdminReportService` explicitly selects request reference, workflow/due/closure dates, service, status, and assignee. Encrypted resident fields and activity contents never enter the reporting collection.
+- Reports calculate aggregate status, workload, overdue, completion, resolution-time, and daily trend data for a maximum 366-day filter window.
+- CSV export uses the same safe report collection. `CsvCellSanitizer` removes line controls and neutralizes formula-leading characters before writing fixed operational columns.
+- `AuditLogger` accepts a typed event, a constrained subject type, and event-specific allow-listed scalar metadata. It discards unrecognized keys and never records resident details or internal note content.
+- Service and request-operation audits are written inside their domain transaction. Staff, settings, exports, and retention actions also create typed audit events. No application update or delete route exists for audit rows.
+- `requests:purge-expired` supports dry runs, locks and rechecks each candidate, deletes private files, and cascades expired closed requests. The scheduler runs it daily at 02:30 without overlap; recent and open requests remain untouched.
 
 ## Data strategy
 
 - PostgreSQL is the production database; SQLite is used locally and in tests.
 - Portable string-backed enums avoid database-specific enum drift.
 - Services and accounts are archived/deactivated rather than deleted.
-- Expired demonstration requests and private attachments will be purged by a scheduled command after the configured retention period.
-- Audit metadata will be allow-listed and must not contain resident contact details.
+- Expired closed requests and private attachments are purged by a scheduled command after the configured retention period.
+- Audit metadata is centrally allow-listed and excludes resident contact details, descriptions, and internal note contents.
 
 ## Frontend strategy
 

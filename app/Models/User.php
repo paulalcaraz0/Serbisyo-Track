@@ -24,6 +24,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
+        'email_verified_at',
     ];
 
     /**
@@ -54,5 +57,11 @@ class User extends Authenticatable implements MustVerifyEmail
     public function requestActivities(): HasMany
     {
         return $this->hasMany(RequestActivity::class, 'actor_id');
+    }
+
+    /** @return HasMany<AuditEvent, $this> */
+    public function auditEvents(): HasMany
+    {
+        return $this->hasMany(AuditEvent::class, 'actor_id');
     }
 }

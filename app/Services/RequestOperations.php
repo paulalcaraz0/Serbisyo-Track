@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Enums\AppointmentStatus;
+use App\Enums\AuditEventType;
 use App\Enums\RequestActivityType;
 use App\Enums\UserRole;
 use App\Models\ServiceRequest;
@@ -15,7 +16,10 @@ use Illuminate\Validation\ValidationException;
 
 class RequestOperations
 {
-    public function __construct(private readonly ResidentUpdateNotifier $notifier) {}
+    public function __construct(
+        private readonly ResidentUpdateNotifier $notifier,
+        private readonly AuditLogger $auditLogger,
+    ) {}
 
     public function assign(ServiceRequest $serviceRequest, User $actor, ?User $assignee): ServiceRequest
     {
@@ -52,6 +56,11 @@ class RequestOperations
                 'private_details' => $assignee === null ? 'Request unassigned.' : 'Request assigned.',
             ]);
 
+            $this->auditLogger->record($actor, AuditEventType::RequestAssigned, 'request', $locked->public_reference, [
+                'request_reference' => $locked->public_reference,
+                'assignee_id' => $assignee?->id,
+            ]);
+
             return $locked->fresh(['service', 'assignee', 'appointment', 'attachments', 'activities.actor', 'activities.subjectUser']);
         });
     }
@@ -66,6 +75,10 @@ class RequestOperations
                 'actor_id' => $actor->id,
                 'event_type' => RequestActivityType::InternalNote,
                 'private_details' => trim($body),
+            ]);
+
+            $this->auditLogger->record($actor, AuditEventType::RequestInternalNoteAdded, 'request', $locked->public_reference, [
+                'request_reference' => $locked->public_reference,
             ]);
 
             $locked->touch();
@@ -114,6 +127,11 @@ class RequestOperations
                 'public_message_en' => $messages['en'],
                 'public_message_fil' => $messages['fil'],
                 'private_details' => $this->clean($privateNote),
+            ]);
+
+            $this->auditLogger->record($actor, AuditEventType::RequestAppointmentUpdated, 'request', $locked->public_reference, [
+                'request_reference' => $locked->public_reference,
+                'appointment_status' => $status->value,
             ]);
 
             $locked->touch();

@@ -9,7 +9,7 @@ This file is the living implementation roadmap. A phase is marked complete only 
 | 2. Services and public information | Complete | Bilingual service directory/details, privacy/accessibility/help pages, and administrator service management |
 | 3. Resident submissions and tracking | Complete | Guided requests, appointments, attachments, secure references, tracking PINs, receipts, and public status tracking |
 | 4. Staff operations | Complete | Assignment, workflow transitions, public/private history, internal notes, request timelines, due targets, appointment controls, and queued notifications |
-| 5. Administration and reporting | Not started | Staff management, office/retention settings, analytics, sanitized exports, audit events, and retention cleanup |
+| 5. Administration and reporting | Complete | Staff management, office/retention settings, analytics, sanitized exports, audit events, and retention cleanup |
 | 6. Hardening and comprehensive QA | Not started | Error pages, accessibility audit, privacy review, security hardening, and full workflow test coverage |
 | 7. Delivery | Not started | Docker, Render deployment configuration, final GitHub Actions validation, final documentation, and clean-install verification |
 
@@ -64,6 +64,27 @@ Phase 3 verification result: 57 automated tests with 468 assertions passed. Clea
 - [x] Automated tests, Pint, Larastan, Prettier, ESLint, TypeScript, dependency audits, and production build pass
 
 Phase 4 verification result: 76 automated tests with 640 assertions passed. Clean migrations/seeding, PHP and frontend formatting, static analysis, TypeScript, frontend linting, production dependency audits, the production build, and live HTTP smoke checks passed. The in-app browser reported no available browser instance, so interactive visual QA remains explicitly deferred rather than represented as completed.
+
+## Phase 5 acceptance checklist
+
+- [x] Only administrators can access staff management, office settings, reports, exports, and audit history
+- [x] Administrators can search, filter, paginate, create, edit, activate, deactivate, promote, demote, and reset passwords for internal accounts
+- [x] An administrator cannot deactivate or demote their own account, and at least one active administrator must remain
+- [x] Deactivating staff transactionally releases their open assignments while preserving closed-request and activity history
+- [x] Bilingual office name/address and public contact details are editable and reflected in the resident-facing footer
+- [x] Retention is validated from 30 to 3,650 days and drives a non-overlapping daily cleanup command
+- [x] Reports aggregate totals, open, overdue, completed, completion rate, resolution time, status, service workload, and daily volume
+- [x] Report queries explicitly omit resident-submitted PII and internal notes
+- [x] CSV exports use fixed operational columns, neutralize spreadsheet formulas, remove line controls, and return private no-store responses
+- [x] Audit actions and metadata keys are centrally allow-listed and omit resident PII and note contents
+- [x] Service, request-operation, staff, settings, export, and retention audit events are append-only through application routes
+- [x] Request and service audits commit in the same transaction as the action they describe
+- [x] Retention dry runs preserve data; real cleanup deletes only expired closed requests and their private files while preserving recent/open requests and audit history
+- [x] Fictional inactive-staff and sanitized-audit seed data is available locally and disabled in production
+- [x] Clean migrations and seed data pass
+- [x] Automated tests, Pint, Larastan, Prettier, ESLint, TypeScript, dependency audits, and production build pass
+
+Phase 5 verification result: 85 automated tests with 753 assertions passed. Clean migrations/seeding, the daily scheduler definition, PHP and frontend formatting, static analysis, TypeScript, frontend linting, production dependency audits, the production build, and live HTTP smoke checks passed. The in-app browser reported no available browser instance, so interactive visual QA remains explicitly deferred rather than represented as completed.
 
 ## Overall MVP definition of done
 

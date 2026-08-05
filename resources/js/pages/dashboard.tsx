@@ -1,7 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
-import { BarChart3, ClipboardCheck, ClipboardList, LibraryBig, ShieldCheck } from 'lucide-react';
+import { BarChart3, ClipboardCheck, ClipboardList, LibraryBig, ShieldCheck, Users } from 'lucide-react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -20,11 +20,11 @@ export default function Dashboard() {
             <Head title="Staff dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
                 <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-900 dark:bg-emerald-950">
-                    <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Phase 4 workspace</p>
+                    <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Phase 5 workspace</p>
                     <h1 className="mt-2 text-2xl font-bold tracking-tight">Welcome, {user.name}</h1>
                     <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
-                        Your {roleLabel.toLowerCase()} account is active. The request queue, assignment workflow, resident-safe status updates, notes,
-                        appointments, and timelines are available now.
+                        Your {roleLabel.toLowerCase()} account is active. Request operations are available to all staff, with reporting, staff
+                        administration, settings, exports, and audit history available to administrators.
                     </p>
                     <div className="mt-5 flex flex-wrap gap-3">
                         <Link
@@ -35,13 +35,29 @@ export default function Dashboard() {
                             Open request queue
                         </Link>
                         {user.role === 'administrator' && (
-                            <Link
-                                href={route('admin.services.index')}
-                                className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
-                            >
-                                <LibraryBig className="size-4" aria-hidden="true" />
-                                Manage services
-                            </Link>
+                            <>
+                                <Link
+                                    href={route('admin.reports.index')}
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                >
+                                    <BarChart3 className="size-4" aria-hidden="true" />
+                                    View reports
+                                </Link>
+                                <Link
+                                    href={route('admin.staff.index')}
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                >
+                                    <Users className="size-4" aria-hidden="true" />
+                                    Manage staff
+                                </Link>
+                                <Link
+                                    href={route('admin.services.index')}
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                >
+                                    <LibraryBig className="size-4" aria-hidden="true" />
+                                    Manage services
+                                </Link>
+                            </>
                         )}
                     </div>
                 </div>
@@ -65,7 +81,7 @@ export default function Dashboard() {
                             {
                                 icon: BarChart3,
                                 title: 'Dashboard-ready',
-                                body: 'The application shell is prepared for tested request and analytics modules.',
+                                body: 'Aggregate reporting and sanitized exports exclude resident-submitted personal details.',
                             },
                         ].map((item) => (
                             <article key={item.title} className="bg-card rounded-2xl border p-5">

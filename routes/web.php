@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditEventController;
+use App\Http\Controllers\Admin\OfficeSettingController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\LocaleController;
 use App\Http\Controllers\Public\RequestAttachmentController;
 use App\Http\Controllers\Public\RequestFormController;
@@ -68,6 +72,14 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     });
 
     Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('staff', StaffController::class)
+            ->parameters(['staff' => 'user'])
+            ->except(['show', 'destroy']);
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/requests.csv', [ReportController::class, 'export'])->name('reports.export');
+        Route::get('audit-events', AuditEventController::class)->name('audit.index');
+        Route::get('settings', [OfficeSettingController::class, 'edit'])->name('settings.edit');
+        Route::patch('settings', [OfficeSettingController::class, 'update'])->name('settings.update');
         Route::resource('services', ServiceController::class)->except(['show', 'destroy']);
         Route::patch('services/{service}/archive', [ServiceController::class, 'archive'])
             ->name('services.archive');

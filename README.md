@@ -6,7 +6,7 @@ SerbisyoTrack is a portfolio demonstration of a barangay service-request and app
 
 ## Current milestone
 
-Phase 4 adds a protected staff operations workspace and controlled request workflow on top of the resident submission, public tracking, service catalog, and application foundation:
+Phase 5 adds protected administration, reporting, audit, export, and retention controls on top of the complete resident and staff workflows:
 
 - Laravel 12 with PHP 8.2+
 - Inertia 2, React 19, and TypeScript
@@ -29,6 +29,13 @@ Phase 4 adds a protected staff operations workspace and controlled request workf
 - Per-service business-day targets, due dates, overdue indicators, and closure timestamps
 - Queued after-commit resident email updates for requests that prefer email contact
 - Protected staff attachment downloads scoped to the owning request
+- Administrator-only staff account search, creation, role changes, activation, deactivation, and password reset
+- Self-lockout and last-active-administrator protection with automatic release of open assignments on deactivation
+- Editable bilingual office contact details and a validated 30–3,650 day retention policy
+- Aggregate request reporting by date, service, and status without selecting resident-submitted PII
+- Formula-safe CSV exports containing operational fields only
+- Append-only allow-listed audit events for services, staff, request operations, settings, exports, and cleanup
+- Daily retention cleanup that permanently removes eligible closed requests and private attachments while preserving audit history
 - Public service routes that use non-identifying slugs and allow-listed response resources
 - Administrator-only service search, filters, sorting, pagination, creation, editing, activation, archival, and restoration
 - Archival instead of deletion so future request and audit history can be preserved
@@ -38,7 +45,7 @@ Phase 4 adds a protected staff operations workspace and controlled request workf
 - SQLite local/test configuration and PostgreSQL-ready environment settings
 - PHPUnit/Pest tests, Pint, Larastan, ESLint, Prettier, and TypeScript checks
 
-Staff administration, analytics, formal audit events, exports, retention cleanup, and deployment configuration are intentionally scheduled for later verified phases. See [PHASES.md](PHASES.md) for the living delivery checklist.
+Accessibility/security hardening and deployment configuration remain scheduled for the final verified phases. See [PHASES.md](PHASES.md) for the living delivery checklist.
 
 ## Intended users
 
@@ -92,6 +99,8 @@ The local/testing seeder creates an administrator, a staff member, six fictional
 
 The sample request references are `ST-DEMA-RQST-AAAA` through `ST-DEMD-RQST-DDDD`; all use tracking PIN `246824`. They cover unassigned, assigned, overdue, and appointment-preference states. No sample represents a real person or government record.
 
+An inactive fictional account and three sanitized audit events are also seeded so the staff and audit filters have immediate demonstration data. The inactive account cannot authenticate.
+
 The seeder refuses to create demonstration credentials when `APP_ENV=production`. Replace these credentials in any shared non-production environment.
 
 ## Quality checks
@@ -129,9 +138,12 @@ composer audit
 - Public history is built from explicitly allow-listed bilingual messages and never exposes an actor, internal note, resident details, storage paths, or a tracking PIN.
 - Public messages, internal notes, and resident-submitted text remain encrypted at rest; activity rows have no application update or delete route.
 - Email notifications are queued only after a successful commit and only when the resident selected email as the preferred channel.
+- Staff administration prevents self-deactivation, self-demotion, and removal of the last active administrator. Deactivation releases open assignments without deleting history.
+- Report queries explicitly select operational fields and omit encrypted resident names, contact details, locations, request descriptions, and internal notes.
+- CSV cells neutralize spreadsheet formula prefixes, remove embedded line controls, use fixed filenames, and are returned with private `no-store` headers.
+- Audit event types and metadata keys are centrally allow-listed; request and service audits commit inside the same transaction as their underlying action.
+- Closed requests and their private files are purged daily only after the configurable retention period. Audit events are retained separately.
 - Sensitive public workflow responses use `no-store`, `noindex`, and `nosniff` controls.
-
-Formal administrator audit events, retention cleanup, and CSV sanitization will be implemented alongside their later features and tests.
 
 ## Public and administrative routes
 
@@ -143,14 +155,16 @@ Formal administrator audit events, retention cleanup, and CSV sanitization will 
 | Staff session | `/login`, `/dashboard`, account settings | Active, verified staff or administrators |
 | Request operations | `/staff/requests` and assignment/status/note/appointment/download actions | Active, verified staff; mutations additionally require assignment or administrator authority |
 | Service management | `/admin/services` and create/edit/archive/restore actions | Administrators only |
+| Administration | `/admin/staff`, `/admin/settings`, `/admin/audit-events` | Administrators only |
+| Reporting | `/admin/reports`, sanitized CSV download | Administrators only |
 
 No public API exposes a service database ID. The `{slug}` value is a stable public route key.
 
 ## Known limitations
 
-- Staff lifecycle management, analytics, CSV exports, formal audit review, and automated retention cleanup are not available yet.
 - Business-day targets currently skip weekends but do not yet use a configurable holiday calendar.
 - Email delivery requires a running queue worker; SMS is represented as a future channel rather than silently simulated.
+- Reporting is operational and aggregate; predictive analytics and external business-intelligence integrations are outside this MVP.
 - Docker is not installed in the current Windows environment, so image validation is deferred to the deployment milestone and CI.
 - Malware scanning is outside the MVP; attachment handling relies on strict content-type, size, count, private-storage, and authorized-download controls.
 - Automated and live HTTP checks pass, but interactive browser visual QA could not run because the current environment exposed no browser instance.
@@ -161,8 +175,9 @@ No public API exposes a service database ID. The `{slug}` value is a stable publ
 2. Completed: service directory, public information, and bilingual service administration
 3. Completed: secure request, appointment, attachment, receipt, and tracking workflows
 4. Completed: staff assignment, controlled status and appointment operations, notes, timelines, overdue targets, and queued email updates
-5. Next: administration, analytics, audit events, exports, and retention cleanup
-6. Accessibility and security review, comprehensive tests, Docker, Render configuration, and delivery documentation
+5. Completed: staff administration, office/retention settings, analytics, sanitized exports, audit events, and scheduled cleanup
+6. Next: accessibility, privacy, and security hardening with comprehensive workflow QA
+7. Docker, Render configuration, final CI validation, delivery documentation, and clean-install verification
 
 ## Screenshots
 

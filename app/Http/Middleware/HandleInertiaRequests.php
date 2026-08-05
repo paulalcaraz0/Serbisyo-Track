@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\OfficeSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use Inertia\Middleware;
@@ -40,12 +41,23 @@ class HandleInertiaRequests extends Middleware
 
         /** @var array<string, string> $supportedLocales */
         $supportedLocales = config('serbisyo.locales');
+        $locale = app()->getLocale();
 
         return array_merge(parent::share($request), [
             'name' => config('app.name'),
-            'locale' => app()->getLocale(),
+            'locale' => $locale,
             'supportedLocales' => $supportedLocales,
-            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4')),
+            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4'), Lang::get('phase5')),
+            'office' => function () use ($locale): array {
+                $settings = OfficeSetting::current();
+
+                return [
+                    'name' => $locale === 'fil' ? $settings->office_name_fil : $settings->office_name_en,
+                    'address' => $locale === 'fil' ? $settings->address_fil : $settings->address_en,
+                    'email' => $settings->contact_email,
+                    'phone' => $settings->contact_phone,
+                ];
+            },
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
             ],

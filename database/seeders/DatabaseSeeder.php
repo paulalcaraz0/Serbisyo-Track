@@ -47,5 +47,6 @@ class DatabaseSeeder extends Seeder
         ])->save();
 
         $this->call(RequestSeeder::class);
+        $this->call(AdministrationSeeder::class);
     }
 }

@@ -2,10 +2,17 @@
 
 namespace App\Providers;
 
+use App\Enums\UserRole;
+use App\Models\AuditEvent;
+use App\Models\OfficeSetting;
 use App\Models\Service;
 use App\Models\ServiceRequest;
+use App\Models\User;
+use App\Policies\AuditEventPolicy;
+use App\Policies\OfficeSettingPolicy;
 use App\Policies\ServicePolicy;
 use App\Policies\ServiceRequestPolicy;
+use App\Policies\UserPolicy;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -29,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Gate::policy(Service::class, ServicePolicy::class);
         Gate::policy(ServiceRequest::class, ServiceRequestPolicy::class);
+        Gate::policy(User::class, UserPolicy::class);
+        Gate::policy(OfficeSetting::class, OfficeSettingPolicy::class);
+        Gate::policy(AuditEvent::class, AuditEventPolicy::class);
+        Gate::define('viewReports', fn (User $user): bool => $user->is_active && $user->role === UserRole::Administrator);
 
         RateLimiter::for('resident-submissions', fn (Request $request) => [
             Limit::perMinute(5)->by($request->ip()),

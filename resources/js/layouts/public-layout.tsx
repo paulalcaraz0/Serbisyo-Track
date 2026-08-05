@@ -6,7 +6,7 @@ import { type PropsWithChildren } from 'react';
 
 export default function PublicLayout({ children }: PropsWithChildren) {
     const page = usePage<SharedData>();
-    const { auth, locale, name, supportedLocales, translations } = page.props;
+    const { auth, locale, name, office, supportedLocales, translations } = page.props;
     const { common, home } = translations;
     const staffDestination = auth.user ? route('dashboard') : route('login');
     const staffLabel = auth.user ? common.dashboard : common.staff_portal;
@@ -107,7 +107,17 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                                 <AppLogoIcon className="size-7 text-[#14594f]" />
                                 {name}
                             </div>
-                            <p className="mt-3">{home.footer_office}</p>
+                            <p className="mt-3 font-semibold">{office.name}</p>
+                            <p className="mt-1">{office.address}</p>
+                            <p className="mt-1">
+                                <a className="hover:text-[#14594f] hover:underline" href={`mailto:${office.email}`}>
+                                    {office.email}
+                                </a>
+                                {' · '}
+                                <a className="hover:text-[#14594f] hover:underline" href={`tel:${office.phone}`}>
+                                    {office.phone}
+                                </a>
+                            </p>
                             <p className="mt-1 max-w-2xl text-xs leading-5">{home.disclaimer}</p>
                         </div>
                         <div>

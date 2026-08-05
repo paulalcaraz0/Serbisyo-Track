@@ -6,7 +6,7 @@ import { ArrowRight, CalendarDays, Check, FileCheck2, FileText, Languages, LockK
 const featureIcons = [Search, FileCheck2, ShieldCheck];
 
 export default function Welcome() {
-    const { auth, locale, name, supportedLocales, translations } = usePage<SharedData>().props;
+    const { auth, locale, name, office, supportedLocales, translations } = usePage<SharedData>().props;
     const { common, home } = translations;
     const staffDestination = auth.user ? route('dashboard') : route('login');
     const staffLabel = auth.user ? common.dashboard : common.staff_portal;
@@ -20,7 +20,7 @@ export default function Welcome() {
     };
 
     return (
-        <>
+        <div className="public-shell">
             <Head title={home.meta_title}>
                 <meta name="description" content={home.meta_description} />
             </Head>
@@ -236,7 +236,17 @@ export default function Welcome() {
                                 <AppLogoIcon className="size-7 text-[#14594f]" />
                                 {name}
                             </div>
-                            <p className="mt-3">{home.footer_office}</p>
+                            <p className="mt-3 font-semibold">{office.name}</p>
+                            <p className="mt-1">{office.address}</p>
+                            <p className="mt-1">
+                                <a className="hover:text-[#14594f] hover:underline" href={`mailto:${office.email}`}>
+                                    {office.email}
+                                </a>
+                                {' · '}
+                                <a className="hover:text-[#14594f] hover:underline" href={`tel:${office.phone}`}>
+                                    {office.phone}
+                                </a>
+                            </p>
                             <p className="mt-1 max-w-2xl text-xs leading-5">{home.disclaimer}</p>
                         </div>
                         <div>
@@ -256,6 +266,6 @@ export default function Welcome() {
                     </div>
                 </footer>
             </div>
-        </>
+        </div>
     );
 }
