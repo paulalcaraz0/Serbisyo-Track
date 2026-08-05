@@ -1,5 +1,6 @@
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import { Head, router } from '@inertiajs/react';
@@ -144,18 +145,26 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                             className="flex h-44 min-w-full items-end gap-1 border-b"
                             style={{ width: `${Math.max(analytics.trend.length * 10, 640)}px` }}
                         >
-                            {analytics.trend.map((point) => (
-                                <div
-                                    key={point.date}
-                                    className="group relative flex h-full flex-1 items-end"
-                                    title={`${point.date}: ${point.count} requests`}
-                                >
-                                    <div
-                                        className="bg-primary min-h-1 w-full rounded-t-sm"
-                                        style={{ height: `${Math.max(3, (point.count / maxTrend) * 100)}%` }}
-                                    />
-                                </div>
-                            ))}
+                            <TooltipProvider delayDuration={0}>
+                                {analytics.trend.map((point) => (
+                                    <Tooltip key={point.date}>
+                                        <TooltipTrigger asChild>
+                                            <div className="group relative flex h-full flex-1 cursor-pointer items-end">
+                                                <div
+                                                    className="bg-primary min-h-1 w-full rounded-t-sm group-hover:bg-primary/80"
+                                                    style={{ height: `${Math.max(3, (point.count / maxTrend) * 100)}%` }}
+                                                />
+                                            </div>
+                                        </TooltipTrigger>
+                                        <TooltipContent side="top">
+                                            <p className="text-xs font-semibold uppercase opacity-70">{point.date}</p>
+                                            <p className="font-bold">
+                                                {point.count} {point.count === 1 ? 'request' : 'requests'}
+                                            </p>
+                                        </TooltipContent>
+                                    </Tooltip>
+                                ))}
+                            </TooltipProvider>
                         </div>
                     </div>
                 </section>
