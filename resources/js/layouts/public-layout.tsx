@@ -1,4 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
+import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { PageAnnouncer } from '@/components/page-announcer';
 import { type SharedData } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
@@ -41,47 +42,48 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                 </div>
             </div>
 
-            <div className="min-h-screen bg-[#f6f8f5] text-slate-950">
-                <header className="border-b border-slate-200 bg-white" data-print-hidden="true">
+            <div className="bg-background text-foreground min-h-screen">
+                <header className="border-border bg-card border-b" data-print-hidden="true">
                     <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex min-h-14 flex-wrap items-center justify-between gap-3">
                             <Link href={route('home')} className="focus-ring flex min-h-11 items-center gap-3 rounded-xl" aria-label={`${name} home`}>
-                                <AppLogoIcon className="size-10 text-[#14594f]" />
+                                <AppLogoIcon className="text-primary size-10" />
                                 <span>
                                     <span className="block text-base font-bold tracking-[-0.02em]">{name}</span>
-                                    <span className="block text-xs font-medium text-slate-500">Barangay Haraya</span>
+                                    <span className="text-muted-foreground block text-xs font-medium">Barangay Haraya</span>
                                 </span>
                             </Link>
 
                             <div className="flex flex-wrap items-center justify-end gap-2">
                                 <div
-                                    className="flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 p-1"
+                                    className="border-border bg-muted flex min-h-11 items-center rounded-xl border p-1"
                                     aria-label={common.language_label}
                                     role="group"
                                 >
-                                    <Languages className="mx-2 hidden size-4 text-slate-500 sm:block" aria-hidden="true" />
+                                    <Languages className="text-muted-foreground mx-2 hidden size-4 sm:block" aria-hidden="true" />
                                     {Object.entries(supportedLocales).map(([code, label]) => (
                                         <button
                                             key={code}
                                             type="button"
                                             onClick={() => updateLocale(code)}
                                             aria-pressed={locale === code}
-                                            className="focus-ring min-h-9 rounded-lg px-3 text-xs font-semibold text-slate-600 hover:bg-white aria-pressed:bg-white aria-pressed:text-[#14594f] aria-pressed:shadow-sm"
+                                            className="focus-ring text-muted-foreground hover:bg-card hover:text-foreground aria-pressed:bg-card aria-pressed:text-primary min-h-9 rounded-lg px-3 text-xs font-semibold aria-pressed:shadow-sm"
                                         >
                                             {label}
                                         </button>
                                     ))}
                                 </div>
+                                <AppearanceToggleDropdown />
                                 <Link
                                     href={staffDestination}
-                                    className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold hover:border-[#14594f] hover:text-[#14594f]"
+                                    className="focus-ring border-border bg-card hover:border-primary hover:text-primary inline-flex min-h-11 items-center justify-center rounded-xl border px-4 text-sm font-semibold"
                                 >
                                     {staffLabel}
                                 </Link>
                             </div>
                         </div>
 
-                        <nav aria-label="Public navigation" className="flex flex-wrap gap-1 border-t border-slate-100 pt-2">
+                        <nav aria-label="Public navigation" className="border-border/60 flex flex-wrap gap-1 border-t pt-2">
                             {publicNav.map((item) => {
                                 const active = page.url === item.href || (item.href !== '/' && page.url.startsWith(item.href));
 
@@ -90,7 +92,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                                         key={item.href}
                                         href={item.href}
                                         aria-current={active ? 'page' : undefined}
-                                        className="focus-ring inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold text-slate-600 hover:bg-slate-50 hover:text-[#14594f] aria-[current=page]:bg-[#e4f1ed] aria-[current=page]:text-[#14594f]"
+                                        className="focus-ring text-muted-foreground hover:bg-muted hover:text-primary aria-[current=page]:bg-secondary aria-[current=page]:text-primary inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold"
                                     >
                                         {item.label}
                                     </Link>
@@ -104,21 +106,21 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                     {children}
                 </main>
 
-                <footer className="border-t border-slate-200 bg-white" data-print-hidden="true">
-                    <div className="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 text-sm text-slate-600 sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8">
+                <footer className="border-border bg-card border-t" data-print-hidden="true">
+                    <div className="text-muted-foreground mx-auto flex max-w-7xl flex-col gap-6 px-4 py-8 text-sm sm:px-6 lg:flex-row lg:items-end lg:justify-between lg:px-8">
                         <div>
-                            <div className="flex items-center gap-2 font-bold text-slate-950">
-                                <AppLogoIcon className="size-7 text-[#14594f]" />
+                            <div className="text-foreground flex items-center gap-2 font-bold">
+                                <AppLogoIcon className="text-primary size-7" />
                                 {name}
                             </div>
                             <p className="mt-3 font-semibold">{office.name}</p>
                             <p className="mt-1">{office.address}</p>
                             <p className="mt-1">
-                                <a className="hover:text-[#14594f] hover:underline" href={`mailto:${office.email}`}>
+                                <a className="hover:text-primary hover:underline" href={`mailto:${office.email}`}>
                                     {office.email}
                                 </a>
                                 {' · '}
-                                <a className="hover:text-[#14594f] hover:underline" href={`tel:${office.phone}`}>
+                                <a className="hover:text-primary hover:underline" href={`tel:${office.phone}`}>
                                     {office.phone}
                                 </a>
                             </p>
@@ -126,17 +128,17 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                         </div>
                         <div>
                             <nav aria-label="Legal and help" className="flex flex-wrap gap-x-4 gap-y-2 font-semibold">
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('privacy')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('privacy')}>
                                     {common.privacy}
                                 </Link>
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('accessibility')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('accessibility')}>
                                     {common.accessibility}
                                 </Link>
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('help')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('help')}>
                                     {common.help}
                                 </Link>
                             </nav>
-                            <p className="mt-3 text-xs font-medium text-slate-500">{home.footer_phase}</p>
+                            <p className="text-muted-foreground mt-3 text-xs font-medium">{home.footer_phase}</p>
                         </div>
                     </div>
                 </footer>

@@ -13,20 +13,20 @@ export default function InfoPage({ pageKey }: { pageKey: PageKey }) {
         <PublicLayout>
             <Head title={page.meta_title} />
 
-            <section className="border-b border-slate-200 bg-white">
+            <section className="border-border bg-card border-b">
                 <div className="mx-auto max-w-5xl px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
-                    <p className="text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{page.eyebrow}</p>
+                    <p className="text-primary text-xs font-bold tracking-[0.14em] uppercase">{page.eyebrow}</p>
                     <h1 className="mt-3 text-4xl font-bold tracking-[-0.04em] text-balance sm:text-5xl">{page.title}</h1>
-                    <p className="mt-5 max-w-3xl text-base leading-7 text-slate-600 sm:text-lg">{page.intro}</p>
+                    <p className="text-muted-foreground mt-5 max-w-3xl text-base leading-7 sm:text-lg">{page.intro}</p>
                 </div>
             </section>
 
             <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
                 <div className="grid gap-5 md:grid-cols-2">
                     {page.sections.map((section) => (
-                        <section key={section.title} className="rounded-2xl border border-slate-200 bg-white p-6">
+                        <section key={section.title} className="border-border bg-card rounded-2xl border p-6">
                             <h2 className="text-xl font-bold tracking-[-0.02em]">{section.title}</h2>
-                            <p className="mt-3 text-sm leading-7 text-slate-600">{section.body}</p>
+                            <p className="text-muted-foreground mt-3 text-sm leading-7">{section.body}</p>
                         </section>
                     ))}
                 </div>

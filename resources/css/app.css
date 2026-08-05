@@ -47,8 +47,7 @@
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root,
-.public-shell {
+:root {
     --background: hsl(100 16% 97%);
     --foreground: hsl(169 30% 12%);
     --card: hsl(0 0% 100%);
@@ -84,10 +83,6 @@
     --sidebar-ring: hsl(171 64% 28%);
 }
 
-.public-shell {
-    color-scheme: light;
-}
-
 .dark {
     --background: hsl(169 27% 8%);
     --foreground: hsl(150 17% 94%);
@@ -116,6 +111,14 @@
     --sidebar-accent-foreground: hsl(150 17% 94%);
     --sidebar-border: hsl(168 15% 22%);
     --sidebar-ring: hsl(156 45% 69%);
+}
+
+:root {
+    color-scheme: light;
+}
+
+:root.dark {
+    color-scheme: dark;
 }
 
 @layer base {
@@ -175,9 +178,9 @@
     min-height: 2.75rem;
     transform: translateY(-150%);
     border-radius: 0.75rem;
-    background: white;
+    background: var(--card);
     padding: 0.75rem 1rem;
-    color: #0f172a;
+    color: var(--card-foreground);
     font-size: 0.875rem;
     font-weight: 700;
     box-shadow: 0 10px 25px rgb(15 23 42 / 0.2);

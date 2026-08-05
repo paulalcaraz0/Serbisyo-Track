@@ -59,7 +59,7 @@ function Field({ id, label, help, error, children }: { id: string; label: string
                 'aria-invalid': error ? true : undefined,
             } as React.HTMLAttributes<HTMLElement>)}
             {help && (
-                <p id={helpId} className="text-xs leading-5 text-slate-500">
+                <p id={helpId} className="text-muted-foreground text-xs leading-5">
                     {help}
                 </p>
             )}
@@ -95,9 +95,9 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
     const wantsAppointment = service.appointment_required || data.appointment_requested;
     const steps = [copy.steps.contact, copy.steps.details, copy.steps.review];
     const textareaClass =
-        'flex min-h-32 w-full rounded-md border border-input bg-white px-3 py-2 text-base placeholder:text-slate-400 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm';
+        'flex min-h-32 w-full rounded-md border border-input bg-background px-3 py-2 text-base text-foreground placeholder:text-muted-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm';
     const selectClass =
-        'flex h-10 w-full rounded-md border border-input bg-white px-3 py-2 text-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
+        'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
 
     useEffect(() => {
         if (errorMessages.length === 0) return;
@@ -137,23 +137,23 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                 <meta name="robots" content="noindex,nofollow,noarchive" />
             </Head>
 
-            <section className="border-b border-slate-200 bg-white">
+            <section className="border-border bg-card border-b">
                 <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
                     <Link
                         href={route('services.show', service.slug)}
-                        className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-bold text-[#14594f] hover:underline"
+                        className="focus-ring text-primary inline-flex min-h-11 items-center gap-2 rounded-lg text-sm font-bold hover:underline"
                     >
                         <ArrowLeft className="size-4" aria-hidden="true" />
                         {copy.back_to_service}
                     </Link>
-                    <p className="mt-6 text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{copy.eyebrow}</p>
+                    <p className="text-primary mt-6 text-xs font-bold tracking-[0.14em] uppercase">{copy.eyebrow}</p>
                     <h1 className="mt-2 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{copy.title.replace(':service', service.name)}</h1>
-                    <p className="mt-4 max-w-3xl leading-7 text-slate-600">{copy.intro}</p>
+                    <p className="text-muted-foreground mt-4 max-w-3xl leading-7">{copy.intro}</p>
                 </div>
             </section>
 
             <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-                <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950">
+                <div className="mb-6 rounded-2xl border border-amber-200 bg-amber-50 p-5 text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
                     <div className="flex items-start gap-3">
                         <AlertTriangle className="mt-0.5 size-5 shrink-0" aria-hidden="true" />
                         <div>
@@ -171,7 +171,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                 <li
                                     key={label}
                                     aria-current={number === currentStep ? 'step' : undefined}
-                                    className={`rounded-xl border px-3 py-3 text-center text-xs font-bold sm:text-sm ${number === currentStep ? 'border-[#14594f] bg-[#e4f1ed] text-[#14594f]' : number < currentStep ? 'border-emerald-200 bg-white text-emerald-800' : 'border-slate-200 bg-white text-slate-500'}`}
+                                    className={`rounded-xl border px-3 py-3 text-center text-xs font-bold sm:text-sm ${number === currentStep ? 'border-primary bg-secondary text-primary' : number < currentStep ? 'bg-card border-emerald-200 text-emerald-800 dark:border-emerald-800 dark:text-emerald-300' : 'border-border bg-card text-muted-foreground'}`}
                                 >
                                     <span className="mx-auto mb-1 flex size-6 items-center justify-center rounded-full bg-current/10">
                                         {number < currentStep ? <Check className="size-3.5" aria-hidden="true" /> : number}
@@ -188,7 +188,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                         ref={errorSummaryRef}
                         role="alert"
                         tabIndex={-1}
-                        className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950"
+                        className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950 dark:border-red-900 dark:bg-red-950/40 dark:text-red-100"
                     >
                         <h2 className="font-bold">{copy.error_title}</h2>
                         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
@@ -199,7 +199,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                     </div>
                 )}
 
-                <form onSubmit={submit} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
+                <form onSubmit={submit} className="border-border bg-card rounded-2xl border p-5 shadow-sm sm:p-8">
                     <div className="sr-only" aria-hidden="true">
                         <label htmlFor="website">Website</label>
                         <input
@@ -217,7 +217,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                             <h2 id="contact-step-title" className="text-2xl font-bold tracking-[-0.025em]">
                                 {copy.contact_title}
                             </h2>
-                            <p className="mt-2 text-sm leading-6 text-slate-600">{copy.contact_intro}</p>
+                            <p className="text-muted-foreground mt-2 text-sm leading-6">{copy.contact_intro}</p>
                             <div className="mt-7 grid gap-6 sm:grid-cols-2">
                                 <div className="sm:col-span-2">
                                     <Field id="resident_name" label={copy.resident_name} help={copy.resident_name_help} error={errors.resident_name}>
@@ -284,7 +284,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                             <h2 id="details-step-title" className="text-2xl font-bold tracking-[-0.025em]">
                                 {copy.details_title}
                             </h2>
-                            <p className="mt-2 text-sm leading-6 text-slate-600">{copy.details_intro}</p>
+                            <p className="text-muted-foreground mt-2 text-sm leading-6">{copy.details_intro}</p>
                             <div className="mt-7 space-y-8">
                                 <Field
                                     id="request_details"
@@ -302,9 +302,9 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                     />
                                 </Field>
 
-                                <fieldset className="rounded-xl border border-slate-200 p-5">
+                                <fieldset className="border-border rounded-xl border p-5">
                                     <legend className="px-2 text-lg font-bold">{copy.appointment_title}</legend>
-                                    <p className="text-sm leading-6 text-slate-600">
+                                    <p className="text-muted-foreground text-sm leading-6">
                                         {service.appointment_required ? copy.appointment_required : copy.appointment_optional}
                                     </p>
                                     {!service.appointment_required && (
@@ -364,14 +364,14 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                     )}
                                 </fieldset>
 
-                                <section aria-labelledby="attachments-title" className="rounded-xl border border-slate-200 p-5">
+                                <section aria-labelledby="attachments-title" className="border-border rounded-xl border p-5">
                                     <div className="flex items-start gap-3">
-                                        <Paperclip className="mt-0.5 size-5 text-[#14594f]" aria-hidden="true" />
+                                        <Paperclip className="text-primary mt-0.5 size-5" aria-hidden="true" />
                                         <div>
                                             <h3 id="attachments-title" className="font-bold">
                                                 {copy.attachments_title}
                                             </h3>
-                                            <p id="attachments-help" className="mt-1 text-sm leading-6 text-slate-600">
+                                            <p id="attachments-help" className="text-muted-foreground mt-1 text-sm leading-6">
                                                 {copy.attachments_help
                                                     .replace(':count', String(attachmentRules.maxFiles))
                                                     .replace(':size', String(attachmentRules.maxMegabytes))}
@@ -397,7 +397,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                                 {data.attachments.map((file, index) => (
                                                     <li
                                                         key={`${file.name}-${file.lastModified}`}
-                                                        className="flex items-center justify-between gap-3 rounded-lg bg-slate-50 p-3 text-sm"
+                                                        className="bg-muted flex items-center justify-between gap-3 rounded-lg p-3 text-sm"
                                                     >
                                                         <span className="min-w-0 truncate">{file.name}</span>
                                                         <button
@@ -408,7 +408,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                                                     data.attachments.filter((_, fileIndex) => fileIndex !== index),
                                                                 )
                                                             }
-                                                            className="focus-ring shrink-0 rounded-lg p-2 text-red-700 hover:bg-red-50"
+                                                            className="focus-ring shrink-0 rounded-lg p-2 text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/50"
                                                             aria-label={copy.remove_file.replace(':name', file.name)}
                                                         >
                                                             <Trash2 className="size-4" aria-hidden="true" />
@@ -428,32 +428,32 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                             <h2 id="review-step-title" className="text-2xl font-bold tracking-[-0.025em]">
                                 {copy.review_title}
                             </h2>
-                            <p className="mt-2 text-sm leading-6 text-slate-600">{copy.review_intro}</p>
+                            <p className="text-muted-foreground mt-2 text-sm leading-6">{copy.review_intro}</p>
                             <dl className="mt-7 grid gap-4 sm:grid-cols-2">
-                                <div className="rounded-xl bg-slate-50 p-4">
-                                    <dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">{copy.review_service}</dt>
+                                <div className="bg-muted rounded-xl p-4">
+                                    <dt className="text-muted-foreground text-xs font-bold tracking-wide uppercase">{copy.review_service}</dt>
                                     <dd className="mt-2 font-bold">{service.name}</dd>
                                 </div>
-                                <div className="rounded-xl bg-slate-50 p-4">
-                                    <dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">{copy.review_contact}</dt>
+                                <div className="bg-muted rounded-xl p-4">
+                                    <dt className="text-muted-foreground text-xs font-bold tracking-wide uppercase">{copy.review_contact}</dt>
                                     <dd className="mt-2 font-bold">
                                         {data.preferred_contact === 'email' ? copy.contact_by_email : copy.contact_by_phone}
                                     </dd>
                                 </div>
-                                <div className="rounded-xl bg-slate-50 p-4 sm:col-span-2">
-                                    <dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">{copy.review_details}</dt>
+                                <div className="bg-muted rounded-xl p-4 sm:col-span-2">
+                                    <dt className="text-muted-foreground text-xs font-bold tracking-wide uppercase">{copy.review_details}</dt>
                                     <dd className="mt-2 text-sm leading-6 whitespace-pre-line">{data.request_details || '—'}</dd>
                                 </div>
-                                <div className="rounded-xl bg-slate-50 p-4">
-                                    <dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">{copy.review_appointment}</dt>
+                                <div className="bg-muted rounded-xl p-4">
+                                    <dt className="text-muted-foreground text-xs font-bold tracking-wide uppercase">{copy.review_appointment}</dt>
                                     <dd className="mt-2 text-sm font-semibold">{formatAppointment()}</dd>
                                 </div>
-                                <div className="rounded-xl bg-slate-50 p-4">
-                                    <dt className="text-xs font-bold tracking-wide text-slate-500 uppercase">{copy.review_attachments}</dt>
+                                <div className="bg-muted rounded-xl p-4">
+                                    <dt className="text-muted-foreground text-xs font-bold tracking-wide uppercase">{copy.review_attachments}</dt>
                                     <dd className="mt-2 text-sm font-semibold">{data.attachments.length || copy.none}</dd>
                                 </div>
                             </dl>
-                            <div className="mt-7 rounded-xl border border-[#b8d9cf] bg-[#f1f8f5] p-5">
+                            <div className="border-primary/30 bg-secondary/70 mt-7 rounded-xl border p-5">
                                 <label htmlFor="privacy_consent" className="flex cursor-pointer items-start gap-3">
                                     <Checkbox
                                         id="privacy_consent"
@@ -467,8 +467,8 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                     />
                                     <span className="text-sm leading-6">{copy.privacy_consent}</span>
                                 </label>
-                                <p id="privacy-consent-help" className="mt-3 pl-7 text-xs text-slate-600">
-                                    <Link className="font-bold text-[#14594f] underline" href={route('privacy')}>
+                                <p id="privacy-consent-help" className="text-muted-foreground mt-3 pl-7 text-xs">
+                                    <Link className="text-primary font-bold underline" href={route('privacy')}>
                                         {translations.common.privacy}
                                     </Link>{' '}
                                     · {copy.consent_help}
@@ -478,7 +478,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                         </section>
                     )}
 
-                    <div className="mt-8 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-6">
+                    <div className="border-border/60 mt-8 flex flex-wrap items-center justify-between gap-3 border-t pt-6">
                         {currentStep > 1 ? (
                             <Button type="button" variant="outline" onClick={() => setCurrentStep((step) => step - 1)} disabled={processing}>
                                 <ArrowLeft />
@@ -500,14 +500,14 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                     </div>
                 </form>
 
-                <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-5" aria-labelledby="requirements-reminder">
+                <section className="border-border bg-card mt-6 rounded-2xl border p-5" aria-labelledby="requirements-reminder">
                     <div className="flex items-center gap-2">
-                        <FileText className="size-5 text-[#14594f]" aria-hidden="true" />
+                        <FileText className="text-primary size-5" aria-hidden="true" />
                         <h2 id="requirements-reminder" className="font-bold">
                             {translations.services.requirements}
                         </h2>
                     </div>
-                    <ul className="mt-3 space-y-2 text-sm text-slate-600">
+                    <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
                         {service.requirements.map((requirement) => (
                             <li key={requirement.name}>
                                 • {requirement.name}{' '}

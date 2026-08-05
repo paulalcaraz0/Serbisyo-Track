@@ -53,7 +53,7 @@ export default function OfficeSettingsEdit({ officeSettings: resource }: Props) 
                 </header>
 
                 {flash.success && (
-                    <div className="max-w-4xl rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">
+                    <div className="max-w-4xl rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100">
                         {flash.success}
                     </div>
                 )}

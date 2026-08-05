@@ -35,44 +35,47 @@ export default function TrackingShow({ trackedRequest }: Props) {
             </Head>
             <div className="mx-auto max-w-4xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
                 <div className="mb-6">
-                    <p className="text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{copy.status_eyebrow}</p>
+                    <p className="text-primary text-xs font-bold tracking-[0.14em] uppercase">{copy.status_eyebrow}</p>
                     <h1 className="mt-2 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{copy.status_title}</h1>
-                    <p className="mt-2 font-mono text-sm font-bold text-slate-500">{trackedRequest.reference}</p>
+                    <p className="text-muted-foreground mt-2 font-mono text-sm font-bold">{trackedRequest.reference}</p>
                 </div>
-                <section className="rounded-3xl border border-emerald-200 bg-white p-6 shadow-sm sm:p-8" aria-labelledby="current-status">
+                <section
+                    className="bg-card rounded-3xl border border-emerald-200 p-6 shadow-sm sm:p-8 dark:border-emerald-900"
+                    aria-labelledby="current-status"
+                >
                     <div className="flex items-start gap-4">
-                        <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#e4f1ed] text-[#14594f]">
+                        <div className="bg-secondary text-primary flex size-12 shrink-0 items-center justify-center rounded-2xl">
                             <CheckCircle2 className="size-6" aria-hidden="true" />
                         </div>
                         <div>
-                            <p className="text-sm font-semibold text-slate-500">{copy.status_title}</p>
+                            <p className="text-muted-foreground text-sm font-semibold">{copy.status_title}</p>
                             <h2 id="current-status" className="mt-1 text-2xl font-bold">
                                 {trackedRequest.statusLabel}
                             </h2>
-                            <p className="mt-2 leading-7 text-slate-600">{trackedRequest.statusDescription}</p>
+                            <p className="text-muted-foreground mt-2 leading-7">{trackedRequest.statusDescription}</p>
                         </div>
                     </div>
                 </section>
                 <div className="mt-6 grid gap-6 md:grid-cols-2">
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="request-summary">
+                    <section className="border-border bg-card rounded-2xl border p-6" aria-labelledby="request-summary">
                         <h2 id="request-summary" className="font-bold">
                             {copy.service}
                         </h2>
-                        <p className="mt-2 text-lg font-bold text-[#14594f]">{trackedRequest.serviceName}</p>
-                        <dl className="mt-5 space-y-4 border-t border-slate-100 pt-5 text-sm">
+                        <p className="text-primary mt-2 text-lg font-bold">{trackedRequest.serviceName}</p>
+                        <dl className="border-border/60 mt-5 space-y-4 border-t pt-5 text-sm">
                             <div>
-                                <dt className="font-semibold text-slate-500">{copy.submitted}</dt>
+                                <dt className="text-muted-foreground font-semibold">{copy.submitted}</dt>
                                 <dd className="mt-1">{formatDate(trackedRequest.submittedAt, { dateStyle: 'medium', timeStyle: 'short' })}</dd>
                             </div>
                             <div>
-                                <dt className="font-semibold text-slate-500">{copy.last_updated}</dt>
+                                <dt className="text-muted-foreground font-semibold">{copy.last_updated}</dt>
                                 <dd className="mt-1">{formatDate(trackedRequest.updatedAt, { dateStyle: 'medium', timeStyle: 'short' })}</dd>
                             </div>
                         </dl>
                     </section>
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="appointment-summary">
+                    <section className="border-border bg-card rounded-2xl border p-6" aria-labelledby="appointment-summary">
                         <h2 id="appointment-summary" className="flex items-center gap-2 font-bold">
-                            <CalendarClock className="size-5 text-[#14594f]" aria-hidden="true" />
+                            <CalendarClock className="text-primary size-5" aria-hidden="true" />
                             {copy.appointment}
                         </h2>
                         {trackedRequest.appointment ? (
@@ -82,51 +85,51 @@ export default function TrackingShow({ trackedRequest }: Props) {
                                         .replace(':date', formatDate(trackedRequest.appointment.preferredDate, { dateStyle: 'long' }))
                                         .replace(':time', timeLabel)}
                                 </p>
-                                <span className="mt-3 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-900">
+                                <span className="mt-3 inline-flex rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-900 dark:bg-amber-950/60 dark:text-amber-200">
                                     {translations.appointment_statuses[trackedRequest.appointment.status]}
                                 </span>
-                                <p className="mt-3 text-sm leading-6 text-slate-600">{copy.appointment_note}</p>
+                                <p className="text-muted-foreground mt-3 text-sm leading-6">{copy.appointment_note}</p>
                             </>
                         ) : (
-                            <p className="mt-4 text-sm text-slate-600">{translations.requests.none}</p>
+                            <p className="text-muted-foreground mt-4 text-sm">{translations.requests.none}</p>
                         )}
                     </section>
                 </div>
-                <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="public-history">
+                <section className="border-border bg-card mt-6 rounded-2xl border p-6" aria-labelledby="public-history">
                     <h2 id="public-history" className="flex items-center gap-2 font-bold">
-                        <History className="size-5 text-[#14594f]" aria-hidden="true" />
+                        <History className="text-primary size-5" aria-hidden="true" />
                         {copy.history}
                     </h2>
-                    <p className="mt-2 text-sm leading-6 text-slate-600">{copy.history_intro}</p>
+                    <p className="text-muted-foreground mt-2 text-sm leading-6">{copy.history_intro}</p>
                     {trackedRequest.history.length ? (
-                        <ol className="mt-5 space-y-4 border-l-2 border-[#b8d9cf] pl-5">
+                        <ol className="border-primary/30 mt-5 space-y-4 border-l-2 pl-5">
                             {[...trackedRequest.history].reverse().map((event) => (
                                 <li key={`${event.occurredAt}-${event.status}`} className="relative">
-                                    <span className="absolute top-1.5 -left-[1.7rem] size-3 rounded-full border-2 border-white bg-[#14594f]" />
-                                    <p className="text-xs font-semibold text-slate-500">
+                                    <span className="border-card bg-primary absolute top-1.5 -left-[1.7rem] size-3 rounded-full border-2" />
+                                    <p className="text-muted-foreground text-xs font-semibold">
                                         {formatDate(event.occurredAt, { dateStyle: 'medium', timeStyle: 'short' })}
                                     </p>
                                     {event.status && <p className="mt-1 font-bold">{translations.statuses[event.status]?.label}</p>}
-                                    <p className="mt-1 text-sm leading-6 text-slate-600">{event.message}</p>
+                                    <p className="text-muted-foreground mt-1 text-sm leading-6">{event.message}</p>
                                 </li>
                             ))}
                         </ol>
                     ) : (
-                        <p className="mt-4 text-sm text-slate-600">{copy.no_history}</p>
+                        <p className="text-muted-foreground mt-4 text-sm">{copy.no_history}</p>
                     )}
                 </section>
-                <section className="mt-6 rounded-2xl border border-slate-200 bg-white p-6" aria-labelledby="attachment-list">
+                <section className="border-border bg-card mt-6 rounded-2xl border p-6" aria-labelledby="attachment-list">
                     <h2 id="attachment-list" className="flex items-center gap-2 font-bold">
-                        <FileText className="size-5 text-[#14594f]" aria-hidden="true" />
+                        <FileText className="text-primary size-5" aria-hidden="true" />
                         {copy.attachments}
                     </h2>
                     {trackedRequest.attachments.length ? (
-                        <ul className="mt-4 divide-y divide-slate-100">
+                        <ul className="divide-border/60 mt-4 divide-y">
                             {trackedRequest.attachments.map((file) => (
                                 <li key={file.publicId} className="flex flex-wrap items-center justify-between gap-3 py-3">
                                     <div>
                                         <p className="font-semibold">{file.name}</p>
-                                        <p className="text-xs text-slate-500">{(file.sizeBytes / 1024).toFixed(1)} KB</p>
+                                        <p className="text-muted-foreground text-xs">{(file.sizeBytes / 1024).toFixed(1)} KB</p>
                                     </div>
                                     <a
                                         href={route('tracking.attachments.show', { reference: trackedRequest.reference, attachment: file.publicId })}
@@ -139,11 +142,11 @@ export default function TrackingShow({ trackedRequest }: Props) {
                             ))}
                         </ul>
                     ) : (
-                        <p className="mt-3 text-sm text-slate-600">{copy.no_attachments}</p>
+                        <p className="text-muted-foreground mt-3 text-sm">{copy.no_attachments}</p>
                     )}
                 </section>
-                <div className="mt-6 flex items-start gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-5 text-sm leading-6 text-slate-600">
-                    <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[#14594f]" aria-hidden="true" />
+                <div className="border-border bg-muted text-muted-foreground mt-6 flex items-start gap-3 rounded-2xl border p-5 text-sm leading-6">
+                    <ShieldCheck className="text-primary mt-0.5 size-5 shrink-0" aria-hidden="true" />
                     <p>{copy.privacy_note}</p>
                 </div>
                 <div className="mt-6 flex flex-wrap gap-3">

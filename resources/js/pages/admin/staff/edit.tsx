@@ -27,7 +27,7 @@ export default function EditStaff({ staffAccount: resource }: Props) {
                     {staff.open_assignments_count} currently open assignment{staff.open_assignments_count === 1 ? '' : 's'}.
                 </p>
                 {flash.success && (
-                    <div className="mb-5 max-w-3xl rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">
+                    <div className="mb-5 max-w-3xl rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100">
                         {flash.success}
                     </div>
                 )}

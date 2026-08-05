@@ -52,7 +52,7 @@ export default function StaffIndex({ staffAccounts, filters, summary }: Props) {
                 </header>
 
                 {flash.success && (
-                    <div className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900">
+                    <div className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100">
                         {flash.success}
                     </div>
                 )}
@@ -137,7 +137,7 @@ export default function StaffIndex({ staffAccounts, filters, summary }: Props) {
                                         {staff.role_label}
                                     </span>
                                     <span
-                                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${staff.is_active ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-200 text-slate-700'}`}
+                                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${staff.is_active ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200' : 'bg-muted text-muted-foreground'}`}
                                     >
                                         {staff.is_active ? 'Active' : 'Inactive'}
                                     </span>

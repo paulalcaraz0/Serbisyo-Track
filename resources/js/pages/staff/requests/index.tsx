@@ -47,10 +47,10 @@ export default function RequestQueue({ requests, filters, summary, services }: P
     const [overdue, setOverdue] = useState(filters.overdue);
     const [sort, setSort] = useState(filters.sort);
     const summaryCards: { label: string; value: number; icon: LucideIcon; color: string }[] = [
-        { label: 'Open', value: summary.open, icon: ClipboardList, color: 'text-slate-800' },
-        { label: 'Assigned to me', value: summary.mine, icon: UserRoundCheck, color: 'text-emerald-700' },
-        { label: 'Unassigned', value: summary.unassigned, icon: UsersRound, color: 'text-amber-700' },
-        { label: 'Overdue', value: summary.overdue, icon: AlertTriangle, color: 'text-red-700' },
+        { label: 'Open', value: summary.open, icon: ClipboardList, color: 'text-foreground' },
+        { label: 'Assigned to me', value: summary.mine, icon: UserRoundCheck, color: 'text-emerald-700 dark:text-emerald-300' },
+        { label: 'Unassigned', value: summary.unassigned, icon: UsersRound, color: 'text-amber-700 dark:text-amber-300' },
+        { label: 'Overdue', value: summary.overdue, icon: AlertTriangle, color: 'text-red-700 dark:text-red-300' },
     ];
     const selectClass = 'bg-background h-10 w-full rounded-md border px-3 text-sm';
     const applyFilters = (event: FormEvent) => {
@@ -192,7 +192,7 @@ export default function RequestQueue({ requests, filters, summary, services }: P
                                             <CalendarClock className="size-3.5" />
                                             Due
                                         </p>
-                                        <p className={`mt-1 font-semibold ${item.is_overdue ? 'text-red-700' : ''}`}>
+                                        <p className={`mt-1 font-semibold ${item.is_overdue ? 'text-red-700 dark:text-red-300' : ''}`}>
                                             {item.due_at ? date(item.due_at) : 'No target'}
                                         </p>
                                     </div>

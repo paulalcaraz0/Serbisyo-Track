@@ -2,32 +2,36 @@ import { useEffect, useState } from 'react';
 
 export type Appearance = 'light' | 'dark' | 'system';
 
-const prefersDark = () => window.matchMedia('(prefers-color-scheme: dark)').matches;
-
-const applyTheme = (appearance: Appearance) => {
-    const isDark = appearance === 'dark' || (appearance === 'system' && prefersDark());
-
-    document.documentElement.classList.toggle('dark', isDark);
-};
-
 const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
+const getStoredAppearance = (): Appearance => {
+    const storedAppearance = localStorage.getItem('appearance');
+
+    return storedAppearance === 'light' || storedAppearance === 'dark' || storedAppearance === 'system' ? storedAppearance : 'system';
+};
+
+const applyTheme = (appearance: Appearance) => {
+    const isDark = appearance === 'dark' || (appearance === 'system' && mediaQuery.matches);
+
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+
+    const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+    themeColor?.setAttribute('content', isDark ? '#0f1a18' : '#14594f');
+};
+
 const handleSystemThemeChange = () => {
-    const currentAppearance = localStorage.getItem('appearance') as Appearance;
-    applyTheme(currentAppearance || 'system');
+    applyTheme(getStoredAppearance());
 };
 
 export function initializeTheme() {
-    const savedAppearance = (localStorage.getItem('appearance') as Appearance) || 'system';
+    applyTheme(getStoredAppearance());
 
-    applyTheme(savedAppearance);
-
-    // Add the event listener for system theme changes...
     mediaQuery.addEventListener('change', handleSystemThemeChange);
 }
 
 export function useAppearance() {
-    const [appearance, setAppearance] = useState<Appearance>('system');
+    const [appearance, setAppearance] = useState<Appearance>(getStoredAppearance);
 
     const updateAppearance = (mode: Appearance) => {
         setAppearance(mode);
@@ -36,10 +40,17 @@ export function useAppearance() {
     };
 
     useEffect(() => {
-        const savedAppearance = localStorage.getItem('appearance') as Appearance | null;
-        updateAppearance(savedAppearance || 'system');
+        const handleStorageChange = (event: StorageEvent) => {
+            if (event.key === 'appearance') {
+                const nextAppearance = getStoredAppearance();
+                setAppearance(nextAppearance);
+                applyTheme(nextAppearance);
+            }
+        };
 
-        return () => mediaQuery.removeEventListener('change', handleSystemThemeChange);
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => window.removeEventListener('storage', handleStorageChange);
     }, []);
 
     return { appearance, updateAppearance };

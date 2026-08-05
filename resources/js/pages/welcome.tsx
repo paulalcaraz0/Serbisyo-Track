@@ -1,4 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
+import AppearanceToggleDropdown from '@/components/appearance-dropdown';
 import { PageAnnouncer } from '@/components/page-announcer';
 import { type SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
@@ -40,51 +41,52 @@ export default function Welcome() {
                 </div>
             </div>
 
-            <div className="min-h-screen bg-[#f6f8f5] text-slate-950">
-                <header className="border-b border-slate-200/90 bg-white/95">
+            <div className="bg-background text-foreground min-h-screen">
+                <header className="border-border/90 bg-card/95 border-b">
                     <div className="mx-auto flex min-h-20 max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <Link href={route('home')} className="focus-ring flex min-h-11 items-center gap-3 rounded-xl" aria-label={`${name} home`}>
-                            <AppLogoIcon className="size-10 text-[#14594f]" />
+                            <AppLogoIcon className="text-primary size-10" />
                             <span>
-                                <span className="block text-base font-bold tracking-[-0.02em] text-slate-950">{name}</span>
-                                <span className="block text-xs font-medium text-slate-500">Barangay Haraya</span>
+                                <span className="text-foreground block text-base font-bold tracking-[-0.02em]">{name}</span>
+                                <span className="text-muted-foreground block text-xs font-medium">Barangay Haraya</span>
                             </span>
                         </Link>
 
                         <div className="flex flex-wrap items-center justify-end gap-2">
                             <Link
                                 href={route('services.index')}
-                                className="focus-ring inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#14594f]"
+                                className="focus-ring text-foreground hover:bg-muted hover:text-primary inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold"
                             >
                                 {common.services}
                             </Link>
                             <Link
                                 href={route('tracking.index')}
-                                className="focus-ring inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 hover:text-[#14594f]"
+                                className="focus-ring text-foreground hover:bg-muted hover:text-primary inline-flex min-h-11 items-center rounded-xl px-3 text-sm font-semibold"
                             >
                                 {common.track}
                             </Link>
                             <div
-                                className="flex min-h-11 items-center rounded-xl border border-slate-200 bg-slate-50 p-1"
+                                className="border-border bg-muted flex min-h-11 items-center rounded-xl border p-1"
                                 aria-label={common.language_label}
                                 role="group"
                             >
-                                <Languages className="mx-2 hidden size-4 text-slate-500 sm:block" aria-hidden="true" />
+                                <Languages className="text-muted-foreground mx-2 hidden size-4 sm:block" aria-hidden="true" />
                                 {Object.entries(supportedLocales).map(([code, label]) => (
                                     <button
                                         key={code}
                                         type="button"
                                         onClick={() => updateLocale(code)}
                                         aria-pressed={locale === code}
-                                        className="focus-ring min-h-9 rounded-lg px-3 text-xs font-semibold text-slate-600 hover:bg-white hover:text-slate-950 aria-pressed:bg-white aria-pressed:text-[#14594f] aria-pressed:shadow-sm"
+                                        className="focus-ring text-muted-foreground hover:bg-card hover:text-foreground aria-pressed:bg-card aria-pressed:text-primary min-h-9 rounded-lg px-3 text-xs font-semibold aria-pressed:shadow-sm"
                                     >
                                         {label}
                                     </button>
                                 ))}
                             </div>
+                            <AppearanceToggleDropdown />
                             <Link
                                 href={staffDestination}
-                                className="focus-ring inline-flex min-h-11 items-center justify-center rounded-xl border border-slate-300 bg-white px-4 text-sm font-semibold text-slate-800 hover:border-[#14594f] hover:text-[#14594f]"
+                                className="focus-ring border-border bg-card text-foreground hover:border-primary hover:text-primary inline-flex min-h-11 items-center justify-center rounded-xl border px-4 text-sm font-semibold"
                             >
                                 {staffLabel}
                             </Link>
@@ -93,64 +95,64 @@ export default function Welcome() {
                 </header>
 
                 <main id="main-content" tabIndex={-1}>
-                    <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white">
-                        <div className="pointer-events-none absolute -top-32 right-[-12rem] -z-10 size-[30rem] rounded-full bg-[#dcece6] blur-3xl" />
-                        <div className="pointer-events-none absolute -bottom-56 left-[-14rem] -z-10 size-[32rem] rounded-full bg-[#fae8c7] opacity-70 blur-3xl" />
+                    <section className="border-border bg-card relative isolate overflow-hidden border-b">
+                        <div className="bg-secondary pointer-events-none absolute -top-32 right-[-12rem] -z-10 size-[30rem] rounded-full blur-3xl" />
+                        <div className="bg-accent pointer-events-none absolute -bottom-56 left-[-14rem] -z-10 size-[32rem] rounded-full opacity-70 blur-3xl" />
 
                         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:px-8 lg:py-28">
                             <div className="max-w-3xl">
-                                <p className="mb-5 inline-flex min-h-8 items-center rounded-full border border-[#b9d7ce] bg-[#edf7f3] px-4 text-xs font-bold tracking-[0.12em] text-[#14594f] uppercase">
+                                <p className="border-primary/30 bg-secondary text-primary mb-5 inline-flex min-h-8 items-center rounded-full border px-4 text-xs font-bold tracking-[0.12em] uppercase">
                                     {home.eyebrow}
                                 </p>
-                                <h1 className="max-w-3xl text-4xl leading-[1.08] font-bold tracking-[-0.045em] text-balance text-slate-950 sm:text-5xl lg:text-6xl">
+                                <h1 className="text-foreground max-w-3xl text-4xl leading-[1.08] font-bold tracking-[-0.045em] text-balance sm:text-5xl lg:text-6xl">
                                     {home.title}
                                 </h1>
-                                <p className="mt-6 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8">{home.description}</p>
+                                <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8">{home.description}</p>
 
                                 <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                                     <Link
                                         href={route('services.index')}
-                                        className="focus-ring inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#14594f] px-5 text-sm font-bold text-white shadow-sm hover:bg-[#0e463e]"
+                                        className="focus-ring bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold shadow-sm"
                                     >
                                         {home.primary_action}
                                         <ArrowRight className="size-4" aria-hidden="true" />
                                     </Link>
                                     <Link
                                         href={staffDestination}
-                                        className="focus-ring inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-300 bg-white px-5 text-sm font-bold text-slate-800 hover:border-slate-400 hover:bg-slate-50"
+                                        className="focus-ring border-border bg-card text-foreground hover:border-primary/60 hover:bg-muted inline-flex min-h-12 items-center justify-center rounded-xl border px-5 text-sm font-bold"
                                     >
                                         {home.secondary_action}
                                     </Link>
                                 </div>
 
-                                <p className="mt-7 flex max-w-xl items-start gap-2 text-sm leading-6 text-slate-500">
-                                    <LockKeyhole className="mt-1 size-4 shrink-0 text-[#14594f]" aria-hidden="true" />
+                                <p className="text-muted-foreground mt-7 flex max-w-xl items-start gap-2 text-sm leading-6">
+                                    <LockKeyhole className="text-primary mt-1 size-4 shrink-0" aria-hidden="true" />
                                     {home.trust_note}
                                 </p>
                             </div>
 
                             <aside
-                                className="relative rounded-[1.75rem] border border-slate-200 bg-white p-5 shadow-[0_24px_70px_-32px_rgba(15,23,42,0.35)] sm:p-7"
+                                className="border-border bg-card relative rounded-[1.75rem] border p-5 shadow-[0_24px_70px_-32px_rgba(15,23,42,0.35)] sm:p-7"
                                 aria-labelledby="journey-title"
                             >
-                                <div className="mb-6 flex items-center justify-between gap-4 border-b border-slate-100 pb-5">
+                                <div className="border-border/60 mb-6 flex items-center justify-between gap-4 border-b pb-5">
                                     <div>
-                                        <p className="text-xs font-bold tracking-[0.12em] text-[#9a5d12] uppercase">{home.preview_label}</p>
-                                        <h2 id="journey-title" className="mt-2 text-xl font-bold tracking-[-0.025em] text-slate-950">
+                                        <p className="text-accent-foreground text-xs font-bold tracking-[0.12em] uppercase">{home.preview_label}</p>
+                                        <h2 id="journey-title" className="text-foreground mt-2 text-xl font-bold tracking-[-0.025em]">
                                             {home.preview_title}
                                         </h2>
                                     </div>
-                                    <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[#fdf0d7] text-[#9a5d12]">
+                                    <div className="bg-accent text-accent-foreground flex size-12 shrink-0 items-center justify-center rounded-2xl">
                                         <CalendarDays className="size-6" aria-hidden="true" />
                                     </div>
                                 </div>
                                 <ol className="space-y-4">
                                     {home.preview_items.map((item, index) => (
-                                        <li key={item} className="flex items-start gap-3 rounded-xl bg-slate-50 px-4 py-3.5">
-                                            <span className="flex size-7 shrink-0 items-center justify-center rounded-full bg-[#14594f] text-xs font-bold text-white">
+                                        <li key={item} className="bg-muted flex items-start gap-3 rounded-xl px-4 py-3.5">
+                                            <span className="bg-primary text-primary-foreground flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold">
                                                 {index + 1}
                                             </span>
-                                            <span className="pt-0.5 text-sm leading-6 font-medium text-slate-700">{item}</span>
+                                            <span className="text-foreground pt-0.5 text-sm leading-6 font-medium">{item}</span>
                                         </li>
                                     ))}
                                 </ol>
@@ -160,11 +162,11 @@ export default function Welcome() {
 
                     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8" aria-labelledby="features-title">
                         <div className="max-w-3xl">
-                            <p className="text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{home.features_label}</p>
-                            <h2 id="features-title" className="mt-3 text-3xl font-bold tracking-[-0.035em] text-balance text-slate-950 sm:text-4xl">
+                            <p className="text-primary text-xs font-bold tracking-[0.14em] uppercase">{home.features_label}</p>
+                            <h2 id="features-title" className="text-foreground mt-3 text-3xl font-bold tracking-[-0.035em] text-balance sm:text-4xl">
                                 {home.features_title}
                             </h2>
-                            <p className="mt-4 text-base leading-7 text-slate-600">{home.features_intro}</p>
+                            <p className="text-muted-foreground mt-4 text-base leading-7">{home.features_intro}</p>
                         </div>
 
                         <div className="mt-10 grid gap-5 md:grid-cols-3">
@@ -174,34 +176,34 @@ export default function Welcome() {
                                 return (
                                     <article
                                         key={feature.title}
-                                        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-[0_12px_36px_-28px_rgba(15,23,42,0.45)]"
+                                        className="border-border bg-card rounded-2xl border p-6 shadow-[0_12px_36px_-28px_rgba(15,23,42,0.45)]"
                                     >
-                                        <div className="flex size-11 items-center justify-center rounded-xl bg-[#e4f1ed] text-[#14594f]">
+                                        <div className="bg-secondary text-primary flex size-11 items-center justify-center rounded-xl">
                                             <FeatureIcon className="size-5" aria-hidden="true" />
                                         </div>
-                                        <h3 className="mt-5 text-lg font-bold tracking-[-0.02em] text-slate-950">{feature.title}</h3>
-                                        <p className="mt-3 text-sm leading-6 text-slate-600">{feature.body}</p>
+                                        <h3 className="text-foreground mt-5 text-lg font-bold tracking-[-0.02em]">{feature.title}</h3>
+                                        <p className="text-muted-foreground mt-3 text-sm leading-6">{feature.body}</p>
                                     </article>
                                 );
                             })}
                         </div>
                     </section>
 
-                    <section id="how-it-works" className="scroll-mt-6 border-y border-slate-200 bg-[#e9f2ef]" aria-labelledby="steps-title">
+                    <section id="how-it-works" className="border-border bg-secondary scroll-mt-6 border-y" aria-labelledby="steps-title">
                         <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-                            <p className="text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{home.steps_label}</p>
-                            <h2 id="steps-title" className="mt-3 max-w-2xl text-3xl font-bold tracking-[-0.035em] text-slate-950 sm:text-4xl">
+                            <p className="text-primary text-xs font-bold tracking-[0.14em] uppercase">{home.steps_label}</p>
+                            <h2 id="steps-title" className="text-foreground mt-3 max-w-2xl text-3xl font-bold tracking-[-0.035em] sm:text-4xl">
                                 {home.steps_title}
                             </h2>
 
                             <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                 {home.steps.map((step, index) => (
-                                    <li key={step.title} className="rounded-2xl border border-[#c7ddd6] bg-white/85 p-5">
-                                        <span className="flex size-9 items-center justify-center rounded-full bg-[#14594f] text-sm font-bold text-white">
+                                    <li key={step.title} className="border-primary/25 bg-card/85 rounded-2xl border p-5">
+                                        <span className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-full text-sm font-bold">
                                             {index + 1}
                                         </span>
-                                        <h3 className="mt-5 font-bold text-slate-950">{step.title}</h3>
-                                        <p className="mt-2 text-sm leading-6 text-slate-600">{step.body}</p>
+                                        <h3 className="text-foreground mt-5 font-bold">{step.title}</h3>
+                                        <p className="text-muted-foreground mt-2 text-sm leading-6">{step.body}</p>
                                     </li>
                                 ))}
                             </ol>
@@ -231,21 +233,21 @@ export default function Welcome() {
                     </section>
                 </main>
 
-                <footer className="border-t border-slate-200 bg-white">
-                    <div className="mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm text-slate-600 sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
+                <footer className="border-border bg-card border-t">
+                    <div className="text-muted-foreground mx-auto flex max-w-7xl flex-col gap-4 px-4 py-8 text-sm sm:px-6 md:flex-row md:items-end md:justify-between lg:px-8">
                         <div>
-                            <div className="flex items-center gap-2 font-bold text-slate-950">
-                                <AppLogoIcon className="size-7 text-[#14594f]" />
+                            <div className="text-foreground flex items-center gap-2 font-bold">
+                                <AppLogoIcon className="text-primary size-7" />
                                 {name}
                             </div>
                             <p className="mt-3 font-semibold">{office.name}</p>
                             <p className="mt-1">{office.address}</p>
                             <p className="mt-1">
-                                <a className="hover:text-[#14594f] hover:underline" href={`mailto:${office.email}`}>
+                                <a className="hover:text-primary hover:underline" href={`mailto:${office.email}`}>
                                     {office.email}
                                 </a>
                                 {' · '}
-                                <a className="hover:text-[#14594f] hover:underline" href={`tel:${office.phone}`}>
+                                <a className="hover:text-primary hover:underline" href={`tel:${office.phone}`}>
                                     {office.phone}
                                 </a>
                             </p>
@@ -253,17 +255,17 @@ export default function Welcome() {
                         </div>
                         <div>
                             <nav aria-label="Legal and help" className="flex flex-wrap gap-x-4 gap-y-2 font-semibold">
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('privacy')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('privacy')}>
                                     {common.privacy}
                                 </Link>
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('accessibility')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('accessibility')}>
                                     {common.accessibility}
                                 </Link>
-                                <Link className="focus-ring rounded hover:text-[#14594f]" href={route('help')}>
+                                <Link className="focus-ring hover:text-primary rounded" href={route('help')}>
                                     {common.help}
                                 </Link>
                             </nav>
-                            <p className="mt-3 text-xs font-medium text-slate-500">{home.footer_phase}</p>
+                            <p className="text-muted-foreground mt-3 text-xs font-medium">{home.footer_phase}</p>
                         </div>
                     </div>
                 </footer>

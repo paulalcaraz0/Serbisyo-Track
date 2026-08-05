@@ -71,7 +71,7 @@ export default function ServicesIndex({ services, filters, summary }: Props) {
                     <div
                         role="status"
                         aria-live="polite"
-                        className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900"
+                        className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
                     >
                         {flash.success}
                     </div>
@@ -79,9 +79,9 @@ export default function ServicesIndex({ services, filters, summary }: Props) {
 
                 <section className="grid gap-3 sm:grid-cols-3" aria-label="Service totals">
                     {[
-                        ['Active', summary.active, 'text-emerald-700'],
-                        ['Inactive', summary.inactive, 'text-amber-700'],
-                        ['Archived', summary.archived, 'text-slate-600'],
+                        ['Active', summary.active, 'text-emerald-700 dark:text-emerald-300'],
+                        ['Inactive', summary.inactive, 'text-amber-700 dark:text-amber-300'],
+                        ['Archived', summary.archived, 'text-muted-foreground'],
                     ].map(([label, value, color]) => (
                         <div key={label} className="bg-card rounded-xl border p-4">
                             <p className="text-muted-foreground text-sm font-semibold">{label}</p>
@@ -163,7 +163,7 @@ export default function ServicesIndex({ services, filters, summary }: Props) {
                                         <p className="text-muted-foreground mt-1 font-mono text-xs">{service.slug}</p>
                                     </div>
                                     <span
-                                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${service.status === 'active' ? 'bg-emerald-100 text-emerald-800' : service.status === 'inactive' ? 'bg-amber-100 text-amber-900' : 'bg-slate-200 text-slate-700'}`}
+                                        className={`w-fit rounded-full px-3 py-1 text-xs font-bold ${service.status === 'active' ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-200' : service.status === 'inactive' ? 'bg-amber-100 text-amber-900 dark:bg-amber-950/60 dark:text-amber-200' : 'bg-muted text-muted-foreground'}`}
                                     >
                                         {service.status}
                                     </span>

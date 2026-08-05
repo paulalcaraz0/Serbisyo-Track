@@ -36,7 +36,10 @@ export default function EditService({ service: resource }: { service: { data: Ad
                     )}
                 </div>
                 {service.status === 'archived' && (
-                    <p role="status" className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950">
+                    <p
+                        role="status"
+                        className="mt-5 rounded-xl border border-amber-300 bg-amber-50 p-4 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100"
+                    >
                         Restore this service from the service list before making it public again.
                     </p>
                 )}

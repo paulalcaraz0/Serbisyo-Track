@@ -29,18 +29,18 @@ export default function TrackingIndex() {
             <Head title={copy.meta_title}>
                 <meta name="robots" content="noindex,nofollow,noarchive" />
             </Head>
-            <section className="border-b border-slate-200 bg-white">
+            <section className="border-border bg-card border-b">
                 <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-16 lg:px-8">
-                    <div className="mx-auto flex size-12 items-center justify-center rounded-2xl bg-[#e4f1ed] text-[#14594f]">
+                    <div className="bg-secondary text-primary mx-auto flex size-12 items-center justify-center rounded-2xl">
                         <Search className="size-6" aria-hidden="true" />
                     </div>
-                    <p className="mt-5 text-xs font-bold tracking-[0.14em] text-[#14594f] uppercase">{copy.eyebrow}</p>
+                    <p className="text-primary mt-5 text-xs font-bold tracking-[0.14em] uppercase">{copy.eyebrow}</p>
                     <h1 className="mt-2 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">{copy.title}</h1>
-                    <p className="mx-auto mt-5 max-w-2xl leading-7 text-slate-600">{copy.intro}</p>
+                    <p className="text-muted-foreground mx-auto mt-5 max-w-2xl leading-7">{copy.intro}</p>
                 </div>
             </section>
             <div className="mx-auto max-w-xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-                <form onSubmit={submit} className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm sm:p-8">
+                <form onSubmit={submit} className="border-border bg-card rounded-2xl border p-6 shadow-sm sm:p-8">
                     <div className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="reference">{copy.reference}</Label>
@@ -77,8 +77,8 @@ export default function TrackingIndex() {
                         {processing ? copy.checking : copy.submit}
                     </Button>
                 </form>
-                <div className="mt-5 flex items-start gap-3 rounded-2xl border border-slate-200 bg-white p-5 text-sm leading-6 text-slate-600">
-                    <ShieldCheck className="mt-0.5 size-5 shrink-0 text-[#14594f]" aria-hidden="true" />
+                <div className="border-border bg-card text-muted-foreground mt-5 flex items-start gap-3 rounded-2xl border p-5 text-sm leading-6">
+                    <ShieldCheck className="text-primary mt-0.5 size-5 shrink-0" aria-hidden="true" />
                     <p>{copy.privacy_note}</p>
                 </div>
             </div>

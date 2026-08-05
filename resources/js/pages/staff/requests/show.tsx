@@ -98,7 +98,7 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                     <div className="flex flex-wrap items-center gap-2">
                         <span className="bg-secondary text-secondary-foreground rounded-full px-3 py-1 text-sm font-bold">{record.status_label}</span>
                         {record.is_overdue && (
-                            <span className="flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-sm font-bold text-red-800">
+                            <span className="flex items-center gap-1 rounded-full bg-red-100 px-3 py-1 text-sm font-bold text-red-800 dark:bg-red-950/60 dark:text-red-200">
                                 <AlertTriangle className="size-4" />
                                 Overdue
                             </span>
@@ -110,7 +110,7 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                     <div
                         role="status"
                         aria-live="polite"
-                        className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900"
+                        className="rounded-xl border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-900 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
                     >
                         {flash.success}
                     </div>
@@ -219,7 +219,7 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                                             </p>
                                         )}
                                         {activity.public_message_en && (
-                                            <div className="mt-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-950">
+                                            <div className="mt-2 rounded-lg bg-emerald-50 p-3 text-sm text-emerald-950 dark:bg-emerald-950/40 dark:text-emerald-100">
                                                 <p className="text-xs font-bold uppercase">Public · English</p>
                                                 <p className="mt-1 leading-6">{activity.public_message_en}</p>
                                                 {activity.public_message_fil && (
@@ -231,7 +231,7 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                                             </div>
                                         )}
                                         {activity.private_details && (
-                                            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950">
+                                            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
                                                 <p className="flex items-center gap-1 text-xs font-bold uppercase">
                                                     <LockKeyhole className="size-3.5" />
                                                     Internal only
@@ -421,7 +421,7 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                         )}
 
                         {terminal && (
-                            <div className="rounded-xl border border-slate-200 bg-slate-50 p-5 text-sm">
+                            <div className="border-border bg-muted rounded-xl border p-5 text-sm">
                                 <p className="font-bold">Request closed</p>
                                 <p className="text-muted-foreground mt-2 leading-6">
                                     Closed requests keep their complete timeline but cannot be reassigned or changed.
@@ -439,7 +439,7 @@ function Summary({ label, value, warning = false }: { label: string; value: stri
     return (
         <div className="bg-card rounded-xl border p-4">
             <p className="text-muted-foreground text-xs font-bold uppercase">{label}</p>
-            <p className={`mt-2 text-sm font-semibold capitalize ${warning ? 'text-red-700' : ''}`}>{value}</p>
+            <p className={`mt-2 text-sm font-semibold capitalize ${warning ? 'text-red-700 dark:text-red-300' : ''}`}>{value}</p>
         </div>
     );
 }
