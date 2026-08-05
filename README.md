@@ -6,7 +6,7 @@ SerbisyoTrack is a portfolio demonstration of a barangay service-request and app
 
 ## Current milestone
 
-Phase 5 adds protected administration, reporting, audit, export, and retention controls on top of the complete resident and staff workflows:
+Phase 6 hardens the complete resident, staff, and administration workflows for production-style failure, privacy, accessibility, and abuse scenarios:
 
 - Laravel 12 with PHP 8.2+
 - Inertia 2, React 19, and TypeScript
@@ -42,10 +42,16 @@ Phase 5 adds protected administration, reporting, audit, export, and retention c
 - Staff-only session authentication with login throttling
 - Administrator/staff role and account-activation foundations
 - Secure response headers and encrypted sessions
+- Safe bilingual 403, 404, 419, 429, 500, and 503 pages that never expose exception details
+- Global response hardening for web and health responses, including strict framing, resource, permissions, and referrer controls
+- Privacy-safe validation redirects that do not flash resident PII or tracking credentials into the session
+- Per-account staff and administrator mutation throttles in addition to layered public rate limits
+- Skip links, focusable landmarks, page-title announcements, announced field errors, forced-colors support, and reduced-motion behavior
+- End-to-end regression coverage spanning resident submission, staff processing, and redacted public tracking
 - SQLite local/test configuration and PostgreSQL-ready environment settings
 - PHPUnit/Pest tests, Pint, Larastan, ESLint, Prettier, and TypeScript checks
 
-Accessibility/security hardening and deployment configuration remain scheduled for the final verified phases. See [PHASES.md](PHASES.md) for the living delivery checklist.
+Deployment configuration remains scheduled for Phase 7. See [PHASES.md](PHASES.md) for the living delivery checklist.
 
 ## Intended users
 
@@ -144,6 +150,10 @@ composer audit
 - Audit event types and metadata keys are centrally allow-listed; request and service audits commit inside the same transaction as their underlying action.
 - Closed requests and their private files are purged daily only after the configurable retention period. Audit events are retained separately.
 - Sensitive public workflow responses use `no-store`, `noindex`, and `nosniff` controls.
+- Framework error pages cover authorization, missing routes, expired sessions, throttling, server errors, and maintenance without returning exception data to browser users.
+- Resident PII, request details, attachment input, and tracking credentials are excluded from validation old-input flashing.
+- Authenticated staff and administrator mutations are rate limited per account; public limits remain scoped by IP and tracking reference where appropriate.
+- Global headers restrict framing, cross-origin resource use, unnecessary browser capabilities, referrers on sensitive responses, and legacy cross-domain policy files.
 
 ## Public and administrative routes
 
@@ -167,7 +177,7 @@ No public API exposes a service database ID. The `{slug}` value is a stable publ
 - Reporting is operational and aggregate; predictive analytics and external business-intelligence integrations are outside this MVP.
 - Docker is not installed in the current Windows environment, so image validation is deferred to the deployment milestone and CI.
 - Malware scanning is outside the MVP; attachment handling relies on strict content-type, size, count, private-storage, and authorized-download controls.
-- Automated and live HTTP checks pass, but interactive browser visual QA could not run because the current environment exposed no browser instance.
+- Automated and live HTTP checks pass, but interactive keyboard, assistive-technology, and cross-browser visual QA could not run because the current environment exposed no browser instance.
 
 ## Roadmap
 
@@ -176,8 +186,8 @@ No public API exposes a service database ID. The `{slug}` value is a stable publ
 3. Completed: secure request, appointment, attachment, receipt, and tracking workflows
 4. Completed: staff assignment, controlled status and appointment operations, notes, timelines, overdue targets, and queued email updates
 5. Completed: staff administration, office/retention settings, analytics, sanitized exports, audit events, and scheduled cleanup
-6. Next: accessibility, privacy, and security hardening with comprehensive workflow QA
-7. Docker, Render configuration, final CI validation, delivery documentation, and clean-install verification
+6. Completed: accessibility, privacy, and security hardening with comprehensive workflow QA
+7. Next: Docker, Render configuration, final CI validation, delivery documentation, and clean-install verification
 
 ## Screenshots
 

@@ -7,7 +7,7 @@ import PublicLayout from '@/layouts/public-layout';
 import { type SharedData } from '@/types';
 import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { AlertTriangle, ArrowLeft, Check, FileText, LockKeyhole, Paperclip, Trash2 } from 'lucide-react';
-import { type FormEvent, type ReactNode, useState } from 'react';
+import { cloneElement, type FormEvent, type ReactElement, useEffect, useRef, useState } from 'react';
 
 interface Requirement {
     name: string;
@@ -46,13 +46,24 @@ interface Props {
     attachmentRules: { maxFiles: number; maxMegabytes: number; accept: string };
 }
 
-function Field({ id, label, help, error, children }: { id: string; label: string; help?: string; error?: string; children: ReactNode }) {
+function Field({ id, label, help, error, children }: { id: string; label: string; help?: string; error?: string; children: ReactElement }) {
+    const helpId = help ? `${id}-help` : undefined;
+    const errorId = error ? `${id}-error` : undefined;
+    const describedBy = [helpId, errorId].filter(Boolean).join(' ') || undefined;
+
     return (
         <div className="space-y-2">
             <Label htmlFor={id}>{label}</Label>
-            {children}
-            {help && <p className="text-xs leading-5 text-slate-500">{help}</p>}
-            <InputError message={error} />
+            {cloneElement(children, {
+                'aria-describedby': describedBy,
+                'aria-invalid': error ? true : undefined,
+            } as React.HTMLAttributes<HTMLElement>)}
+            {help && (
+                <p id={helpId} className="text-xs leading-5 text-slate-500">
+                    {help}
+                </p>
+            )}
+            <InputError id={errorId} message={error} />
         </div>
     );
 }
@@ -62,6 +73,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
     const copy = translations.requests;
     const service = resource.data;
     const [currentStep, setCurrentStep] = useState(1);
+    const errorSummaryRef = useRef<HTMLDivElement>(null);
     const { data, setData, post, processing, errors } = useForm<RequestFormData>({
         service_slug: service.slug,
         resident_name: '',
@@ -86,6 +98,14 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
         'flex min-h-32 w-full rounded-md border border-input bg-white px-3 py-2 text-base placeholder:text-slate-400 focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 md:text-sm';
     const selectClass =
         'flex h-10 w-full rounded-md border border-input bg-white px-3 py-2 text-sm focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2';
+
+    useEffect(() => {
+        if (errorMessages.length === 0) return;
+
+        const frame = window.requestAnimationFrame(() => errorSummaryRef.current?.focus());
+
+        return () => window.cancelAnimationFrame(frame);
+    }, [errors, errorMessages.length]);
 
     const submit = (event: FormEvent) => {
         event.preventDefault();
@@ -164,7 +184,12 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                 </nav>
 
                 {errorMessages.length > 0 && (
-                    <div role="alert" className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950">
+                    <div
+                        ref={errorSummaryRef}
+                        role="alert"
+                        tabIndex={-1}
+                        className="mb-6 rounded-2xl border border-red-200 bg-red-50 p-5 text-red-950"
+                    >
                         <h2 className="font-bold">{copy.error_title}</h2>
                         <ul className="mt-2 list-disc space-y-1 pl-5 text-sm">
                             {errorMessages.map((message) => (
@@ -283,8 +308,12 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                         {service.appointment_required ? copy.appointment_required : copy.appointment_optional}
                                     </p>
                                     {!service.appointment_required && (
-                                        <label className="mt-4 flex min-h-11 cursor-pointer items-center gap-3 font-semibold">
+                                        <label
+                                            htmlFor="appointment_requested"
+                                            className="mt-4 flex min-h-11 cursor-pointer items-center gap-3 font-semibold"
+                                        >
                                             <Checkbox
+                                                id="appointment_requested"
                                                 checked={data.appointment_requested}
                                                 onCheckedChange={(checked) => setData('appointment_requested', checked === true)}
                                             />
@@ -342,7 +371,7 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                             <h3 id="attachments-title" className="font-bold">
                                                 {copy.attachments_title}
                                             </h3>
-                                            <p className="mt-1 text-sm leading-6 text-slate-600">
+                                            <p id="attachments-help" className="mt-1 text-sm leading-6 text-slate-600">
                                                 {copy.attachments_help
                                                     .replace(':count', String(attachmentRules.maxFiles))
                                                     .replace(':size', String(attachmentRules.maxMegabytes))}
@@ -350,13 +379,17 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                         </div>
                                     </div>
                                     <Input
+                                        id="attachments"
                                         className="mt-4 h-auto py-3"
                                         type="file"
                                         multiple
                                         accept={attachmentRules.accept}
+                                        aria-labelledby="attachments-title"
+                                        aria-describedby={attachmentError ? 'attachments-help attachments-error' : 'attachments-help'}
+                                        aria-invalid={attachmentError ? true : undefined}
                                         onChange={(e) => addFiles(e.target.files)}
                                     />
-                                    <InputError message={attachmentError} className="mt-2" />
+                                    <InputError id="attachments-error" message={attachmentError} className="mt-2" />
                                     {data.attachments.length > 0 && (
                                         <div className="mt-4">
                                             <p className="text-sm font-bold">{copy.selected_files}</p>
@@ -421,21 +454,26 @@ export default function CreateRequest({ service: resource, appointmentDateBounds
                                 </div>
                             </dl>
                             <div className="mt-7 rounded-xl border border-[#b8d9cf] bg-[#f1f8f5] p-5">
-                                <label className="flex cursor-pointer items-start gap-3">
+                                <label htmlFor="privacy_consent" className="flex cursor-pointer items-start gap-3">
                                     <Checkbox
+                                        id="privacy_consent"
                                         className="mt-0.5"
                                         checked={data.privacy_consent}
+                                        aria-describedby={
+                                            errors.privacy_consent ? 'privacy-consent-help privacy-consent-error' : 'privacy-consent-help'
+                                        }
+                                        aria-invalid={errors.privacy_consent ? true : undefined}
                                         onCheckedChange={(checked) => setData('privacy_consent', checked === true)}
                                     />
                                     <span className="text-sm leading-6">{copy.privacy_consent}</span>
                                 </label>
-                                <p className="mt-3 pl-7 text-xs text-slate-600">
+                                <p id="privacy-consent-help" className="mt-3 pl-7 text-xs text-slate-600">
                                     <Link className="font-bold text-[#14594f] underline" href={route('privacy')}>
                                         {translations.common.privacy}
                                     </Link>{' '}
                                     · {copy.consent_help}
                                 </p>
-                                <InputError message={errors.privacy_consent} className="mt-2 pl-7" />
+                                <InputError id="privacy-consent-error" message={errors.privacy_consent} className="mt-2 pl-7" />
                             </div>
                         </section>
                     )}

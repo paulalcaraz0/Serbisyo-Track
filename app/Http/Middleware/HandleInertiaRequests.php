@@ -47,7 +47,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'locale' => $locale,
             'supportedLocales' => $supportedLocales,
-            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4'), Lang::get('phase5')),
+            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4'), Lang::get('phase5'), Lang::get('phase6')),
             'office' => function () use ($locale): array {
                 $settings = OfficeSetting::current();
 
@@ -60,6 +60,7 @@ class HandleInertiaRequests extends Middleware
             },
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),
+                'error' => fn () => $request->session()->get('error'),
             ],
             'auth' => [
                 'user' => $user?->only(['id', 'name', 'email', 'email_verified_at', 'role']),

@@ -62,10 +62,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::prefix('staff')->name('staff.')->group(function () {
         Route::get('requests', [StaffRequestController::class, 'index'])->name('requests.index');
         Route::get('requests/{serviceRequest}', [StaffRequestController::class, 'show'])->name('requests.show');
-        Route::patch('requests/{serviceRequest}/assignment', RequestAssignmentController::class)->name('requests.assignment');
-        Route::post('requests/{serviceRequest}/transitions', RequestTransitionController::class)->name('requests.transitions');
-        Route::post('requests/{serviceRequest}/notes', InternalNoteController::class)->name('requests.notes');
-        Route::patch('requests/{serviceRequest}/appointment', StaffRequestAppointmentController::class)->name('requests.appointment');
+        Route::middleware('throttle:staff-mutations')->group(function () {
+            Route::patch('requests/{serviceRequest}/assignment', RequestAssignmentController::class)->name('requests.assignment');
+            Route::post('requests/{serviceRequest}/transitions', RequestTransitionController::class)->name('requests.transitions');
+            Route::post('requests/{serviceRequest}/notes', InternalNoteController::class)->name('requests.notes');
+            Route::patch('requests/{serviceRequest}/appointment', StaffRequestAppointmentController::class)->name('requests.appointment');
+        });
         Route::get('requests/{serviceRequest}/attachments/{attachment}', StaffRequestAttachmentController::class)
             ->middleware('throttle:60,1')
             ->name('requests.attachments.show');
@@ -74,16 +76,23 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::resource('staff', StaffController::class)
             ->parameters(['staff' => 'user'])
+            ->middlewareFor(['store', 'update'], 'throttle:admin-mutations')
             ->except(['show', 'destroy']);
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('reports/requests.csv', [ReportController::class, 'export'])->name('reports.export');
         Route::get('audit-events', AuditEventController::class)->name('audit.index');
         Route::get('settings', [OfficeSettingController::class, 'edit'])->name('settings.edit');
-        Route::patch('settings', [OfficeSettingController::class, 'update'])->name('settings.update');
-        Route::resource('services', ServiceController::class)->except(['show', 'destroy']);
+        Route::patch('settings', [OfficeSettingController::class, 'update'])
+            ->middleware('throttle:admin-mutations')
+            ->name('settings.update');
+        Route::resource('services', ServiceController::class)
+            ->middlewareFor(['store', 'update'], 'throttle:admin-mutations')
+            ->except(['show', 'destroy']);
         Route::patch('services/{service}/archive', [ServiceController::class, 'archive'])
+            ->middleware('throttle:admin-mutations')
             ->name('services.archive');
         Route::patch('services/{service}/restore', [ServiceController::class, 'restore'])
+            ->middleware('throttle:admin-mutations')
             ->name('services.restore');
     });
 });

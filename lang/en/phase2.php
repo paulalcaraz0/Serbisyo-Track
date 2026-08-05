@@ -65,7 +65,7 @@ return [
             'sections' => [
                 ['title' => 'What we support', 'body' => 'Pages use semantic headings, associated form labels, keyboard-operable controls, visible focus indicators, comfortable touch targets, sufficient color contrast, and screen-reader-friendly status text.'],
                 ['title' => 'Motion and display', 'body' => 'The interface avoids unnecessary animation, respects reduced-motion preferences, reflows from 320-pixel screens, and is designed to prevent horizontal overflow.'],
-                ['title' => 'Known work in progress', 'body' => 'Accessibility checks run during each phase. Formal assistive-technology and cross-browser audits remain part of the final hardening phase and results will be documented honestly.'],
+                ['title' => 'Verification scope', 'body' => 'Automated accessibility checks, keyboard-focused review, reduced-motion support, error announcements, landmark review, and responsive layout checks are part of the verified hardening work. Manual testing with every assistive-technology and browser combination is not claimed.'],
                 ['title' => 'Report a barrier', 'body' => 'If you encounter an accessibility problem, email help@barangayharaya.test with the page and a short description. Do not include sensitive personal information.'],
             ],
         ],

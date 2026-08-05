@@ -129,6 +129,7 @@
 
     html {
         scroll-behavior: smooth;
+        scroll-padding-top: 1rem;
     }
 
     body {
@@ -141,11 +142,16 @@
     select,
     textarea {
         @apply transition-colors duration-150;
+        touch-action: manipulation;
     }
 
     :focus-visible {
         outline: 3px solid hsl(171 64% 35%);
         outline-offset: 3px;
+    }
+
+    [aria-invalid='true'] {
+        border-color: hsl(0 70% 45%);
     }
 
     ::selection {
@@ -189,6 +195,17 @@
         animation-duration: 0.01ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
+    }
+}
+
+@media (forced-colors: active) {
+    :focus-visible,
+    .focus-ring:focus-visible {
+        outline: 3px solid CanvasText;
+    }
+
+    [aria-invalid='true'] {
+        outline: 2px solid Mark;
     }
 }
 

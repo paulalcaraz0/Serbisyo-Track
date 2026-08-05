@@ -53,5 +53,13 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('resident-downloads', fn (Request $request) => [
             Limit::perMinute(20)->by($request->ip()),
         ]);
+
+        RateLimiter::for('staff-mutations', fn (Request $request) => [
+            Limit::perMinute(30)->by('staff|'.($request->user()?->getAuthIdentifier() ?? $request->ip())),
+        ]);
+
+        RateLimiter::for('admin-mutations', fn (Request $request) => [
+            Limit::perMinute(20)->by('admin|'.($request->user()?->getAuthIdentifier() ?? $request->ip())),
+        ]);
     }
 }

@@ -134,7 +134,13 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                         </div>
                     </div>
                     <div className="mt-6 overflow-x-auto pb-2">
+                        <ul className="sr-only">
+                            {analytics.trend.map((point) => (
+                                <li key={point.date}>{`${point.date}: ${point.count} requests`}</li>
+                            ))}
+                        </ul>
                         <div
+                            aria-hidden="true"
                             className="flex h-44 min-w-full items-end gap-1 border-b"
                             style={{ width: `${Math.max(analytics.trend.length * 10, 640)}px` }}
                         >
@@ -147,7 +153,6 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                                     <div
                                         className="bg-primary min-h-1 w-full rounded-t-sm"
                                         style={{ height: `${Math.max(3, (point.count / maxTrend) * 100)}%` }}
-                                        aria-label={`${point.date}: ${point.count} requests`}
                                     />
                                 </div>
                             ))}
@@ -183,17 +188,29 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                                 <table className="w-full min-w-[36rem] text-left text-sm">
                                     <thead className="bg-muted/60">
                                         <tr>
-                                            <th className="px-4 py-3">Service</th>
-                                            <th className="px-4 py-3">Total</th>
-                                            <th className="px-4 py-3">Open</th>
-                                            <th className="px-4 py-3">Completed</th>
-                                            <th className="px-4 py-3">Overdue</th>
+                                            <th scope="col" className="px-4 py-3">
+                                                Service
+                                            </th>
+                                            <th scope="col" className="px-4 py-3">
+                                                Total
+                                            </th>
+                                            <th scope="col" className="px-4 py-3">
+                                                Open
+                                            </th>
+                                            <th scope="col" className="px-4 py-3">
+                                                Completed
+                                            </th>
+                                            <th scope="col" className="px-4 py-3">
+                                                Overdue
+                                            </th>
                                         </tr>
                                     </thead>
                                     <tbody className="divide-y">
                                         {analytics.service_breakdown.map((item) => (
                                             <tr key={item.slug}>
-                                                <th className="px-4 py-3 font-semibold">{item.name}</th>
+                                                <th scope="row" className="px-4 py-3 font-semibold">
+                                                    {item.name}
+                                                </th>
                                                 <td className="px-4 py-3">{item.total}</td>
                                                 <td className="px-4 py-3">{item.open}</td>
                                                 <td className="px-4 py-3">{item.completed}</td>

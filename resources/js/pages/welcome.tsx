@@ -1,4 +1,5 @@
 import AppLogoIcon from '@/components/app-logo-icon';
+import { PageAnnouncer } from '@/components/page-announcer';
 import { type SharedData } from '@/types';
 import { Head, Link, router, usePage } from '@inertiajs/react';
 import { ArrowRight, CalendarDays, Check, FileCheck2, FileText, Languages, LockKeyhole, Search, ShieldCheck } from 'lucide-react';
@@ -21,6 +22,7 @@ export default function Welcome() {
 
     return (
         <div className="public-shell">
+            <PageAnnouncer />
             <Head title={home.meta_title}>
                 <meta name="description" content={home.meta_description} />
             </Head>
@@ -90,7 +92,7 @@ export default function Welcome() {
                     </div>
                 </header>
 
-                <main id="main-content">
+                <main id="main-content" tabIndex={-1}>
                     <section className="relative isolate overflow-hidden border-b border-slate-200 bg-white">
                         <div className="pointer-events-none absolute -top-32 right-[-12rem] -z-10 size-[30rem] rounded-full bg-[#dcece6] blur-3xl" />
                         <div className="pointer-events-none absolute -bottom-56 left-[-14rem] -z-10 size-[32rem] rounded-full bg-[#fae8c7] opacity-70 blur-3xl" />

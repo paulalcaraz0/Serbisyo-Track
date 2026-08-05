@@ -65,7 +65,7 @@ return [
             'sections' => [
                 ['title' => 'Mga sinusuportahan namin', 'body' => 'Gumagamit ang mga page ng semantic heading, kaugnay na form label, keyboard-operable control, malinaw na focus indicator, komportableng touch target, sapat na contrast, at screen-reader-friendly status text.'],
                 ['title' => 'Motion at display', 'body' => 'Iniiwasan ang hindi kailangang animation, sinusunod ang reduced-motion preference, nagre-reflow mula sa 320-pixel screen, at iniiwasan ang horizontal overflow.'],
-                ['title' => 'Kasalukuyang ginagawa', 'body' => 'May accessibility checks sa bawat phase. Bahagi ng final hardening phase ang pormal na assistive-technology at cross-browser audit at tapat na idodokumento ang resulta.'],
+                ['title' => 'Saklaw ng verification', 'body' => 'Bahagi ng beripikadong hardening ang automated accessibility checks, keyboard-focused review, reduced-motion support, error announcements, landmark review, at responsive layout checks. Hindi inaangking nasubukan nang mano-mano ang bawat kombinasyon ng assistive technology at browser.'],
                 ['title' => 'Mag-ulat ng hadlang', 'body' => 'Kung may accessibility problem, mag-email sa help@barangayharaya.test kasama ang page at maikling paglalarawan. Huwag magsama ng sensitibong impormasyon.'],
             ],
         ],

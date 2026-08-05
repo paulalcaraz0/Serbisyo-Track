@@ -49,9 +49,12 @@ class FoundationSecurityTest extends TestCase
             ->assertHeader('X-Content-Type-Options', 'nosniff')
             ->assertHeader('X-Frame-Options', 'DENY')
             ->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin')
-            ->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=()')
+            ->assertHeader('Permissions-Policy', 'accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()')
             ->assertHeader('Cross-Origin-Opener-Policy', 'same-origin')
-            ->assertHeader('Content-Security-Policy', "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'");
+            ->assertHeader('Cross-Origin-Resource-Policy', 'same-origin')
+            ->assertHeader('Origin-Agent-Cluster', '?1')
+            ->assertHeader('X-Permitted-Cross-Domain-Policies', 'none')
+            ->assertHeader('Content-Security-Policy', "base-uri 'self'; form-action 'self'; frame-ancestors 'none'; object-src 'none'; img-src 'self' data:; font-src 'self'; media-src 'self'; manifest-src 'self'; worker-src 'self'; child-src 'self'");
     }
 
     public function test_authenticated_shared_user_data_is_allow_listed(): void
@@ -61,11 +64,21 @@ class FoundationSecurityTest extends TestCase
         $this->actingAs($user)
             ->get('/dashboard')
             ->assertHeader('Cache-Control', 'no-store, private')
+            ->assertHeader('Referrer-Policy', 'no-referrer')
             ->assertInertia(fn (Assert $page) => $page
                 ->where('auth.user.id', $user->id)
                 ->where('auth.user.role', UserRole::Administrator->value)
                 ->missing('auth.user.is_active')
                 ->missing('auth.user.last_login_at')
                 ->missing('auth.user.password'));
+    }
+
+    public function test_health_response_receives_global_security_headers(): void
+    {
+        $this->get('/up')
+            ->assertOk()
+            ->assertHeader('X-Content-Type-Options', 'nosniff')
+            ->assertHeader('X-Frame-Options', 'DENY')
+            ->assertHeader('Cross-Origin-Resource-Policy', 'same-origin');
     }
 }

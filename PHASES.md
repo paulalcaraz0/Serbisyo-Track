@@ -10,7 +10,7 @@ This file is the living implementation roadmap. A phase is marked complete only 
 | 3. Resident submissions and tracking | Complete | Guided requests, appointments, attachments, secure references, tracking PINs, receipts, and public status tracking |
 | 4. Staff operations | Complete | Assignment, workflow transitions, public/private history, internal notes, request timelines, due targets, appointment controls, and queued notifications |
 | 5. Administration and reporting | Complete | Staff management, office/retention settings, analytics, sanitized exports, audit events, and retention cleanup |
-| 6. Hardening and comprehensive QA | Not started | Error pages, accessibility audit, privacy review, security hardening, and full workflow test coverage |
+| 6. Hardening and comprehensive QA | Complete | Safe bilingual error states, accessibility and privacy review, layered security controls, abuse limits, and full workflow regression coverage |
 | 7. Delivery | Not started | Docker, Render deployment configuration, final GitHub Actions validation, final documentation, and clean-install verification |
 
 ## Phase 2 acceptance checklist
@@ -85,6 +85,24 @@ Phase 4 verification result: 76 automated tests with 640 assertions passed. Clea
 - [x] Automated tests, Pint, Larastan, Prettier, ESLint, TypeScript, dependency audits, and production build pass
 
 Phase 5 verification result: 85 automated tests with 753 assertions passed. Clean migrations/seeding, the daily scheduler definition, PHP and frontend formatting, static analysis, TypeScript, frontend linting, production dependency audits, the production build, and live HTTP smoke checks passed. The in-app browser reported no available browser instance, so interactive visual QA remains explicitly deferred rather than represented as completed.
+
+## Phase 6 acceptance checklist
+
+- [x] Browser-safe 403, 404, 419, 429, 500, and 503 pages are bilingual, accessible, non-indexable, non-cacheable, and omit exception details
+- [x] JSON clients retain machine-readable framework errors without receiving the Inertia error UI
+- [x] Error rendering is independent of office/database shared data so it remains viable during backend failures
+- [x] Security headers apply globally, including the health endpoint, with tighter permissions, resource isolation, referrer, framing, and content controls
+- [x] Sensitive resident and tracking inputs are excluded from Laravel's server-side validation flash bag
+- [x] Public submission/tracking/download limits are supplemented by per-account staff and administrator mutation limits
+- [x] Public, authentication, and staff shells provide skip links, focusable main landmarks, and route-title announcements
+- [x] Resident validation summaries receive focus and form controls expose invalid/error/help relationships to assistive technology
+- [x] Reduced-motion and forced-colors preferences are supported, touch behavior is improved, and report tables/charts have non-visual equivalents
+- [x] Privacy and accessibility copy reflects the implemented retention, audit, verification, and known-testing boundaries
+- [x] End-to-end regression coverage verifies resident submission, staff processing, and redacted public tracking in one workflow
+- [x] Error handling, PII flashing, authenticated abuse limits, security headers, and production error redaction have dedicated regression tests
+- [x] Automated tests, Pint, Larastan, Prettier, ESLint, TypeScript, dependency audits, production build, and live HTTP smoke checks pass
+
+Phase 6 verification result: 95 automated tests with 1,043 assertions passed. PHP and frontend formatting, static analysis, TypeScript, frontend linting, production dependency audits, the production build, and live HTTP smoke checks passed. The in-app browser again reported no available browser instance, so interactive keyboard, assistive-technology, and cross-browser visual QA remains explicitly deferred rather than represented as completed.
 
 ## Overall MVP definition of done
 

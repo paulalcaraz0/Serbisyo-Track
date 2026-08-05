@@ -35,6 +35,7 @@ export interface SharedData {
     translations: Translations;
     flash: {
         success?: string;
+        error?: string;
     };
     [key: string]: unknown;
 }
@@ -70,6 +71,16 @@ export interface InfoPageTranslation {
 }
 
 export interface Translations {
+    errors: {
+        meta_title: string;
+        eyebrow: string;
+        home: string;
+        services: string;
+        track: string;
+        dashboard: string;
+        help: string;
+        statuses: Record<string, { title: string; description: string }>;
+    };
     common: {
         language_label: string;
         english: string;
