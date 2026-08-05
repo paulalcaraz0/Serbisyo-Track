@@ -65,6 +65,20 @@ The application is a Laravel monolith. Inertia keeps routing, authentication, va
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for boundaries and planned modules.
 
+### Inertia page convention
+
+React page components live in `resources/js/pages` using lowercase directory and file names. Server-side component names map directly to `.tsx` files beneath that directory:
+
+```php
+return Inertia::render('requests/create');
+```
+
+```text
+resources/js/pages/requests/create.tsx
+```
+
+The browser resolver in `resources/js/app.tsx`, the SSR resolver, and `config/inertia.php` all use this same lowercase convention. Preserve the capitalization when adding or renaming pages: GitHub Actions runs on Linux, where `pages` and `Pages` are different paths even though Windows treats them as equivalent.
+
 ## Local setup
 
 ### Windows PowerShell
@@ -110,6 +124,8 @@ An inactive fictional account and three sanitized audit events are also seeded s
 The seeder refuses to create demonstration credentials when `APP_ENV=production`. Replace these credentials in any shared non-production environment.
 
 ## Quality checks
+
+GitHub Actions runs these checks on Ubuntu for pushes and pull requests targeting `main` or `develop`. This also verifies case-sensitive file resolution that may not be detectable on Windows.
 
 ```powershell
 php artisan test
