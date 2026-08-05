@@ -1,57 +1,54 @@
-# SerbisyoTrack
+<p align="center">
+  <img src="public/branding/serbisyo-track-icon.png" width="190" alt="SerbisyoTrack location pin, document, and checkmark logo">
+</p>
 
-SerbisyoTrack is a portfolio demonstration of a barangay service-request and appointment portal. It is designed to help residents understand services, submit requests, request appointments, receive a secure reference, and follow public status updates. Authorized staff will process those requests through a protected dashboard.
+<h1 align="center">SerbisyoTrack</h1>
 
-> **Demonstration only:** SerbisyoTrack is not affiliated with, operated by, or endorsed by a real government office. Barangay Haraya, its records, and all development accounts are fictional.
+<p align="center">
+  A bilingual, privacy-conscious service-request and appointment tracking portal for a fictional barangay.
+</p>
 
-## Current milestone
+<p align="center">
+  <img alt="Laravel 12" src="https://img.shields.io/badge/Laravel-12-FF2D20?logo=laravel&logoColor=white">
+  <img alt="React 19" src="https://img.shields.io/badge/React-19-149ECA?logo=react&logoColor=white">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white">
+  <img alt="Phase 6 complete" src="https://img.shields.io/badge/Phase%206-complete-14594F">
+</p>
 
-Phase 6 hardens the complete resident, staff, and administration workflows for production-style failure, privacy, accessibility, and abuse scenarios:
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#local-setup">Local setup</a> ·
+  <a href="#demonstration-accounts-and-requests">Demo accounts</a> ·
+  <a href="#quality-checks">Quality checks</a> ·
+  <a href="PHASES.md">Delivery phases</a>
+</p>
 
-- Laravel 12 with PHP 8.2+
-- Inertia 2, React 19, and TypeScript
+> **Portfolio demonstration only:** SerbisyoTrack is not affiliated with, operated by, or endorsed by a real government office. Barangay Haraya, its records, contact details, accounts, and requests are fictional. Do not submit real personal or sensitive information.
+
+## Project status
+
+Phases 1–6 are complete. The application includes the resident, staff, and administration workflows plus accessibility, privacy, security, error-handling, and comprehensive regression hardening. Phase 7 covers deployment configuration, final CI validation, clean-install verification, and delivery documentation.
+
+See [PHASES.md](PHASES.md) for the acceptance checklist and verified results for every completed phase.
+
+## Features
+
+| Area                 | Highlights                                                                                                                                                                                                             |
+| -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Resident experience  | Bilingual service directory, detailed eligibility and requirements, guided requests, appointment preferences, private attachments, printable receipts, and reference-and-PIN tracking without an account               |
+| Privacy and security | Encrypted resident fields and sessions, hashed tracking PINs, private file storage, short-lived tracking grants, layered rate limits, allow-listed public responses, secure headers, and non-cacheable sensitive pages |
+| Staff workspace      | Searchable request queue, safe claim and release controls, assignment policies, controlled status transitions, appointment management, encrypted notes, immutable history, due dates, and overdue indicators           |
+| Administration       | Service and staff management, bilingual office settings, aggregate reporting, formula-safe CSV exports, append-only audit events, and configurable scheduled retention cleanup                                         |
+| Accessibility        | Semantic landmarks, skip links, keyboard-visible focus, announced validation errors and page titles, responsive layouts, reduced-motion support, forced-colors support, and non-visual chart data                      |
+| Quality assurance    | End-to-end resident-to-staff-to-tracking coverage, authorization and abuse regression tests, PHP and TypeScript static analysis, formatting, linting, dependency audits, and production builds                         |
+
+### Technology snapshot
+
+- Laravel 12 and PHP 8.2+
+- Inertia 2, React 19, and strict TypeScript
 - Tailwind CSS 4 and Vite
-- English and Filipino homepage, service, privacy, accessibility, and help content
-- Six complete fictional services with eligibility, requirements, fees, schedules, procedures, appointment guidance, and contact details
-- Guided bilingual resident request forms that do not require an account
-- Required or optional appointment preferences with clear confirmation guidance
-- Private PDF, JPG, and PNG attachments with strict count and size limits
-- Encrypted resident-submitted fields and attachment names at rest
-- High-entropy non-sequential references and one-way hashed six-digit tracking PINs
-- Printable receipts that reveal the tracking PIN only once
-- Rate-limited public tracking with 15-minute session grants and allow-listed status responses
-- Authorized private attachment downloads that verify both the request and attachment ownership
-- Staff request queues with search, status, assignment, and overdue filters
-- Administrator assignment plus safe staff self-claim and release controls
-- Server-enforced workflow transitions, terminal-state protection, and appointment scheduling rules
-- Encrypted internal notes and immutable request activity timelines
-- Bilingual public-safe status and appointment history without staff or private metadata
-- Per-service business-day targets, due dates, overdue indicators, and closure timestamps
-- Queued after-commit resident email updates for requests that prefer email contact
-- Protected staff attachment downloads scoped to the owning request
-- Administrator-only staff account search, creation, role changes, activation, deactivation, and password reset
-- Self-lockout and last-active-administrator protection with automatic release of open assignments on deactivation
-- Editable bilingual office contact details and a validated 30–3,650 day retention policy
-- Aggregate request reporting by date, service, and status without selecting resident-submitted PII
-- Formula-safe CSV exports containing operational fields only
-- Append-only allow-listed audit events for services, staff, request operations, settings, exports, and cleanup
-- Daily retention cleanup that permanently removes eligible closed requests and private attachments while preserving audit history
-- Public service routes that use non-identifying slugs and allow-listed response resources
-- Administrator-only service search, filters, sorting, pagination, creation, editing, activation, archival, and restoration
-- Archival instead of deletion so future request and audit history can be preserved
-- Staff-only session authentication with login throttling
-- Administrator/staff role and account-activation foundations
-- Secure response headers and encrypted sessions
-- Safe bilingual 403, 404, 419, 429, 500, and 503 pages that never expose exception details
-- Global response hardening for web and health responses, including strict framing, resource, permissions, and referrer controls
-- Privacy-safe validation redirects that do not flash resident PII or tracking credentials into the session
-- Per-account staff and administrator mutation throttles in addition to layered public rate limits
-- Skip links, focusable landmarks, page-title announcements, announced field errors, forced-colors support, and reduced-motion behavior
-- End-to-end regression coverage spanning resident submission, staff processing, and redacted public tracking
-- SQLite local/test configuration and PostgreSQL-ready environment settings
-- PHPUnit/Pest tests, Pint, Larastan, ESLint, Prettier, and TypeScript checks
-
-Deployment configuration remains scheduled for Phase 7. See [PHASES.md](PHASES.md) for the living delivery checklist.
+- SQLite for local development and tests; PostgreSQL-ready configuration for production
+- Database-backed sessions, queues, cache, and scheduled cleanup
 
 ## Intended users
 
@@ -108,6 +105,8 @@ composer run dev
 ```
 
 Set `APP_DEBUG=true` only in a trusted local environment when detailed debugging is needed. Never enable it in production.
+
+`composer run dev` starts the Laravel application, queue worker, log viewer, and Vite development server together. Open **http://localhost:8000** in your browser; the Vite address is only the frontend asset server and will display Vite's Laravel integration message when opened directly.
 
 ## Demonstration accounts and requests
 
@@ -173,16 +172,16 @@ composer audit
 
 ## Public and administrative routes
 
-| Area | Routes | Access |
-| --- | --- | --- |
-| Public information | `/`, `/services`, `/services/{slug}`, `/privacy`, `/accessibility`, `/help` | Everyone |
-| Resident requests | `/services/{slug}/request`, request receipt | Everyone; receipt is session-grant protected |
-| Public tracking | `/track`, `/track/{reference}`, authorized attachment downloads | Reference and PIN; 15-minute session grant |
-| Staff session | `/login`, `/dashboard`, account settings | Active, verified staff or administrators |
-| Request operations | `/staff/requests` and assignment/status/note/appointment/download actions | Active, verified staff; mutations additionally require assignment or administrator authority |
-| Service management | `/admin/services` and create/edit/archive/restore actions | Administrators only |
-| Administration | `/admin/staff`, `/admin/settings`, `/admin/audit-events` | Administrators only |
-| Reporting | `/admin/reports`, sanitized CSV download | Administrators only |
+| Area               | Routes                                                                      | Access                                                                                       |
+| ------------------ | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| Public information | `/`, `/services`, `/services/{slug}`, `/privacy`, `/accessibility`, `/help` | Everyone                                                                                     |
+| Resident requests  | `/services/{slug}/request`, request receipt                                 | Everyone; receipt is session-grant protected                                                 |
+| Public tracking    | `/track`, `/track/{reference}`, authorized attachment downloads             | Reference and PIN; 15-minute session grant                                                   |
+| Staff session      | `/login`, `/dashboard`, account settings                                    | Active, verified staff or administrators                                                     |
+| Request operations | `/staff/requests` and assignment/status/note/appointment/download actions   | Active, verified staff; mutations additionally require assignment or administrator authority |
+| Service management | `/admin/services` and create/edit/archive/restore actions                   | Administrators only                                                                          |
+| Administration     | `/admin/staff`, `/admin/settings`, `/admin/audit-events`                    | Administrators only                                                                          |
+| Reporting          | `/admin/reports`, sanitized CSV download                                    | Administrators only                                                                          |
 
 No public API exposes a service database ID. The `{slug}` value is a stable public route key.
 
@@ -205,9 +204,16 @@ No public API exposes a service database ID. The `{slug}` value is a stable publ
 6. Completed: accessibility, privacy, and security hardening with comprehensive workflow QA
 7. Next: Docker, Render configuration, final CI validation, delivery documentation, and clean-install verification
 
-## Screenshots
+## Quick tour
 
-Screenshots will be added after the primary resident and staff workflows are complete.
+After starting the development environment, explore these entry points:
+
+- `/` — resident landing page and demonstration notice
+- `/services` — bilingual public service directory
+- `/track` — secure reference-and-PIN request tracking
+- `/login` — fictional staff and administrator sign-in
+- `/staff/requests` — protected operational request queue
+- `/admin/reports` — administrator-only aggregate reporting
 
 ## License and portfolio use
 

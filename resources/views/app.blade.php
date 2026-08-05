@@ -6,7 +6,8 @@
 
         <title inertia>{{ config('app.name', 'SerbisyoTrack') }}</title>
         <meta name="theme-color" content="#14594f">
-        <link rel="icon" href="/logo.svg" type="image/svg+xml">
+        <link rel="icon" href="/branding/serbisyo-track-icon.png" type="image/png">
+        <link rel="apple-touch-icon" href="/branding/serbisyo-track-icon.png">
 
         @routes
         @viteReactRefresh
