@@ -81,4 +81,12 @@ class FoundationSecurityTest extends TestCase
             ->assertHeader('X-Frame-Options', 'DENY')
             ->assertHeader('Cross-Origin-Resource-Policy', 'same-origin');
     }
+
+    public function test_inertia_component_finder_matches_the_lowercase_react_pages_directory(): void
+    {
+        $this->assertSame(
+            [resource_path('js/pages')],
+            config('inertia.testing.page_paths'),
+        );
+    }
 }
