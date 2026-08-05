@@ -156,7 +156,7 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                                                 />
                                             </div>
                                         </TooltipTrigger>
-                                        <TooltipContent side="top">
+                                        <TooltipContent side="top" className="![animation-duration:0ms]">
                                             <p className="text-xs font-semibold uppercase opacity-70">{point.date}</p>
                                             <p className="font-bold">
                                                 {point.count} {point.count === 1 ? 'request' : 'requests'}
