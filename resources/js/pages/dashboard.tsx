@@ -19,8 +19,8 @@ export default function Dashboard() {
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Staff dashboard" />
             <div className="flex h-full flex-1 flex-col gap-6 p-4 sm:p-6 lg:p-8">
-                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-900 dark:bg-emerald-950">
-                    <p className="text-sm font-semibold text-emerald-800 dark:text-emerald-200">Phase 5 workspace</p>
+                <div className="bg-card rounded-2xl border p-6 shadow-sm">
+                    <p className="text-primary text-sm font-semibold">Phase 5 workspace</p>
                     <h1 className="mt-2 text-2xl font-bold tracking-tight">Welcome, {user.name}</h1>
                     <p className="text-muted-foreground mt-2 max-w-3xl text-sm leading-6">
                         Your {roleLabel.toLowerCase()} account is active. Request operations are available to all staff, with reporting, staff
@@ -29,7 +29,7 @@ export default function Dashboard() {
                     <div className="mt-5 flex flex-wrap gap-3">
                         <Link
                             href={route('staff.requests.index')}
-                            className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-emerald-800 px-4 text-sm font-bold text-white hover:bg-emerald-900 dark:bg-emerald-200 dark:text-emerald-950"
+                            className="bg-primary inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-bold text-primary-foreground hover:bg-primary/90"
                         >
                             <ClipboardList className="size-4" aria-hidden="true" />
                             Open request queue
@@ -38,21 +38,21 @@ export default function Dashboard() {
                             <>
                                 <Link
                                     href={route('admin.reports.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
                                 >
                                     <BarChart3 className="size-4" aria-hidden="true" />
                                     View reports
                                 </Link>
                                 <Link
                                     href={route('admin.staff.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
                                 >
                                     <Users className="size-4" aria-hidden="true" />
                                     Manage staff
                                 </Link>
                                 <Link
                                     href={route('admin.services.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-emerald-700 bg-white px-4 text-sm font-bold text-emerald-900 hover:bg-emerald-100 dark:bg-emerald-950 dark:text-emerald-100"
+                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
                                 >
                                     <LibraryBig className="size-4" aria-hidden="true" />
                                     Manage services

@@ -48,7 +48,7 @@ export default function RequestQueue({ requests, filters, summary, services }: P
     const [sort, setSort] = useState(filters.sort);
     const summaryCards: { label: string; value: number; icon: LucideIcon; color: string }[] = [
         { label: 'Open', value: summary.open, icon: ClipboardList, color: 'text-foreground' },
-        { label: 'Assigned to me', value: summary.mine, icon: UserRoundCheck, color: 'text-emerald-700 dark:text-emerald-300' },
+        { label: 'Assigned to me', value: summary.mine, icon: UserRoundCheck, color: 'text-primary' },
         { label: 'Unassigned', value: summary.unassigned, icon: UsersRound, color: 'text-amber-700 dark:text-amber-300' },
         { label: 'Overdue', value: summary.overdue, icon: AlertTriangle, color: 'text-red-700 dark:text-red-300' },
     ];

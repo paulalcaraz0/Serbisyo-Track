@@ -48,69 +48,69 @@
 }
 
 :root {
-    --background: hsl(100 16% 97%);
-    --foreground: hsl(169 30% 12%);
+    --background: hsl(210 25% 98%);
+    --foreground: hsl(215 30% 14%);
     --card: hsl(0 0% 100%);
-    --card-foreground: hsl(169 30% 12%);
+    --card-foreground: hsl(215 30% 14%);
     --popover: hsl(0 0% 100%);
-    --popover-foreground: hsl(169 30% 12%);
-    --primary: hsl(171 58% 29%);
+    --popover-foreground: hsl(215 30% 14%);
+    --primary: hsl(213 45% 36%);
     --primary-foreground: hsl(0 0% 100%);
-    --secondary: hsl(160 24% 92%);
-    --secondary-foreground: hsl(171 52% 18%);
-    --muted: hsl(150 12% 94%);
-    --muted-foreground: hsl(168 10% 39%);
-    --accent: hsl(39 85% 87%);
-    --accent-foreground: hsl(33 72% 27%);
+    --secondary: hsl(212 26% 93%);
+    --secondary-foreground: hsl(214 35% 22%);
+    --muted: hsl(210 18% 94%);
+    --muted-foreground: hsl(214 12% 40%);
+    --accent: hsl(39 60% 90%);
+    --accent-foreground: hsl(32 50% 30%);
     --destructive: hsl(0 70% 45%);
     --destructive-foreground: hsl(0 0% 100%);
-    --border: hsl(160 12% 87%);
-    --input: hsl(160 12% 80%);
-    --ring: hsl(171 64% 28%);
-    --chart-1: hsl(171 64% 28%);
+    --border: hsl(212 16% 88%);
+    --input: hsl(212 16% 81%);
+    --ring: hsl(213 48% 38%);
+    --chart-1: hsl(213 48% 40%);
     --chart-2: hsl(39 73% 51%);
-    --chart-3: hsl(198 55% 40%);
+    --chart-3: hsl(198 55% 42%);
     --chart-4: hsl(18 65% 58%);
-    --chart-5: hsl(143 38% 42%);
+    --chart-5: hsl(152 32% 46%);
     --radius: 0.75rem;
-    --sidebar-background: hsl(150 18% 97%);
-    --sidebar-foreground: hsl(169 25% 20%);
-    --sidebar-primary: hsl(171 64% 21%);
+    --sidebar-background: hsl(211 24% 97%);
+    --sidebar-foreground: hsl(215 25% 22%);
+    --sidebar-primary: hsl(213 50% 28%);
     --sidebar-primary-foreground: hsl(0 0% 100%);
-    --sidebar-accent: hsl(160 24% 92%);
-    --sidebar-accent-foreground: hsl(171 52% 18%);
-    --sidebar-border: hsl(160 12% 87%);
-    --sidebar-ring: hsl(171 64% 28%);
+    --sidebar-accent: hsl(212 26% 92%);
+    --sidebar-accent-foreground: hsl(214 40% 20%);
+    --sidebar-border: hsl(212 16% 88%);
+    --sidebar-ring: hsl(213 48% 38%);
 }
 
 .dark {
-    --background: hsl(169 27% 8%);
-    --foreground: hsl(150 17% 94%);
-    --card: hsl(169 25% 11%);
-    --card-foreground: hsl(150 17% 94%);
-    --popover: hsl(169 25% 11%);
-    --popover-foreground: hsl(150 17% 94%);
-    --primary: hsl(156 45% 69%);
-    --primary-foreground: hsl(169 35% 10%);
-    --secondary: hsl(168 18% 17%);
-    --secondary-foreground: hsl(150 17% 94%);
-    --muted: hsl(168 18% 17%);
-    --muted-foreground: hsl(160 10% 67%);
-    --accent: hsl(38 38% 24%);
-    --accent-foreground: hsl(39 85% 87%);
+    --background: hsl(216 24% 8%);
+    --foreground: hsl(211 20% 93%);
+    --card: hsl(215 22% 11%);
+    --card-foreground: hsl(211 20% 93%);
+    --popover: hsl(215 22% 11%);
+    --popover-foreground: hsl(211 20% 93%);
+    --primary: hsl(211 55% 68%);
+    --primary-foreground: hsl(216 45% 10%);
+    --secondary: hsl(214 18% 17%);
+    --secondary-foreground: hsl(211 20% 93%);
+    --muted: hsl(214 18% 17%);
+    --muted-foreground: hsl(213 11% 67%);
+    --accent: hsl(38 32% 24%);
+    --accent-foreground: hsl(39 55% 88%);
     --destructive: hsl(0 64% 56%);
     --destructive-foreground: hsl(0 0% 100%);
-    --border: hsl(168 15% 22%);
-    --input: hsl(168 15% 26%);
-    --ring: hsl(156 45% 69%);
-    --sidebar-background: hsl(169 27% 9%);
-    --sidebar-foreground: hsl(150 17% 90%);
-    --sidebar-primary: hsl(156 45% 69%);
-    --sidebar-primary-foreground: hsl(169 35% 10%);
-    --sidebar-accent: hsl(168 18% 17%);
-    --sidebar-accent-foreground: hsl(150 17% 94%);
-    --sidebar-border: hsl(168 15% 22%);
-    --sidebar-ring: hsl(156 45% 69%);
+    --border: hsl(214 15% 21%);
+    --input: hsl(214 15% 26%);
+    --ring: hsl(211 55% 68%);
+    --sidebar-background: hsl(216 24% 9%);
+    --sidebar-foreground: hsl(211 18% 90%);
+    --sidebar-primary: hsl(211 55% 68%);
+    --sidebar-primary-foreground: hsl(216 45% 10%);
+    --sidebar-accent: hsl(214 18% 17%);
+    --sidebar-accent-foreground: hsl(211 20% 92%);
+    --sidebar-border: hsl(214 15% 21%);
+    --sidebar-ring: hsl(211 55% 68%);
 }
 
 :root {
@@ -149,7 +149,7 @@
     }
 
     :focus-visible {
-        outline: 3px solid hsl(171 64% 35%);
+        outline: 3px solid hsl(213 50% 42%);
         outline-offset: 3px;
     }
 
@@ -158,14 +158,14 @@
     }
 
     ::selection {
-        background: hsl(156 35% 78%);
-        color: hsl(169 35% 10%);
+        background: hsl(212 45% 82%);
+        color: hsl(216 45% 12%);
     }
 }
 
 @utility focus-ring {
     &:focus-visible {
-        outline: 3px solid hsl(171 64% 35%);
+        outline: 3px solid hsl(213 50% 42%);
         outline-offset: 3px;
     }
 }

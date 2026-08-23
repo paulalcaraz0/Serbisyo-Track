@@ -40,7 +40,7 @@ export default function TrackingShow({ trackedRequest }: Props) {
                     <p className="text-muted-foreground mt-2 font-mono text-sm font-bold">{trackedRequest.reference}</p>
                 </div>
                 <section
-                    className="bg-card rounded-3xl border border-emerald-200 p-6 shadow-sm sm:p-8 dark:border-emerald-900"
+                    className="bg-card rounded-3xl border p-6 shadow-sm sm:p-8"
                     aria-labelledby="current-status"
                 >
                     <div className="flex items-start gap-4">

@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <title inertia>{{ config('app.name', 'SerbisyoTrack') }}</title>
-        <meta name="theme-color" content="#14594f">
+        <meta name="theme-color" content="#335885">
         <link rel="icon" href="/branding/serbisyo-track-icon.png" type="image/png">
         <link rel="apple-touch-icon" href="/branding/serbisyo-track-icon.png">
 
@@ -17,7 +17,7 @@
 
                 document.documentElement.classList.toggle('dark', isDark);
                 document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#0f1a18' : '#14594f');
+                document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#101319' : '#335885');
             })();
         </script>
 
