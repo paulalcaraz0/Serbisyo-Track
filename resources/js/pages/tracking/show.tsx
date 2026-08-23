@@ -39,10 +39,7 @@ export default function TrackingShow({ trackedRequest }: Props) {
                     <h1 className="mt-2 text-3xl font-bold tracking-[-0.035em] sm:text-4xl">{copy.status_title}</h1>
                     <p className="text-muted-foreground mt-2 font-mono text-sm font-bold">{trackedRequest.reference}</p>
                 </div>
-                <section
-                    className="bg-card rounded-3xl border p-6 shadow-sm sm:p-8"
-                    aria-labelledby="current-status"
-                >
+                <section className="bg-card rounded-3xl border p-6 shadow-sm sm:p-8" aria-labelledby="current-status">
                     <div className="flex items-start gap-4">
                         <div className="bg-secondary text-primary flex size-12 shrink-0 items-center justify-center rounded-2xl">
                             <CheckCircle2 className="size-6" aria-hidden="true" />

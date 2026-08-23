@@ -24,28 +24,31 @@ export default function InfoPage({ pageKey }: { pageKey: PageKey }) {
             <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
                 <div className="grid gap-5 md:grid-cols-2">
                     {page.sections.map((section) => (
-                        <section key={section.title} className="border-border bg-card rounded-2xl border p-6">
+                        <section
+                            key={section.title}
+                            className="border-border bg-card shadow-soft hover:shadow-lift rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-0.5"
+                        >
                             <h2 className="text-xl font-bold tracking-[-0.02em]">{section.title}</h2>
                             <p className="text-muted-foreground mt-3 text-sm leading-7">{section.body}</p>
                         </section>
                     ))}
                 </div>
 
-                <div className="mt-8 flex flex-col gap-3 rounded-2xl bg-[#163f3a] p-6 text-white sm:flex-row sm:items-center sm:justify-between">
-                    <p className="max-w-xl text-sm leading-6 text-[#d7e8e4]">
+                <div className="shadow-lift mt-8 flex flex-col gap-3 rounded-2xl bg-gradient-to-br from-[hsl(213_48%_28%)] to-[hsl(216_42%_15%)] p-6 text-white sm:flex-row sm:items-center sm:justify-between">
+                    <p className="max-w-xl text-sm leading-6 text-white/75">
                         Barangay Haraya and its contact details are fictional and are used only for this portfolio demonstration.
                     </p>
                     <div className="flex flex-wrap gap-2">
                         <Link
                             href={route('services.index')}
-                            className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-bold text-[#14594f]"
+                            className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-bold text-[hsl(213_45%_30%)] transition-transform duration-200 active:scale-[0.98]"
                         >
                             {translations.common.services}
                             <ArrowRight className="size-4" aria-hidden="true" />
                         </Link>
                         <a
                             href="mailto:help@barangayharaya.test"
-                            className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/40 px-4 text-sm font-bold text-white hover:bg-white/10"
+                            className="focus-ring inline-flex min-h-11 items-center gap-2 rounded-xl border border-white/40 px-4 text-sm font-bold text-white transition-colors hover:bg-white/10"
                         >
                             <Mail className="size-4" aria-hidden="true" />
                             {translations.common.help}

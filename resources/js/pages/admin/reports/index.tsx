@@ -151,7 +151,7 @@ export default function ReportsIndex({ filters, analytics, services, statuses }:
                                         <TooltipTrigger asChild>
                                             <div className="group relative flex h-full flex-1 cursor-pointer items-end">
                                                 <div
-                                                    className="bg-primary min-h-1 w-full rounded-t-sm group-hover:bg-primary/80"
+                                                    className="bg-primary group-hover:bg-primary/80 min-h-1 w-full rounded-t-sm"
                                                     style={{ height: `${Math.max(3, (point.count / maxTrend) * 100)}%` }}
                                                 />
                                             </div>

@@ -96,43 +96,63 @@ export default function Welcome() {
 
                 <main id="main-content" tabIndex={-1}>
                     <section className="border-border bg-card relative isolate overflow-hidden border-b">
-                        <div className="bg-secondary pointer-events-none absolute -top-32 right-[-12rem] -z-10 size-[30rem] rounded-full blur-3xl" />
-                        <div className="bg-accent pointer-events-none absolute -bottom-56 left-[-14rem] -z-10 size-[32rem] rounded-full opacity-70 blur-3xl" />
+                        <div className="dot-grid pointer-events-none absolute inset-0 -z-10 opacity-60 [mask-image:radial-gradient(ellipse_at_top_left,black,transparent_65%)]" />
+                        <div className="pointer-events-none absolute -top-40 right-[-14rem] -z-10 size-[34rem] rounded-full bg-[radial-gradient(circle_at_center,hsl(213_55%_60%/0.35),transparent_70%)] blur-3xl" />
+                        <div className="pointer-events-none absolute -bottom-64 left-[-16rem] -z-10 size-[38rem] rounded-full bg-[radial-gradient(circle_at_center,hsl(39_80%_70%/0.4),transparent_70%)] blur-3xl" />
+                        <div className="via-primary/40 pointer-events-none absolute inset-x-0 top-0 -z-10 h-px bg-gradient-to-r from-transparent to-transparent" />
 
                         <div className="mx-auto grid max-w-7xl gap-12 px-4 py-16 sm:px-6 sm:py-20 lg:grid-cols-[1.08fr_0.92fr] lg:items-center lg:px-8 lg:py-28">
                             <div className="max-w-3xl">
-                                <p className="border-primary/30 bg-secondary text-primary mb-5 inline-flex min-h-8 items-center rounded-full border px-4 text-xs font-bold tracking-[0.12em] uppercase">
+                                <p
+                                    className="border-primary/30 bg-secondary/80 text-primary animate-fade-up mb-5 inline-flex min-h-8 items-center rounded-full border px-4 text-xs font-bold tracking-[0.12em] uppercase backdrop-blur"
+                                    style={{ animationDelay: '0ms' }}
+                                >
                                     {home.eyebrow}
                                 </p>
-                                <h1 className="text-foreground max-w-3xl text-4xl leading-[1.08] font-bold tracking-[-0.045em] text-balance sm:text-5xl lg:text-6xl">
-                                    {home.title}
+                                <h1 className="text-foreground relative max-w-3xl text-4xl leading-[1.08] font-bold tracking-[-0.045em] text-balance sm:text-5xl lg:text-6xl">
+                                    <span className="animate-fade-up block" style={{ animationDelay: '60ms' }}>
+                                        {home.title}
+                                    </span>
+                                    <span
+                                        aria-hidden="true"
+                                        className="from-primary via-primary/60 to-accent absolute -bottom-2 left-1 h-1.5 w-24 rounded-full bg-gradient-to-r"
+                                    />
                                 </h1>
-                                <p className="text-muted-foreground mt-6 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8">{home.description}</p>
+                                <p
+                                    className="text-muted-foreground animate-fade-up mt-8 max-w-2xl text-base leading-7 sm:text-lg sm:leading-8"
+                                    style={{ animationDelay: '120ms' }}
+                                >
+                                    {home.description}
+                                </p>
 
-                                <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                                <div className="animate-fade-up mt-9 flex flex-col gap-3 sm:flex-row" style={{ animationDelay: '180ms' }}>
                                     <Link
                                         href={route('services.index')}
-                                        className="focus-ring bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-bold shadow-sm"
+                                        className="focus-ring bg-primary text-primary-foreground hover:bg-primary/90 shadow-soft hover:shadow-lift inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-6 text-sm font-bold transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
                                     >
                                         {home.primary_action}
                                         <ArrowRight className="size-4" aria-hidden="true" />
                                     </Link>
                                     <Link
                                         href={staffDestination}
-                                        className="focus-ring border-border bg-card text-foreground hover:border-primary/60 hover:bg-muted inline-flex min-h-12 items-center justify-center rounded-xl border px-5 text-sm font-bold"
+                                        className="focus-ring border-border bg-card/80 text-foreground hover:border-primary/60 hover:bg-muted inline-flex min-h-12 items-center justify-center rounded-xl border px-6 text-sm font-bold backdrop-blur transition-all duration-200 hover:-translate-y-0.5 active:scale-[0.98]"
                                     >
                                         {home.secondary_action}
                                     </Link>
                                 </div>
 
-                                <p className="text-muted-foreground mt-7 flex max-w-xl items-start gap-2 text-sm leading-6">
-                                    <LockKeyhole className="text-primary mt-1 size-4 shrink-0" aria-hidden="true" />
-                                    {home.trust_note}
+                                <p
+                                    className="border-border/70 bg-card/60 animate-fade-up mt-8 flex max-w-xl items-start gap-3 rounded-2xl border p-4 text-sm leading-6 backdrop-blur"
+                                    style={{ animationDelay: '240ms' }}
+                                >
+                                    <LockKeyhole className="text-primary mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                                    <span className="text-muted-foreground">{home.trust_note}</span>
                                 </p>
                             </div>
 
                             <aside
-                                className="border-border bg-card relative rounded-[1.75rem] border p-5 shadow-[0_24px_70px_-32px_rgba(15,23,42,0.35)] sm:p-7"
+                                className="animate-fade-up border-border bg-card/90 shadow-glow relative rounded-[1.75rem] border p-5 ring-1 ring-white/40 backdrop-blur-sm transition-transform duration-300 hover:-translate-y-1 sm:p-7 dark:ring-white/5"
+                                style={{ animationDelay: '160ms' }}
                                 aria-labelledby="journey-title"
                             >
                                 <div className="border-border/60 mb-6 flex items-center justify-between gap-4 border-b pb-5">
@@ -160,6 +180,20 @@ export default function Welcome() {
                         </div>
                     </section>
 
+                    <section className="mx-auto max-w-7xl px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+                        <p className="sr-only">{home.stats_label}</p>
+                        <div className="border-border bg-card/80 shadow-soft focus-within:shadow-glow hover:shadow-glow sm:divide-border/70 grid gap-y-6 rounded-2xl border px-6 py-8 backdrop-blur transition-shadow duration-300 sm:grid-cols-3 sm:gap-x-6 sm:divide-x">
+                            {home.stats.map((stat) => (
+                                <div key={stat.label} className="flex flex-col items-center gap-1.5 px-4 text-center sm:px-6">
+                                    <span className="from-primary to-primary/55 bg-gradient-to-br bg-clip-text text-4xl font-bold tracking-[-0.03em] text-transparent">
+                                        {stat.value}
+                                    </span>
+                                    <span className="text-muted-foreground max-w-56 text-sm leading-6 font-semibold">{stat.label}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+
                     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8" aria-labelledby="features-title">
                         <div className="max-w-3xl">
                             <p className="text-primary text-xs font-bold tracking-[0.14em] uppercase">{home.features_label}</p>
@@ -176,9 +210,10 @@ export default function Welcome() {
                                 return (
                                     <article
                                         key={feature.title}
-                                        className="border-border bg-card rounded-2xl border p-6 shadow-[0_12px_36px_-28px_rgba(15,23,42,0.45)]"
+                                        className="group border-border bg-card shadow-soft hover:shadow-lift relative rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
                                     >
-                                        <div className="bg-secondary text-primary flex size-11 items-center justify-center rounded-xl">
+                                        <div className="via-primary/50 absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                                        <div className="bg-secondary text-primary flex size-11 items-center justify-center rounded-xl transition-transform duration-300 group-hover:scale-105">
                                             <FeatureIcon className="size-5" aria-hidden="true" />
                                         </div>
                                         <h3 className="text-foreground mt-5 text-lg font-bold tracking-[-0.02em]">{feature.title}</h3>
@@ -198,8 +233,11 @@ export default function Welcome() {
 
                             <ol className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
                                 {home.steps.map((step, index) => (
-                                    <li key={step.title} className="border-primary/25 bg-card/85 rounded-2xl border p-5">
-                                        <span className="bg-primary text-primary-foreground flex size-9 items-center justify-center rounded-full text-sm font-bold">
+                                    <li
+                                        key={step.title}
+                                        className="border-primary/25 bg-card/85 hover:border-primary/50 hover:shadow-lift rounded-2xl border p-5 transition-all duration-300 hover:-translate-y-1"
+                                    >
+                                        <span className="bg-primary text-primary-foreground shadow-soft flex size-9 items-center justify-center rounded-full text-sm font-bold">
                                             {index + 1}
                                         </span>
                                         <h3 className="text-foreground mt-5 font-bold">{step.title}</h3>
@@ -211,18 +249,25 @@ export default function Welcome() {
                     </section>
 
                     <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-20 lg:px-8" aria-labelledby="foundation-title">
-                        <div className="grid overflow-hidden rounded-[1.75rem] bg-[#163f3a] text-white lg:grid-cols-[0.9fr_1.1fr]">
+                        <div className="shadow-lift relative isolate grid overflow-hidden rounded-[1.75rem] bg-gradient-to-br from-[hsl(213_48%_28%)] to-[hsl(216_42%_15%)] text-white lg:grid-cols-[0.9fr_1.1fr]">
+                            <div
+                                aria-hidden="true"
+                                className="pointer-events-none absolute -top-24 right-0 -z-10 size-[26rem] rounded-full bg-[radial-gradient(circle_at_center,hsl(213_60%_55%/0.35),transparent_70%)] blur-3xl"
+                            />
                             <div className="p-7 sm:p-10 lg:p-12">
-                                <p className="text-xs font-bold tracking-[0.14em] text-[#f4c776] uppercase">{home.foundation_label}</p>
+                                <p className="text-accent text-xs font-bold tracking-[0.14em] uppercase">{home.foundation_label}</p>
                                 <h2 id="foundation-title" className="mt-3 text-3xl font-bold tracking-[-0.035em] text-balance sm:text-4xl">
                                     {home.foundation_title}
                                 </h2>
-                                <p className="mt-5 text-sm leading-7 text-[#d7e8e4] sm:text-base">{home.foundation_body}</p>
+                                <p className="mt-5 text-sm leading-7 text-white/70 sm:text-base">{home.foundation_body}</p>
                             </div>
                             <ul className="grid gap-px bg-white/10 lg:grid-rows-3">
                                 {home.foundation_points.map((point) => (
-                                    <li key={point} className="flex items-center gap-4 bg-[#1b4b45] px-7 py-6 sm:px-10">
-                                        <span className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#f4c776] text-[#163f3a]">
+                                    <li
+                                        key={point}
+                                        className="flex items-center gap-4 px-7 py-6 transition-colors duration-200 hover:bg-white/5 sm:px-10"
+                                    >
+                                        <span className="bg-accent text-accent-foreground shadow-soft flex size-8 shrink-0 items-center justify-center rounded-full">
                                             <Check className="size-4 stroke-[3]" aria-hidden="true" />
                                         </span>
                                         <span className="text-sm leading-6 font-semibold sm:text-base">{point}</span>

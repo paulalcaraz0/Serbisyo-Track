@@ -248,6 +248,8 @@ export interface Translations {
         preview_label: string;
         preview_title: string;
         preview_items: string[];
+        stats_label: string;
+        stats: { value: string; label: string }[];
         features_label: string;
         features_title: string;
         features_intro: string;

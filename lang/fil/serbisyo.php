@@ -28,6 +28,12 @@ return [
             'Itago ang pribadong reference at tracking PIN',
             'Basahin ang pampublikong update nang hindi inilalantad ang pribadong tala',
         ],
+        'stats_label' => 'Ang portal sa isang tingin',
+        'stats' => [
+            ['value' => '2', 'label' => 'Wika, English at Filipino, magkatabi'],
+            ['value' => '24/7', 'label' => 'Tracking gamit ang reference at PIN'],
+            ['value' => '0', 'label' => 'Account na kailangan ng residente'],
+        ],
         'features_label' => 'Mga susuportahan ng portal',
         'features_title' => 'Mahalagang impormasyon bago, habang, at pagkatapos ng kahilingan',
         'features_intro' => 'Handa na ang unang pundasyon. Idaragdag ang mga workflow ng residente at kawani sa mga beripikadong milestone.',

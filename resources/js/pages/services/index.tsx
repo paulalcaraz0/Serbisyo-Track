@@ -50,8 +50,9 @@ export default function ServiceDirectory({ services }: Props) {
                         {services.data.map((service) => (
                             <article
                                 key={service.slug}
-                                className="border-border bg-card flex flex-col rounded-2xl border p-6 shadow-[0_12px_36px_-30px_rgba(15,23,42,0.5)]"
+                                className="group border-border bg-card shadow-soft hover:border-primary/40 hover:shadow-lift relative flex flex-col rounded-2xl border p-6 transition-all duration-300 hover:-translate-y-1"
                             >
+                                <div className="via-primary/50 absolute inset-x-6 top-0 h-px bg-gradient-to-r from-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                                 <h2 className="text-foreground text-xl font-bold tracking-[-0.025em]">{service.name}</h2>
                                 <p className="text-muted-foreground mt-3 flex-1 text-sm leading-6">{service.description}</p>
                                 <dl className="border-border/60 mt-6 space-y-3 border-t pt-5 text-sm">
@@ -81,10 +82,10 @@ export default function ServiceDirectory({ services }: Props) {
                                 </dl>
                                 <Link
                                     href={route('services.show', service.slug)}
-                                    className="focus-ring bg-primary text-primary-foreground hover:bg-primary/90 mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold"
+                                    className="focus-ring bg-primary text-primary-foreground hover:bg-primary/90 group-hover:shadow-soft mt-6 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold transition-all duration-200 active:scale-[0.98]"
                                 >
                                     {copy.view_details}
-                                    <ArrowRight className="size-4" aria-hidden="true" />
+                                    <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
                                 </Link>
                             </article>
                         ))}

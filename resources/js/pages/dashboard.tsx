@@ -29,7 +29,7 @@ export default function Dashboard() {
                     <div className="mt-5 flex flex-wrap gap-3">
                         <Link
                             href={route('staff.requests.index')}
-                            className="bg-primary inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-bold text-primary-foreground hover:bg-primary/90"
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 inline-flex min-h-11 items-center gap-2 rounded-lg px-4 text-sm font-bold"
                         >
                             <ClipboardList className="size-4" aria-hidden="true" />
                             Open request queue
@@ -38,21 +38,21 @@ export default function Dashboard() {
                             <>
                                 <Link
                                     href={route('admin.reports.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
+                                    className="bg-card hover:bg-muted inline-flex min-h-11 items-center gap-2 rounded-lg border px-4 text-sm font-bold"
                                 >
                                     <BarChart3 className="size-4" aria-hidden="true" />
                                     View reports
                                 </Link>
                                 <Link
                                     href={route('admin.staff.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
+                                    className="bg-card hover:bg-muted inline-flex min-h-11 items-center gap-2 rounded-lg border px-4 text-sm font-bold"
                                 >
                                     <Users className="size-4" aria-hidden="true" />
                                     Manage staff
                                 </Link>
                                 <Link
                                     href={route('admin.services.index')}
-                                    className="inline-flex min-h-11 items-center gap-2 rounded-lg border bg-card px-4 text-sm font-bold hover:bg-muted"
+                                    className="bg-card hover:bg-muted inline-flex min-h-11 items-center gap-2 rounded-lg border px-4 text-sm font-bold"
                                 >
                                     <LibraryBig className="size-4" aria-hidden="true" />
                                     Manage services

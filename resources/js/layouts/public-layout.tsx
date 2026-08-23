@@ -43,11 +43,11 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             </div>
 
             <div className="bg-background text-foreground min-h-screen">
-                <header className="border-border bg-card border-b" data-print-hidden="true">
+                <header className="border-border/70 bg-card/75 sticky top-0 z-40 border-b backdrop-blur-xl" data-print-hidden="true">
                     <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex min-h-14 flex-wrap items-center justify-between gap-3">
                             <Link href={route('home')} className="focus-ring flex min-h-11 items-center gap-3 rounded-xl" aria-label={`${name} home`}>
-                                <AppLogoIcon className="text-primary size-10" />
+                                <AppLogoIcon className="text-primary size-10 transition-transform duration-300" />
                                 <span>
                                     <span className="block text-base font-bold tracking-[-0.02em]">{name}</span>
                                     <span className="text-muted-foreground block text-xs font-medium">Barangay Haraya</span>
@@ -92,7 +92,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
                                         key={item.href}
                                         href={item.href}
                                         aria-current={active ? 'page' : undefined}
-                                        className="focus-ring text-muted-foreground hover:bg-muted hover:text-primary aria-[current=page]:bg-secondary aria-[current=page]:text-primary inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold"
+                                        className="focus-ring text-muted-foreground hover:bg-muted hover:text-primary after:bg-primary aria-[current=page]:bg-secondary/60 aria-[current=page]:text-primary relative inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-semibold transition-colors after:absolute after:inset-x-3 after:bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:rounded-full after:opacity-60 after:transition-transform after:duration-300 after:content-[''] hover:after:scale-x-50 aria-[current=page]:after:scale-x-100 aria-[current=page]:after:opacity-100"
                                     >
                                         {item.label}
                                     </Link>

@@ -17,7 +17,7 @@ const applyTheme = (appearance: Appearance) => {
     document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
 
     const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
-    themeColor?.setAttribute('content', isDark ? '#0f1a18' : '#14594f');
+    themeColor?.setAttribute('content', isDark ? '#101319' : '#335885');
 };
 
 const handleSystemThemeChange = () => {

@@ -29,18 +29,27 @@ export default function TrackingIndex() {
             <Head title={copy.meta_title}>
                 <meta name="robots" content="noindex,nofollow,noarchive" />
             </Head>
-            <section className="border-border bg-card border-b">
+            <section className="border-border bg-card relative isolate overflow-hidden border-b">
+                <div className="dot-grid pointer-events-none absolute inset-0 -z-10 opacity-50 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
+                <div className="pointer-events-none absolute -top-40 left-1/2 -z-10 size-[30rem] -translate-x-1/2 rounded-full bg-[radial-gradient(circle_at_center,hsl(213_55%_60%/0.3),transparent_70%)] blur-3xl" />
                 <div className="mx-auto max-w-3xl px-4 py-12 text-center sm:px-6 sm:py-16 lg:px-8">
-                    <div className="bg-secondary text-primary mx-auto flex size-12 items-center justify-center rounded-2xl">
+                    <div className="bg-secondary text-primary shadow-soft mx-auto flex size-12 items-center justify-center rounded-2xl">
                         <Search className="size-6" aria-hidden="true" />
                     </div>
-                    <p className="text-primary mt-5 text-xs font-bold tracking-[0.14em] uppercase">{copy.eyebrow}</p>
-                    <h1 className="mt-2 text-4xl font-bold tracking-[-0.04em] sm:text-5xl">{copy.title}</h1>
-                    <p className="text-muted-foreground mx-auto mt-5 max-w-2xl leading-7">{copy.intro}</p>
+                    <p className="text-primary animate-fade-up mt-5 text-xs font-bold tracking-[0.14em] uppercase">{copy.eyebrow}</p>
+                    <h1 className="animate-fade-up mt-2 text-4xl font-bold tracking-[-0.04em] sm:text-5xl" style={{ animationDelay: '60ms' }}>
+                        {copy.title}
+                    </h1>
+                    <p className="text-muted-foreground animate-fade-up mx-auto mt-5 max-w-2xl leading-7" style={{ animationDelay: '120ms' }}>
+                        {copy.intro}
+                    </p>
                 </div>
             </section>
             <div className="mx-auto max-w-xl px-4 py-10 sm:px-6 sm:py-14 lg:px-8">
-                <form onSubmit={submit} className="border-border bg-card rounded-2xl border p-6 shadow-sm sm:p-8">
+                <form
+                    onSubmit={submit}
+                    className="border-border bg-card shadow-soft focus-within:shadow-glow rounded-2xl border p-6 transition-shadow duration-300 sm:p-8"
+                >
                     <div className="space-y-6">
                         <div className="space-y-2">
                             <Label htmlFor="reference">{copy.reference}</Label>

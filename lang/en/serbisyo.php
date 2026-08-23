@@ -28,6 +28,12 @@ return [
             'Save a private reference and tracking PIN',
             'Read public updates without exposing private notes',
         ],
+        'stats_label' => 'The portal at a glance',
+        'stats' => [
+            ['value' => '2', 'label' => 'Languages, English and Filipino, side by side'],
+            ['value' => '24/7', 'label' => 'Reference-and-PIN tracking availability'],
+            ['value' => '0', 'label' => 'Resident accounts required'],
+        ],
         'features_label' => 'What the portal will support',
         'features_title' => 'Useful information before, during, and after a request',
         'features_intro' => 'The first foundation is ready. Resident and staff workflows will be added in verified milestones.',
