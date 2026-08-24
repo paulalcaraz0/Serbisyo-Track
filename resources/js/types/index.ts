@@ -1,3 +1,4 @@
+import { type SharedAnnouncement } from '@/types/admin';
 import { LucideIcon } from 'lucide-react';
 
 export interface Auth {
@@ -33,6 +34,7 @@ export interface SharedData {
         phone: string;
     };
     translations: Translations;
+    announcements?: SharedAnnouncement[];
     flash: {
         success?: string;
         error?: string;
@@ -273,5 +275,10 @@ export interface Translations {
         forgot: string;
         submit: string;
         restricted: string;
+    };
+    announcements: {
+        banner_label: string;
+        dismiss: string;
+        restore: string;
     };
 }

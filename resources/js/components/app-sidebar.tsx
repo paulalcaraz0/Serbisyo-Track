@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BarChart3, ClipboardList, LayoutGrid, LibraryBig, ScrollText, Settings2, Users } from 'lucide-react';
+import { BarChart3, CalendarDays, ClipboardList, LayoutGrid, LibraryBig, Megaphone, ScrollText, Settings2, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -28,6 +28,8 @@ export function AppSidebar() {
                   { title: 'Reports', url: '/admin/reports', icon: BarChart3 },
                   { title: 'Staff', url: '/admin/staff', icon: Users },
                   { title: 'Services', url: '/admin/services', icon: LibraryBig },
+                  { title: 'Holiday calendar', url: '/admin/holidays', icon: CalendarDays },
+                  { title: 'Announcements', url: '/admin/announcements', icon: Megaphone },
                   { title: 'Audit history', url: '/admin/audit-events', icon: ScrollText },
                   { title: 'Office settings', url: '/admin/settings', icon: Settings2 },
               ]

@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Announcement;
 use App\Models\OfficeSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
@@ -47,7 +48,7 @@ class HandleInertiaRequests extends Middleware
             'name' => config('app.name'),
             'locale' => $locale,
             'supportedLocales' => $supportedLocales,
-            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4'), Lang::get('phase5'), Lang::get('phase6')),
+            'translations' => array_replace_recursive(Lang::get('serbisyo'), Lang::get('phase2'), Lang::get('phase3'), Lang::get('phase4'), Lang::get('phase5'), Lang::get('phase6'), Lang::get('phase7')),
             'office' => function () use ($locale): array {
                 $settings = OfficeSetting::current();
 
@@ -57,6 +58,20 @@ class HandleInertiaRequests extends Middleware
                     'email' => $settings->contact_email,
                     'phone' => $settings->contact_phone,
                 ];
+            },
+            'announcements' => function () use ($locale): array {
+                return Announcement::query()
+                    ->active()
+                    ->get()
+                    ->map(fn (Announcement $announcement): array => [
+                        'id' => $announcement->id,
+                        'level' => $announcement->level,
+                        'message' => $locale === 'fil' ? $announcement->message_fil : $announcement->message_en,
+                        'starts_at' => $announcement->starts_at?->toIso8601String(),
+                        'ends_at' => $announcement->ends_at?->toIso8601String(),
+                    ])
+                    ->values()
+                    ->all();
             },
             'flash' => [
                 'success' => fn () => $request->session()->get('success'),

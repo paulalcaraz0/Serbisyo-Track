@@ -17,6 +17,12 @@ enum AuditEventType: string
     case OfficeSettingsUpdated = 'office_settings.updated';
     case ReportExported = 'report.exported';
     case RetentionPurged = 'retention.purged';
+    case HolidayCreated = 'holiday.created';
+    case HolidayUpdated = 'holiday.updated';
+    case HolidayDeleted = 'holiday.deleted';
+    case AnnouncementCreated = 'announcement.created';
+    case AnnouncementUpdated = 'announcement.updated';
+    case AnnouncementDeleted = 'announcement.deleted';
 
     public function label(): string
     {
@@ -34,6 +40,12 @@ enum AuditEventType: string
             self::OfficeSettingsUpdated => 'Office settings updated',
             self::ReportExported => 'Request report exported',
             self::RetentionPurged => 'Retention cleanup executed',
+            self::HolidayCreated => 'Holiday created',
+            self::HolidayUpdated => 'Holiday updated',
+            self::HolidayDeleted => 'Holiday deleted',
+            self::AnnouncementCreated => 'Announcement created',
+            self::AnnouncementUpdated => 'Announcement updated',
+            self::AnnouncementDeleted => 'Announcement deleted',
         };
     }
 }

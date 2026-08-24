@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call(ServiceSeeder::class);
+        $this->call(CalendarSeeder::class);
 
         if (app()->environment('production')) {
             $this->command->warn('Demonstration credentials are never seeded in production.');

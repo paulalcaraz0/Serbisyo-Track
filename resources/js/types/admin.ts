@@ -38,3 +38,31 @@ export interface PaginationLink {
     label: string;
     active: boolean;
 }
+
+export type AnnouncementLevel = 'info' | 'warning' | 'critical';
+
+export interface AdminHoliday {
+    id: number;
+    date: string;
+    name_en: string;
+    name_fil: string;
+    is_recurring: boolean;
+}
+
+export interface AdminAnnouncement {
+    id: number;
+    message_en: string;
+    message_fil: string;
+    level: AnnouncementLevel;
+    starts_at: string | null;
+    ends_at: string | null;
+    is_active: boolean;
+}
+
+export interface SharedAnnouncement {
+    id: number;
+    level: AnnouncementLevel;
+    message: string;
+    starts_at: string | null;
+    ends_at: string | null;
+}

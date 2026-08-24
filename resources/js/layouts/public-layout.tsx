@@ -1,5 +1,6 @@
 import AppLogoIcon from '@/components/app-logo-icon';
 import AppearanceToggleDropdown from '@/components/appearance-dropdown';
+import OfficeBanner from '@/components/office-banner';
 import { PageAnnouncer } from '@/components/page-announcer';
 import { type SharedData } from '@/types';
 import { Link, router, usePage } from '@inertiajs/react';
@@ -43,6 +44,7 @@ export default function PublicLayout({ children }: PropsWithChildren) {
             </div>
 
             <div className="bg-background text-foreground min-h-screen">
+                <OfficeBanner />
                 <header className="border-border/70 bg-card/75 sticky top-0 z-40 border-b backdrop-blur-xl" data-print-hidden="true">
                     <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3 sm:px-6 lg:px-8">
                         <div className="flex min-h-14 flex-wrap items-center justify-between gap-3">

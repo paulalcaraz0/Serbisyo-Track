@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\AuditEventController;
+use App\Http\Controllers\Admin\HolidayController;
 use App\Http\Controllers\Admin\OfficeSettingController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\ServiceController;
@@ -81,6 +83,12 @@ Route::middleware(['auth', 'active', 'verified'])->group(function () {
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('reports/requests.csv', [ReportController::class, 'export'])->name('reports.export');
         Route::get('audit-events', AuditEventController::class)->name('audit.index');
+        Route::resource('holidays', HolidayController::class)
+            ->middlewareFor(['store', 'update', 'destroy'], 'throttle:admin-mutations')
+            ->except(['show']);
+        Route::resource('announcements', AnnouncementController::class)
+            ->middlewareFor(['store', 'update', 'destroy'], 'throttle:admin-mutations')
+            ->except(['show']);
         Route::get('settings', [OfficeSettingController::class, 'edit'])->name('settings.edit');
         Route::patch('settings', [OfficeSettingController::class, 'update'])
             ->middleware('throttle:admin-mutations')

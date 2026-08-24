@@ -19,7 +19,7 @@ class AuditLogger
         string|int|null $subjectIdentifier = null,
         array $metadata = [],
     ): AuditEvent {
-        if (! in_array($subjectType, ['staff', 'service', 'request', 'office_settings', 'report', 'retention'], true)) {
+        if (! in_array($subjectType, ['staff', 'service', 'request', 'office_settings', 'report', 'retention', 'holiday', 'announcement'], true)) {
             throw new InvalidArgumentException('Unsupported audit subject type.');
         }
 
@@ -58,6 +58,12 @@ class AuditLogger
             AuditEventType::OfficeSettingsUpdated => ['retention_days'],
             AuditEventType::ReportExported => ['date_from', 'date_to', 'service_slug', 'status', 'row_count'],
             AuditEventType::RetentionPurged => ['cutoff_date', 'request_count', 'attachment_count', 'dry_run'],
+            AuditEventType::HolidayCreated,
+            AuditEventType::HolidayUpdated,
+            AuditEventType::HolidayDeleted => ['holiday_date', 'is_recurring'],
+            AuditEventType::AnnouncementCreated,
+            AuditEventType::AnnouncementUpdated,
+            AuditEventType::AnnouncementDeleted => ['announcement_level'],
         };
     }
 }
