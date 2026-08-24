@@ -21,7 +21,7 @@ const levelStyles = {
 } as const;
 
 export default function OfficeBanner() {
-    const { announcements, locale, translations } = usePage<SharedData>().props;
+    const { activeAnnouncements, locale, translations } = usePage<SharedData>().props;
     const copy = translations.announcements;
     const [dismissedIds, setDismissedIds] = useState<number[]>([]);
     const [showDismissed, setShowDismissed] = useState(false);
@@ -40,12 +40,12 @@ export default function OfficeBanner() {
         }
     }, []);
 
-    if (!announcements || announcements.length === 0) {
+    if (!Array.isArray(activeAnnouncements) || activeAnnouncements.length === 0) {
         return null;
     }
 
-    const visible = showDismissed ? announcements : announcements.filter((item) => !dismissedIds.includes(item.id));
-    const hiddenCount = announcements.length - visible.length;
+    const visible = showDismissed ? activeAnnouncements : activeAnnouncements.filter((item) => !dismissedIds.includes(item.id));
+    const hiddenCount = activeAnnouncements.length - visible.length;
 
     const dismiss = (id: number) => {
         const next = [...dismissedIds.filter((value) => value !== id), id].slice(-50);

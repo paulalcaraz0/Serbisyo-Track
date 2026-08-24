@@ -59,7 +59,7 @@ class HandleInertiaRequests extends Middleware
                     'phone' => $settings->contact_phone,
                 ];
             },
-            'announcements' => function () use ($locale): array {
+            'activeAnnouncements' => function () use ($locale): array {
                 return Announcement::query()
                     ->active()
                     ->get()

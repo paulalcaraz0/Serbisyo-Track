@@ -51,6 +51,7 @@ class AnnouncementManagementTest extends TestCase
             ->assertInertia(fn (Assert $page) => $page
                 ->component('admin/announcements/index')
                 ->has('announcements.data', 1)
+                ->has('activeAnnouncements', 1)
                 ->where('announcements.data.0.level', 'warning'));
     }
 
@@ -120,9 +121,9 @@ class AnnouncementManagementTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('welcome')
-                ->has('announcements', 2)
-                ->where('announcements.0.level', 'warning')
-                ->whereType('announcements.0.message', 'string'));
+                ->has('activeAnnouncements', 2)
+                ->where('activeAnnouncements.0.level', 'warning')
+                ->whereType('activeAnnouncements.0.message', 'string'));
     }
 
     public function test_inactive_future_and_expired_announcements_are_hidden_from_public_pages(): void
@@ -144,7 +145,7 @@ class AnnouncementManagementTest extends TestCase
             ->assertOk()
             ->assertInertia(fn (Assert $page) => $page
                 ->component('welcome')
-                ->has('announcements', 1));
+                ->has('activeAnnouncements', 1));
     }
 
     /**

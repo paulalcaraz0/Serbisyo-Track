@@ -34,7 +34,7 @@ export interface SharedData {
         phone: string;
     };
     translations: Translations;
-    announcements?: SharedAnnouncement[];
+    activeAnnouncements?: SharedAnnouncement[];
     flash: {
         success?: string;
         error?: string;
