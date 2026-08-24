@@ -16,9 +16,9 @@ export default function AppSidebarLayout({ children, breadcrumbs = [] }: { child
             <a href="#main-content" className="skip-link">
                 {translations.common.skip_to_content}
             </a>
-            <OfficeBanner />
             <AppSidebar />
             <AppContent id="main-content" tabIndex={-1} variant="sidebar">
+                <OfficeBanner />
                 <AppSidebarHeader breadcrumbs={breadcrumbs} />
                 {children}
             </AppContent>
