@@ -9,4 +9,5 @@ enum RequestActivityType: string
     case StatusChange = 'status_change';
     case InternalNote = 'internal_note';
     case Appointment = 'appointment';
+    case ResidentResponse = 'resident_response';
 }

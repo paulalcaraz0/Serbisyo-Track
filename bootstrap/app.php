@@ -43,6 +43,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'contact_phone',
             'general_location',
             'request_details',
+            'response_details',
             'appointment_note',
             'attachments',
             'tracking_pin',

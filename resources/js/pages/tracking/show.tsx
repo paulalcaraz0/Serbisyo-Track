@@ -1,9 +1,13 @@
-import { buttonVariants } from '@/components/ui/button';
+import InputError from '@/components/input-error';
+import { Button, buttonVariants } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import PublicLayout from '@/layouts/public-layout';
 import { cn } from '@/lib/utils';
 import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
-import { CalendarClock, CheckCircle2, Download, FileText, History, ShieldCheck } from 'lucide-react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
+import { CalendarClock, CheckCircle2, Download, FileText, History, MessageSquareText, Send, ShieldCheck, Trash2 } from 'lucide-react';
+import { type FormEvent, useRef } from 'react';
 
 interface Props {
     trackedRequest: {
@@ -12,21 +16,52 @@ interface Props {
         status: string;
         statusLabel: string;
         statusDescription: string;
+        canRespond: boolean;
+        requestedInformationMessage: string | null;
         submittedAt: string | null;
         updatedAt: string | null;
         appointment: { preferredDate: string | null; preferredTimeWindow: string; status: string } | null;
         attachments: { publicId: string; name: string; sizeBytes: number }[];
         history: { status: string | null; message: string; occurredAt: string }[];
     };
+    attachmentRules: { maxFiles: number; maxMegabytes: number; accept: string };
 }
 
-export default function TrackingShow({ trackedRequest }: Props) {
-    const { locale, translations } = usePage<SharedData>().props;
+interface ResponseFormData {
+    [key: string]: string | File[];
+    response_details: string;
+    attachments: File[];
+    website: string;
+}
+
+export default function TrackingShow({ trackedRequest, attachmentRules }: Props) {
+    const { flash, locale, translations } = usePage<SharedData>().props;
     const copy = translations.tracking;
+    const responseCopy = translations.resident_response;
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const responseForm = useForm<ResponseFormData>({ response_details: '', attachments: [], website: '' });
+    const attachmentError = Object.entries(responseForm.errors).find(([key]) => key === 'attachments' || key.startsWith('attachments.'))?.[1];
     const dateLocale = locale === 'fil' ? 'fil-PH' : 'en-PH';
     const formatDate = (value: string | null, options: Intl.DateTimeFormatOptions) =>
         value ? new Intl.DateTimeFormat(dateLocale, options).format(new Date(value)) : '—';
     const timeLabel = trackedRequest.appointment?.preferredTimeWindow === 'morning' ? translations.requests.morning : translations.requests.afternoon;
+
+    const submitResponse = (event: FormEvent) => {
+        event.preventDefault();
+        responseForm.post(route('tracking.responses.store', { reference: trackedRequest.reference }), {
+            forceFormData: true,
+            preserveScroll: true,
+            onSuccess: () => {
+                responseForm.reset();
+                if (fileInputRef.current) fileInputRef.current.value = '';
+            },
+        });
+    };
+
+    const addResponseFiles = (files: FileList | null) => {
+        if (!files) return;
+        responseForm.setData('attachments', Array.from(files).slice(0, attachmentRules.maxFiles));
+    };
 
     return (
         <PublicLayout>
@@ -53,6 +88,134 @@ export default function TrackingShow({ trackedRequest }: Props) {
                         </div>
                     </div>
                 </section>
+                {flash.success && (
+                    <div
+                        role="status"
+                        aria-live="polite"
+                        className="mt-6 rounded-2xl border border-emerald-300 bg-emerald-50 p-5 text-sm font-semibold text-emerald-950 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-100"
+                    >
+                        {flash.success}
+                    </div>
+                )}
+                {trackedRequest.canRespond && (
+                    <section
+                        className="border-primary/30 bg-card mt-6 rounded-2xl border p-6 shadow-sm sm:p-8"
+                        aria-labelledby="resident-response-title"
+                    >
+                        <div className="flex items-start gap-4">
+                            <div className="bg-secondary text-primary flex size-11 shrink-0 items-center justify-center rounded-xl">
+                                <MessageSquareText className="size-5" aria-hidden="true" />
+                            </div>
+                            <div>
+                                <h2 id="resident-response-title" className="text-xl font-bold">
+                                    {responseCopy.title}
+                                </h2>
+                                <p className="text-muted-foreground mt-2 text-sm leading-6">{responseCopy.intro}</p>
+                            </div>
+                        </div>
+
+                        {trackedRequest.requestedInformationMessage && (
+                            <div className="border-primary/20 bg-secondary/50 mt-6 rounded-xl border p-4">
+                                <p className="text-primary text-xs font-bold tracking-wide uppercase">{responseCopy.staff_request_label}</p>
+                                <p className="mt-2 text-sm leading-6">{trackedRequest.requestedInformationMessage}</p>
+                            </div>
+                        )}
+
+                        <form onSubmit={submitResponse} className="mt-6 space-y-5">
+                            <div className="sr-only" aria-hidden="true">
+                                <Label htmlFor="response_website">Website</Label>
+                                <Input
+                                    id="response_website"
+                                    name="website"
+                                    tabIndex={-1}
+                                    autoComplete="off"
+                                    value={responseForm.data.website}
+                                    onChange={(event) => responseForm.setData('website', event.target.value)}
+                                />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="response_details">{responseCopy.details_label}</Label>
+                                <textarea
+                                    id="response_details"
+                                    className="border-input bg-background text-foreground placeholder:text-muted-foreground focus-visible:ring-ring min-h-32 w-full rounded-md border px-3 py-2 text-base focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-hidden md:text-sm"
+                                    minLength={10}
+                                    maxLength={2000}
+                                    required
+                                    aria-describedby="response-details-help response-details-error"
+                                    aria-invalid={responseForm.errors.response_details ? true : undefined}
+                                    value={responseForm.data.response_details}
+                                    onChange={(event) => responseForm.setData('response_details', event.target.value)}
+                                />
+                                <p id="response-details-help" className="text-muted-foreground text-xs leading-5">
+                                    {responseCopy.details_help}
+                                </p>
+                                <InputError id="response-details-error" message={responseForm.errors.response_details} />
+                            </div>
+
+                            <div className="space-y-2">
+                                <Label htmlFor="response_attachments">{responseCopy.attachments_label}</Label>
+                                <p id="response-attachments-help" className="text-muted-foreground text-xs leading-5">
+                                    {responseCopy.attachments_help
+                                        .replace(':count', String(attachmentRules.maxFiles))
+                                        .replace(':size', String(attachmentRules.maxMegabytes))}
+                                </p>
+                                <Input
+                                    ref={fileInputRef}
+                                    id="response_attachments"
+                                    className="h-auto py-3"
+                                    type="file"
+                                    multiple
+                                    accept={attachmentRules.accept}
+                                    aria-describedby={
+                                        attachmentError ? 'response-attachments-help response-attachments-error' : 'response-attachments-help'
+                                    }
+                                    aria-invalid={attachmentError ? true : undefined}
+                                    onChange={(event) => addResponseFiles(event.target.files)}
+                                />
+                                <InputError id="response-attachments-error" message={attachmentError} />
+                                {responseForm.data.attachments.length > 0 && (
+                                    <div className="pt-2">
+                                        <p className="text-sm font-bold">{responseCopy.selected_files}</p>
+                                        <ul className="mt-2 space-y-2">
+                                            {responseForm.data.attachments.map((file, index) => (
+                                                <li
+                                                    key={`${file.name}-${file.lastModified}`}
+                                                    className="bg-muted flex items-center justify-between gap-3 rounded-lg p-3 text-sm"
+                                                >
+                                                    <span className="min-w-0 truncate">{file.name}</span>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() =>
+                                                            responseForm.setData(
+                                                                'attachments',
+                                                                responseForm.data.attachments.filter((_, fileIndex) => fileIndex !== index),
+                                                            )
+                                                        }
+                                                        className="focus-ring shrink-0 rounded-lg p-2 text-red-700 hover:bg-red-50 dark:text-red-300 dark:hover:bg-red-950/50"
+                                                        aria-label={responseCopy.remove_file.replace(':name', file.name)}
+                                                    >
+                                                        <Trash2 className="size-4" aria-hidden="true" />
+                                                    </button>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="border-border bg-muted text-muted-foreground flex items-start gap-3 rounded-xl border p-4 text-xs leading-5">
+                                <ShieldCheck className="text-primary mt-0.5 size-4 shrink-0" aria-hidden="true" />
+                                <p>{responseCopy.privacy_note}</p>
+                            </div>
+
+                            <Button type="submit" size="lg" disabled={responseForm.processing}>
+                                <Send className="size-4" aria-hidden="true" />
+                                {responseForm.processing ? responseCopy.submitting : responseCopy.submit}
+                            </Button>
+                        </form>
+                    </section>
+                )}
                 <div className="mt-6 grid gap-6 md:grid-cols-2">
                     <section className="border-border bg-card rounded-2xl border p-6" aria-labelledby="request-summary">
                         <h2 id="request-summary" className="font-bold">
@@ -100,8 +263,8 @@ export default function TrackingShow({ trackedRequest }: Props) {
                     <p className="text-muted-foreground mt-2 text-sm leading-6">{copy.history_intro}</p>
                     {trackedRequest.history.length ? (
                         <ol className="border-primary/30 mt-5 space-y-4 border-l-2 pl-5">
-                            {[...trackedRequest.history].reverse().map((event) => (
-                                <li key={`${event.occurredAt}-${event.status}`} className="relative">
+                            {[...trackedRequest.history].reverse().map((event, index) => (
+                                <li key={`${event.occurredAt}-${event.status}-${index}`} className="relative">
                                     <span className="border-card bg-primary absolute top-1.5 -left-[1.7rem] size-3 rounded-full border-2" />
                                     <p className="text-muted-foreground text-xs font-semibold">
                                         {formatDate(event.occurredAt, { dateStyle: 'medium', timeStyle: 'short' })}

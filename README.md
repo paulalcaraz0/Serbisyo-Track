@@ -35,7 +35,7 @@ See [PHASES.md](PHASES.md) for the acceptance checklist and verified results for
 
 | Area                 | Highlights                                                                                                                                                                                                             |
 | -------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Resident experience  | Bilingual service directory, detailed eligibility and requirements, guided requests, appointment preferences, private attachments, printable receipts, and reference-and-PIN tracking without an account               |
+| Resident experience  | Bilingual service directory, detailed eligibility and requirements, guided requests, secure follow-up responses, appointment preferences, private attachments, printable receipts, and reference-and-PIN tracking without an account |
 | Privacy and security | Encrypted resident fields and sessions, hashed tracking PINs, private file storage, short-lived tracking grants, layered rate limits, allow-listed public responses, secure headers, and non-cacheable sensitive pages |
 | Staff workspace      | Searchable request queue, safe claim and release controls, assignment policies, controlled status transitions, appointment management, encrypted notes, immutable history, due dates, and overdue indicators           |
 | Administration       | Service and staff management, bilingual office settings, aggregate reporting, formula-safe CSV exports, append-only audit events, and configurable scheduled retention cleanup                                         |
@@ -154,6 +154,7 @@ composer audit
 - Request references use 60 bits of cryptographic randomness and omit visually ambiguous characters.
 - Tracking and receipt access uses short-lived encrypted-session grants; public response objects are explicitly allow-listed.
 - Attachments are content-validated, stored on the private disk, and downloaded only after request ownership and tracking access checks.
+- While a request needs information, the same tracking grant lets the resident send an encrypted response and additional private files; the response is appended to the staff timeline without changing the status on staff's behalf.
 - Staff request visibility and each operation are protected by server-side policy checks; assignment, transitions, notes, and appointment changes are transactionally locked.
 - Only an assigned staff member or an administrator can change an open request, while verified active staff may safely claim unassigned work or release their own assignment.
 - Public history is built from explicitly allow-listed bilingual messages and never exposes an actor, internal note, resident details, storage paths, or a tracking PIN.
@@ -176,7 +177,7 @@ composer audit
 | ------------------ | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | Public information | `/`, `/services`, `/services/{slug}`, `/privacy`, `/accessibility`, `/help` | Everyone                                                                                     |
 | Resident requests  | `/services/{slug}/request`, request receipt                                 | Everyone; receipt is session-grant protected                                                 |
-| Public tracking    | `/track`, `/track/{reference}`, authorized attachment downloads             | Reference and PIN; 15-minute session grant                                                   |
+| Public tracking    | `/track`, `/track/{reference}`, secure follow-up responses, authorized attachment downloads | Reference and PIN; 15-minute session grant                                          |
 | Staff session      | `/login`, `/dashboard`, account settings                                    | Active, verified staff or administrators                                                     |
 | Request operations | `/staff/requests` and assignment/status/note/appointment/download actions   | Active, verified staff; mutations additionally require assignment or administrator authority |
 | Service management | `/admin/services` and create/edit/archive/restore actions                   | Administrators only                                                                          |

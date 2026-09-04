@@ -8,6 +8,7 @@ use Database\Factories\RequestActivityFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RequestActivity extends Model
 {
@@ -54,5 +55,11 @@ class RequestActivity extends Model
     public function subjectUser(): BelongsTo
     {
         return $this->belongsTo(User::class, 'subject_user_id');
+    }
+
+    /** @return HasMany<RequestAttachment, $this> */
+    public function attachments(): HasMany
+    {
+        return $this->hasMany(RequestAttachment::class)->orderBy('created_at');
     }
 }

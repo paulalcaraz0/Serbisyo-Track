@@ -21,6 +21,7 @@ const activityLabels: Record<RequestActivity['event_type'], string> = {
     status_change: 'Status changed',
     internal_note: 'Internal note',
     appointment: 'Appointment updated',
+    resident_response: 'Resident provided information',
 };
 
 export default function RequestWorkspace({ requestRecord: resource, staffOptions, allowedTransitions }: Props) {
@@ -209,7 +210,11 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                                             <time className="text-muted-foreground text-xs">{date(activity.created_at)}</time>
                                         </div>
                                         <p className="text-muted-foreground mt-1 text-xs">
-                                            {activity.actor ? `By ${activity.actor}` : 'System'}
+                                            {activity.event_type === 'resident_response'
+                                                ? 'By resident through secure tracking'
+                                                : activity.actor
+                                                  ? `By ${activity.actor}`
+                                                  : 'System'}
                                             {activity.subject_user ? ` · ${activity.subject_user}` : ''}
                                         </p>
                                         {activity.from_status && activity.to_status && (
@@ -231,12 +236,43 @@ export default function RequestWorkspace({ requestRecord: resource, staffOptions
                                             </div>
                                         )}
                                         {activity.private_details && (
-                                            <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100">
+                                            <div
+                                                className={`mt-2 rounded-lg border p-3 text-sm ${
+                                                    activity.event_type === 'resident_response'
+                                                        ? 'border-blue-200 bg-blue-50 text-blue-950 dark:border-blue-800 dark:bg-blue-950/40 dark:text-blue-100'
+                                                        : 'border-amber-200 bg-amber-50 text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-100'
+                                                }`}
+                                            >
                                                 <p className="flex items-center gap-1 text-xs font-bold uppercase">
-                                                    <LockKeyhole className="size-3.5" />
-                                                    Internal only
+                                                    {activity.event_type === 'resident_response' ? (
+                                                        <MessageSquareText className="size-3.5" />
+                                                    ) : (
+                                                        <LockKeyhole className="size-3.5" />
+                                                    )}
+                                                    {activity.event_type === 'resident_response' ? 'Resident response' : 'Internal only'}
                                                 </p>
                                                 <p className="mt-1 leading-6 whitespace-pre-line">{activity.private_details}</p>
+                                            </div>
+                                        )}
+                                        {activity.attachments.length > 0 && (
+                                            <div className="mt-2 rounded-lg border p-3 text-sm">
+                                                <p className="text-muted-foreground text-xs font-bold uppercase">Files provided with this response</p>
+                                                <ul className="mt-2 space-y-2">
+                                                    {activity.attachments.map((file) => (
+                                                        <li key={file.public_id}>
+                                                            <a
+                                                                className="focus-ring text-primary inline-flex min-h-10 items-center gap-2 rounded-lg font-semibold hover:underline"
+                                                                href={route('staff.requests.attachments.show', {
+                                                                    serviceRequest: record.reference,
+                                                                    attachment: file.public_id,
+                                                                })}
+                                                            >
+                                                                <Download className="size-4" />
+                                                                {file.name}
+                                                            </a>
+                                                        </li>
+                                                    ))}
+                                                </ul>
                                             </div>
                                         )}
                                     </li>

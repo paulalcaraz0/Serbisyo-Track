@@ -12,6 +12,7 @@ use App\Http\Controllers\Public\RequestAttachmentController;
 use App\Http\Controllers\Public\RequestFormController;
 use App\Http\Controllers\Public\RequestReceiptController;
 use App\Http\Controllers\Public\RequestTrackingController;
+use App\Http\Controllers\Public\ResidentResponseController;
 use App\Http\Controllers\Public\ServiceDetailsController;
 use App\Http\Controllers\Public\ServiceDirectoryController;
 use App\Http\Controllers\Public\ServiceRequestController;
@@ -41,6 +42,9 @@ Route::post('track', [RequestTrackingController::class, 'verify'])
     ->middleware('throttle:resident-tracking')
     ->name('tracking.verify');
 Route::get('track/{reference}', [RequestTrackingController::class, 'show'])->name('tracking.show');
+Route::post('track/{reference}/responses', ResidentResponseController::class)
+    ->middleware('throttle:resident-responses')
+    ->name('tracking.responses.store');
 Route::get('track/{reference}/attachments/{attachment}', RequestAttachmentController::class)
     ->middleware('throttle:resident-downloads')
     ->name('tracking.attachments.show');

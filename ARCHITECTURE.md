@@ -60,6 +60,7 @@ Phase 3 implements resident intake and public tracking without resident accounts
 - Submission creation and attachment metadata writes occur in one database transaction; any private files written before a failure are removed.
 - The receipt reveals the PIN only on its initial response. Reloaded receipts remain redacted and accessible only through the same short-lived session grant.
 - Tracking checks a reference and PIN behind layered rate limits, then issues a 15-minute encrypted-session grant. Public tracking props exclude resident name, contact, location, request description, and future private notes.
+- When the status is `needs_information`, the tracking grant authorizes a rate-limited resident response. The response text is encrypted in an append-only activity, uploaded files are linked to that activity, and the request remains in the same state until staff reviews it.
 - Attachment downloads query through the owning request and require the same tracking grant; no storage path or database identifier is exposed.
 - Sensitive request, receipt, tracking, and attachment responses send `no-store` and `noindex` headers.
 
@@ -73,6 +74,7 @@ Phase 4 implements the protected processing boundary:
 - `RequestActivity` is an append-only timeline record with an actor, optional subject, typed event, status edge, encrypted bilingual public messages, and encrypted private details. No application route mutates or deletes an activity.
 - Staff list resources deliberately omit resident PII. The protected detail resource includes only the data needed for the authorized workspace and never returns PIN hashes or storage paths.
 - Public tracking derives history from activities that contain both allow-listed public messages. It selects the request locale and omits actors, private details, raw bilingual fields, and internal identifiers.
+- Resident-response activities show a generic bilingual confirmation in public history while their encrypted text and linked files are available in the authorized staff timeline.
 - Each service has a 1–60 business-day internal target. Submission calculates `due_at` while skipping weekends; open overdue work is surfaced in queue summaries and filters.
 - `ResidentRequestUpdated` is an after-commit queued email notification. The notifier sends only when email is the selected contact channel and never contains the tracking PIN.
 - Fictional development seed data exercises unassigned, assigned, overdue, and appointment-preference states and is guarded from production.

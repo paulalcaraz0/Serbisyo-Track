@@ -281,4 +281,26 @@ export interface Translations {
         dismiss: string;
         restore: string;
     };
+    resident_response: {
+        title: string;
+        intro: string;
+        staff_request_label: string;
+        details_label: string;
+        details_help: string;
+        attachments_label: string;
+        attachments_help: string;
+        selected_files: string;
+        remove_file: string;
+        privacy_note: string;
+        submit: string;
+        submitting: string;
+        confirmation: string;
+        timeline_message: string;
+        validation: {
+            required: string;
+            min: string;
+            max: string;
+            unavailable: string;
+        };
+    };
 }

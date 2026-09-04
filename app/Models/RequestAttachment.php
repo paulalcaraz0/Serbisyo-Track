@@ -13,6 +13,7 @@ class RequestAttachment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'request_activity_id',
         'public_id',
         'disk',
         'path',
@@ -37,5 +38,11 @@ class RequestAttachment extends Model
     public function serviceRequest(): BelongsTo
     {
         return $this->belongsTo(ServiceRequest::class);
+    }
+
+    /** @return BelongsTo<RequestActivity, $this> */
+    public function requestActivity(): BelongsTo
+    {
+        return $this->belongsTo(RequestActivity::class);
     }
 }

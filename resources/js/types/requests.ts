@@ -13,7 +13,7 @@ export interface StaffRequestSummary {
 
 export interface RequestActivity {
     id: number;
-    event_type: 'submitted' | 'assignment' | 'status_change' | 'internal_note' | 'appointment';
+    event_type: 'submitted' | 'assignment' | 'status_change' | 'internal_note' | 'appointment' | 'resident_response';
     actor: string | null;
     subject_user: string | null;
     from_status: string | null;
@@ -21,6 +21,7 @@ export interface RequestActivity {
     public_message_en: string | null;
     public_message_fil: string | null;
     private_details: string | null;
+    attachments: { public_id: string; name: string; mime_type: string; size_bytes: number }[];
     created_at: string;
 }
 

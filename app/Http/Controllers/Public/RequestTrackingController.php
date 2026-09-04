@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Enums\ServiceRequestStatus;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Public\TrackServiceRequestRequest;
 use App\Models\ServiceRequest;
@@ -53,6 +54,11 @@ class RequestTrackingController extends Controller
             ->firstOrFail();
         $filipino = app()->getLocale() === 'fil';
         $status = $serviceRequest->status->value;
+        $latestInformationRequest = $serviceRequest->activities
+            ->filter(fn ($activity) => $activity->to_status === ServiceRequestStatus::NeedsInformation
+                && $activity->public_message_en !== null
+                && $activity->public_message_fil !== null)
+            ->last();
 
         return Inertia::render('tracking/show', [
             'trackedRequest' => [
@@ -61,6 +67,10 @@ class RequestTrackingController extends Controller
                 'status' => $status,
                 'statusLabel' => __("phase3.statuses.{$status}.label"),
                 'statusDescription' => __("phase3.statuses.{$status}.description"),
+                'canRespond' => $serviceRequest->status === ServiceRequestStatus::NeedsInformation,
+                'requestedInformationMessage' => $latestInformationRequest
+                    ? ($filipino ? $latestInformationRequest->public_message_fil : $latestInformationRequest->public_message_en)
+                    : null,
                 'submittedAt' => $serviceRequest->submitted_at->toIso8601String(),
                 'updatedAt' => $serviceRequest->updated_at->toIso8601String(),
                 'appointment' => $serviceRequest->appointment ? [
@@ -80,6 +90,11 @@ class RequestTrackingController extends Controller
                         'message' => $filipino ? $activity->public_message_fil : $activity->public_message_en,
                         'occurredAt' => $activity->created_at->toIso8601String(),
                     ])->values(),
+            ],
+            'attachmentRules' => [
+                'maxFiles' => (int) config('serbisyo.attachment_max_files', 5),
+                'maxMegabytes' => ((int) config('serbisyo.attachment_max_kilobytes', 5120)) / 1024,
+                'accept' => '.pdf,.jpg,.jpeg,.png',
             ],
         ]);
     }

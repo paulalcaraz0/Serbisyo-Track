@@ -7,7 +7,7 @@ This file is the living implementation roadmap. A phase is marked complete only 
 | 0. Architecture and planning | Complete | Architecture, data model direction, assumptions, risks, milestones, and acceptance gates defined |
 | 1. Application foundation | Complete | Laravel/Inertia/React foundation, bilingual homepage, staff authentication, roles, security headers, quality tooling, SQLite, CI baseline, and documentation |
 | 2. Services and public information | Complete | Bilingual service directory/details, privacy/accessibility/help pages, and administrator service management |
-| 3. Resident submissions and tracking | Complete | Guided requests, appointments, attachments, secure references, tracking PINs, receipts, and public status tracking |
+| 3. Resident submissions and tracking | Complete | Guided requests, appointments, attachments, secure follow-up responses, tracking PINs, receipts, and public status tracking |
 | 4. Staff operations | Complete | Assignment, workflow transitions, public/private history, internal notes, request timelines, due targets, appointment controls, and queued notifications |
 | 5. Administration and reporting | Complete | Staff management, office/retention settings, analytics, sanitized exports, audit events, and retention cleanup |
 | 6. Hardening and comprehensive QA | Complete | Safe bilingual error states, accessibility and privacy review, layered security controls, abuse limits, and full workflow regression coverage |
@@ -37,6 +37,7 @@ Phase 2 verification result: 45 automated tests with 338 assertions passed. The 
 - [x] Up to five PDF, JPG, or PNG attachments of at most 5 MB each are validated by content and stored privately
 - [x] The receipt displays the tracking PIN once, supports printing, and does not expose submitted personal details
 - [x] Reference-and-PIN tracking is rate limited, uses a short-lived session grant, and returns only allow-listed public status data
+- [x] Residents can securely provide encrypted follow-up information and private files only while staff is awaiting information
 - [x] Attachment downloads require the matching tracking grant and request ownership
 - [x] Inactive and archived services reject new requests
 - [x] Request, receipt, tracking, and download responses opt out of caching and search indexing
@@ -56,6 +57,7 @@ Phase 3 verification result: 57 automated tests with 468 assertions passed. Clea
 - [x] A request cannot enter Scheduled until its appointment is confirmed
 - [x] Status, assignment, note, and appointment actions append encrypted immutable activity records
 - [x] Public tracking exposes only allow-listed localized history without actors, private notes, personal data, or storage metadata
+- [x] Resident follow-up responses and their linked files appear in the authorized staff timeline without automatically changing request status
 - [x] Service-specific business-day targets populate due dates, overdue indicators, and terminal closure times
 - [x] Email-preference updates are queued after commit without including the tracking PIN
 - [x] Staff attachment downloads are authorized and scoped through the owning request

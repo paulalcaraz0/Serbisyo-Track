@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\RequestActivity;
 use App\Models\ServiceRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -62,6 +63,7 @@ class StaffRequestResource extends JsonResource
                 'public_message_en' => $activity->public_message_en,
                 'public_message_fil' => $activity->public_message_fil,
                 'private_details' => $activity->private_details,
+                'attachments' => $this->activityAttachments($activity),
                 'created_at' => $activity->created_at->toIso8601String(),
             ])->values(),
             'permissions' => [
@@ -71,5 +73,22 @@ class StaffRequestResource extends JsonResource
                 'manage_appointment' => $request->user()?->can('manageAppointment', $this->resource) ?? false,
             ],
         ];
+    }
+
+    /** @return array<int, array<string, mixed>> */
+    private function activityAttachments(RequestActivity $activity): array
+    {
+        $attachments = [];
+
+        foreach ($activity->attachments as $attachment) {
+            $attachments[] = [
+                'public_id' => $attachment->public_id,
+                'name' => $attachment->original_name,
+                'mime_type' => $attachment->mime_type,
+                'size_bytes' => $attachment->size_bytes,
+            ];
+        }
+
+        return $attachments;
     }
 }

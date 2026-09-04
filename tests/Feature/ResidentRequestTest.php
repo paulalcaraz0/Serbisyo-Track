@@ -3,10 +3,12 @@
 namespace Tests\Feature;
 
 use App\Enums\AppointmentStatus;
+use App\Enums\RequestActivityType;
 use App\Enums\ServiceRequestStatus;
 use App\Models\RequestAttachment;
 use App\Models\Service;
 use App\Models\ServiceRequest;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
@@ -250,6 +252,136 @@ class ResidentRequestTest extends TestCase
             'reference' => $serviceRequest->public_reference,
             'attachment' => $otherAttachment->public_id,
         ]))->assertNotFound();
+    }
+
+    public function test_resident_can_securely_provide_requested_information_and_staff_can_review_it(): void
+    {
+        Storage::fake('local');
+        $staff = User::factory()->create();
+        $serviceRequest = ServiceRequest::factory()->create([
+            'assigned_to' => $staff->id,
+            'status' => ServiceRequestStatus::NeedsInformation,
+        ]);
+        $serviceRequest->activities()->create([
+            'actor_id' => $staff->id,
+            'event_type' => RequestActivityType::StatusChange,
+            'from_status' => ServiceRequestStatus::Acknowledged,
+            'to_status' => ServiceRequestStatus::NeedsInformation,
+            'public_message_en' => 'Please provide a fictional supporting document.',
+            'public_message_fil' => 'Magbigay ng kathang-isip na supporting document.',
+        ]);
+        $residentMessage = 'Here is the fictional supporting information requested by staff.';
+
+        $this->withSession([
+            'resident_tracking_grants' => [$serviceRequest->public_reference => now()->addMinutes(5)->timestamp],
+        ])->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), [
+            'response_details' => $residentMessage,
+            'attachments' => [UploadedFile::fake()->create('additional-proof.pdf', 100, 'application/pdf')],
+            'website' => '',
+        ])->assertRedirect(route('tracking.show', ['reference' => $serviceRequest->public_reference]))
+            ->assertSessionHas('success', __('phase7.resident_response.confirmation'));
+
+        $responseActivity = $serviceRequest->activities()->reorder()->latest('id')->firstOrFail();
+        $this->assertSame(RequestActivityType::ResidentResponse, $responseActivity->event_type);
+        $this->assertSame($residentMessage, $responseActivity->private_details);
+        $this->assertNull($responseActivity->actor_id);
+        $this->assertSame(ServiceRequestStatus::NeedsInformation, $serviceRequest->fresh()->status);
+
+        $rawActivity = DB::table('request_activities')->where('id', $responseActivity->id)->first();
+        $this->assertNotSame($residentMessage, $rawActivity->private_details);
+
+        $attachment = $responseActivity->attachments()->firstOrFail();
+        $this->assertSame($serviceRequest->id, $attachment->service_request_id);
+        $this->assertSame('additional-proof.pdf', $attachment->original_name);
+        Storage::disk('local')->assertExists($attachment->path);
+
+        $this->get(route('tracking.show', ['reference' => $serviceRequest->public_reference]))
+            ->assertOk()
+            ->assertDontSee($residentMessage)
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('trackedRequest.canRespond', true)
+                ->where('trackedRequest.requestedInformationMessage', 'Please provide a fictional supporting document.')
+                ->where('trackedRequest.history.1.message', __('phase7.resident_response.timeline_message'))
+                ->where('trackedRequest.attachments.0.name', 'additional-proof.pdf')
+                ->where('attachmentRules.maxFiles', 5)
+                ->missing('trackedRequest.private_details'));
+
+        $this->actingAs($staff)
+            ->get(route('staff.requests.show', $serviceRequest))
+            ->assertOk()
+            ->assertInertia(fn (Assert $page) => $page
+                ->where('requestRecord.data.activities.1.event_type', RequestActivityType::ResidentResponse->value)
+                ->where('requestRecord.data.activities.1.private_details', $residentMessage)
+                ->where('requestRecord.data.activities.1.attachments.0.name', 'additional-proof.pdf'));
+    }
+
+    public function test_resident_response_requires_tracking_access_and_needs_information_status(): void
+    {
+        $serviceRequest = ServiceRequest::factory()->create(['status' => ServiceRequestStatus::NeedsInformation]);
+        $payload = [
+            'response_details' => 'Fictional additional information for staff review.',
+            'attachments' => [],
+            'website' => '',
+        ];
+
+        $this->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), $payload)
+            ->assertRedirect(route('tracking.index'))
+            ->assertSessionHasErrors('reference');
+
+        $this->assertDatabaseCount('request_activities', 0);
+
+        $serviceRequest->update(['status' => ServiceRequestStatus::InProgress]);
+
+        $this->withSession([
+            'resident_tracking_grants' => [$serviceRequest->public_reference => now()->addMinutes(5)->timestamp],
+        ])->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), $payload)
+            ->assertRedirect()
+            ->assertSessionHasErrors('response_details');
+
+        $this->assertDatabaseCount('request_activities', 0);
+    }
+
+    public function test_resident_response_validation_rejects_unsafe_files_and_does_not_flash_private_text(): void
+    {
+        Storage::fake('local');
+        $serviceRequest = ServiceRequest::factory()->create(['status' => ServiceRequestStatus::NeedsInformation]);
+
+        $this->withSession([
+            'resident_tracking_grants' => [$serviceRequest->public_reference => now()->addMinutes(5)->timestamp],
+        ])->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), [
+            'response_details' => 'short',
+            'attachments' => [UploadedFile::fake()->create('unsafe.exe', 10, 'application/x-msdownload')],
+            'website' => '',
+        ])->assertSessionHasErrors(['response_details', 'attachments.0'])
+            ->assertSessionMissing('_old_input.response_details')
+            ->assertSessionMissing('_old_input.attachments');
+
+        $this->assertDatabaseCount('request_activities', 0);
+        $this->assertDatabaseCount('request_attachments', 0);
+    }
+
+    public function test_resident_responses_are_rate_limited_by_reference_and_ip(): void
+    {
+        $serviceRequest = ServiceRequest::factory()->create(['status' => ServiceRequestStatus::NeedsInformation]);
+        $this->withSession([
+            'resident_tracking_grants' => [$serviceRequest->public_reference => now()->addMinutes(5)->timestamp],
+        ]);
+
+        for ($attempt = 0; $attempt < 5; $attempt++) {
+            $this->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), [
+                'response_details' => 'short',
+                'attachments' => [],
+                'website' => '',
+            ])->assertSessionHasErrors('response_details');
+        }
+
+        $this->post(route('tracking.responses.store', ['reference' => $serviceRequest->public_reference]), [
+            'response_details' => 'short',
+            'attachments' => [],
+            'website' => '',
+        ])->assertTooManyRequests();
+
+        $this->assertDatabaseCount('request_activities', 0);
     }
 
     /**

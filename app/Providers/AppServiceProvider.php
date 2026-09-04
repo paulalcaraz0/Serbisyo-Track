@@ -54,6 +54,11 @@ class AppServiceProvider extends ServiceProvider
             Limit::perMinute(20)->by($request->ip()),
         ]);
 
+        RateLimiter::for('resident-responses', fn (Request $request) => [
+            Limit::perMinute(5)->by('response-ip|'.$request->ip()),
+            Limit::perHour(10)->by('response-reference|'.$request->ip().'|'.strtoupper((string) $request->route('reference'))),
+        ]);
+
         RateLimiter::for('staff-mutations', fn (Request $request) => [
             Limit::perMinute(30)->by('staff|'.($request->user()?->getAuthIdentifier() ?? $request->ip())),
         ]);

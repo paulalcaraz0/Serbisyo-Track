@@ -67,7 +67,7 @@ class RequestController extends Controller
         $user = $request->user();
         abort_unless($user instanceof User, 403);
 
-        $serviceRequest->load(['service', 'assignee', 'appointment', 'attachments', 'activities.actor', 'activities.subjectUser']);
+        $serviceRequest->load(['service', 'assignee', 'appointment', 'attachments', 'activities.actor', 'activities.subjectUser', 'activities.attachments']);
         $mayTransition = $user->can('transition', $serviceRequest);
         $staffQuery = User::query()->where('is_active', true)->whereNotNull('email_verified_at')->orderBy('name');
 
